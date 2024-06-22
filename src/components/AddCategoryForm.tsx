@@ -10,8 +10,10 @@ export default function AddCategoryForm({ categories, addCategory }: AddCategory
   const [inputValue, setInputValue] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const checkIfCategoryExists = (value: string) => {
-    return categories.some((category: CategoryProps) => category.name.localeCompare(value));
+  const ifCategoryExists = (value: string) => {
+    return categories.some(
+      (category: CategoryProps) => category.name.toLowerCase() === value.toLowerCase()
+    );
   };
 
   const handleInput = (e: FormEvent<HTMLInputElement>) => {
@@ -25,7 +27,7 @@ export default function AddCategoryForm({ categories, addCategory }: AddCategory
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (checkIfCategoryExists(inputValue)) {
+    if (ifCategoryExists(inputValue)) {
       setIsError(true);
       return;
     }
@@ -57,7 +59,7 @@ export default function AddCategoryForm({ categories, addCategory }: AddCategory
         )}
       </form>
 
-      <ul style={{ columnCount: 2 }}>
+      <ul style={{ columnCount: 2, paddingInlineStart: "1em" }}>
         {categories.map((category) => (
           <li key={category.id}>{category.name}</li>
         ))}

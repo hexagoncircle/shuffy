@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import EditCardForm from "./EditCardForm";
 import "@css/Card.css";
 import { useClickAway } from "@uidotdev/usehooks";
@@ -10,51 +10,44 @@ export interface CardDataProps {
   category: string;
 }
 
-export interface CardProps extends CardDataProps {
-  updateCard(card: CardDataProps): void;
-  deleteCard(id: string): void;
+export interface CardProps {
+  card: CardDataProps;
+  onUpdate(card: CardDataProps): void;
+  onDelete(id: string): void;
   setIsActive(id: string): void;
 }
 
-export default function Card({
-  id,
-  name,
-  category,
-  isActive,
-  setIsActive,
-  updateCard,
-  deleteCard,
-}: CardProps) {
+export default function Card({ card, onUpdate, onDelete }: CardProps) {
+  const isMounted = useRef(false);
   const ref = useClickAway<HTMLElement>(() => setIsEditing(false));
   const nameRef = useRef<HTMLButtonElement>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const { name, category, isActive } = card;
 
-  const handleUpdate = (card: CardDataProps) => {
-    updateCard(card);
-    setIsEditing(false);
+  const handleIsActiveChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onUpdate({
+      ...card,
+      isActive: e.target.checked,
+    });
   };
 
-  useEffect(() => {
-    if (!nameRef.current || isEditing) return;
-
-    nameRef.current.focus();
-  }, [isEditing]);
+  const handleUpdate = (card: CardDataProps) => {
+    onUpdate(card);
+    setIsEditing(false);
+  };
 
   return (
     <article ref={ref} tabIndex={-1} className="card | cluster">
       {isEditing ? (
         <EditCardForm
-          id={id}
-          name={name}
-          category={category}
-          isActive={isActive}
-          updateCard={handleUpdate}
-          deleteCard={deleteCard}
-          cancelUpdate={() => setIsEditing(false)}
+          card={card}
+          onUpdate={handleUpdate}
+          onDelete={onDelete}
+          onCancel={() => setIsEditing(false)}
         />
       ) : (
         <>
-          <input type="checkbox" checked={isActive} onChange={() => setIsActive(id)} />
+          <input type="checkbox" checked={isActive} onChange={handleIsActiveChange} />
           <button ref={nameRef} className="card-name" onClick={() => setIsEditing(true)}>
             {name}
           </button>

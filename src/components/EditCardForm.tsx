@@ -2,21 +2,16 @@ import { FormEvent, SyntheticEvent, useContext, useState } from "react";
 import { CardDataProps } from "./Card";
 import { CategoriesContext, CategoryProps } from "../contexts/CategoriesContext";
 
-interface EditCardForm extends CardDataProps {
-  updateCard(card: CardDataProps): void;
-  deleteCard(id: string): void;
-  cancelUpdate(): void;
+interface EditCardForm {
+  card: CardDataProps;
+  onCancel(): void;
+  onDelete(id: string): void;
+  onUpdate(card: CardDataProps): void;
 }
 
-export default function EditCardForm({
-  id,
-  name,
-  category,
-  isActive,
-  cancelUpdate,
-  deleteCard,
-  updateCard,
-}: EditCardForm) {
+export default function EditCardForm({ card, onCancel, onDelete, onUpdate }: EditCardForm) {
+  const { id, name, category } = card;
+
   const categoryList = useContext<CategoryProps[]>(CategoriesContext);
   const [inputValue, setInputValue] = useState(name);
   const [categorySelectValue, setCategorySelectValue] = useState(category);
@@ -34,7 +29,13 @@ export default function EditCardForm({
 
     if (!inputValue) return;
 
-    updateCard({ name: inputValue, category: categorySelectValue, isActive, id });
+    const updatedCard = {
+      ...card,
+      name: inputValue,
+      category: categorySelectValue,
+    };
+
+    onUpdate(updatedCard);
   };
 
   return (
@@ -70,10 +71,10 @@ export default function EditCardForm({
 
       <div className="cluster">
         <button type="submit">Update</button>
-        <button type="button" onClick={cancelUpdate}>
+        <button type="button" onClick={onCancel}>
           Cancel
         </button>
-        <button type="button" onClick={() => deleteCard(id)}>
+        <button type="button" onClick={() => onDelete(id)}>
           Delete
         </button>
       </div>

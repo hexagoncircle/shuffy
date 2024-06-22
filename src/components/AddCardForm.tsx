@@ -1,9 +1,11 @@
 import { FormEvent, SyntheticEvent, useState } from "react";
 import { CategoryProps } from "../contexts/CategoriesContext";
+import { CardDataProps } from "./Card";
+import { v4 as uuid } from "uuid";
 
 interface AddCardFormProps {
   categories: CategoryProps[];
-  addCard(name: string, category: string): void;
+  addCard(card: CardDataProps): void;
 }
 
 export default function AddCardForm({ categories, addCard }: AddCardFormProps) {
@@ -23,20 +25,27 @@ export default function AddCardForm({ categories, addCard }: AddCardFormProps) {
 
     if (!inputValue) return;
 
-    addCard(inputValue, categorySelectValue);
+    const newCard = {
+      name: inputValue,
+      category: categorySelectValue,
+      id: uuid(),
+      isActive: true,
+    };
+
+    addCard(newCard);
     setInputValue("");
   };
 
   return (
     <form id="add-card-form" onSubmit={handleSubmit} autoComplete="off">
       <div>
-        <label htmlFor="add-card">Add new card</label>
-        <input id="add-card" value={inputValue} type="text" onInput={handleInput} />
+        <label htmlFor="add-card-name">Add new card</label>
+        <input id="add-card-name" value={inputValue} type="text" onInput={handleInput} />
       </div>
 
       <div>
-        <label htmlFor="select-category">Category</label>
-        <select id="select-category" onChange={handleCategorySelect}>
+        <label htmlFor="add-card-category">Select category</label>
+        <select id="add-card-category" onChange={handleCategorySelect}>
           {categories.map((category) => (
             <option key={category.id} value={category.name}>
               {category.name}

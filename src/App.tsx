@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { CategoriesContext } from "./contexts/CategoriesContext";
+import { CardDataProps } from "./components/Card";
+import cardsReducer from "./reducers/cardsReducer";
 import AddCategoryForm from "./components/AddCategoryForm";
 import AddCardForm from "./components/AddCardForm";
 import Deck from "./components/Deck";
@@ -15,7 +17,7 @@ import CARDS from "./data/cards.json";
 
 function App() {
   const [categories, setCategories] = useState(CATEGORIES);
-  const [cards, setCards] = useState(CARDS);
+  const [cards, dispatch] = useReducer(cardsReducer, CARDS);
   const activeCards = cards.filter((card) => card.isActive);
 
   const addCategory = (name: string) => {
@@ -24,16 +26,25 @@ function App() {
     setCategories([...categories, newCategory]);
   };
 
-  const addCard = (name: string, category: string) => {
-    const newCard = { name, category, id: uuid(), isActive: true };
+  const addCard = (card: CardDataProps) => {
+    dispatch({
+      type: "added",
+      card,
+    });
+  };
 
-    setCards([...cards, newCard]);
+  const updateCard = (card: CardDataProps) => {
+    dispatch({
+      type: "updated",
+      card,
+    });
   };
 
   const deleteCard = (id: string) => {
-    const remainingCards = cards.filter((card) => id !== card.id);
-
-    setCards(remainingCards);
+    dispatch({
+      type: "deleted",
+      id,
+    });
   };
 
   return (
@@ -42,7 +53,7 @@ function App() {
       <AddCardForm categories={categories} addCard={addCard} />
       <AddCategoryForm categories={categories} addCategory={addCategory}></AddCategoryForm>
       <CategoriesContext.Provider value={categories}>
-        <Deck cards={cards} updateCards={setCards} deleteCard={deleteCard} />
+        <Deck cards={cards} updateCard={updateCard} deleteCard={deleteCard} />
       </CategoriesContext.Provider>
       <GetCardForm cards={activeCards}></GetCardForm>
     </main>
