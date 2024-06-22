@@ -5,42 +5,42 @@ import { v4 as uuid } from "uuid";
 
 interface CardAddFormProps {
   categories: CategoryProps[];
-  addCard(card: CardDataProps): void;
+  onCreate(card: CardDataProps): void;
 }
 
-export default function CardAddForm({ categories, addCard }: CardAddFormProps) {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState(categories[0].name);
+export default function CardAddForm({ categories, onCreate }: CardAddFormProps) {
+  const [nameValue, setNameValue] = useState("");
+  const [categoryValue, setCategoryValue] = useState(categories[0].name);
 
   const handleNameInput = (e: FormEvent<HTMLInputElement>) => {
-    setName(e.currentTarget.value);
+    setNameValue(e.currentTarget.value);
   };
 
   const handleCategoryChange = (e: FormEvent<HTMLSelectElement>) => {
-    setCategory(e.currentTarget.value);
+    setCategoryValue(e.currentTarget.value);
   };
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (!name) return;
+    if (!nameValue) return;
 
     const newCard = {
-      name: name,
-      category: category,
+      name: nameValue,
+      category: categoryValue,
       id: uuid(),
       isActive: true,
     };
 
-    addCard(newCard);
-    setName("");
+    onCreate(newCard);
+    setNameValue("");
   };
 
   return (
     <form id="add-card-form" onSubmit={handleSubmit} autoComplete="off">
       <div>
         <label htmlFor="add-card-name">Add new card</label>
-        <input id="add-card-name" type="text" value={name} onInput={handleNameInput} />
+        <input id="add-card-name" type="text" value={nameValue} onInput={handleNameInput} />
       </div>
 
       <div>

@@ -1,7 +1,7 @@
 import { CardDataProps } from "@/components/Card";
 
-type AddedAction = {
-  type: "added";
+type CreatedAction = {
+  type: "created";
   card: CardDataProps;
 };
 
@@ -15,11 +15,11 @@ type DeletedAction = {
   id: string;
 };
 
-type Actions = AddedAction | UpdatedAction | DeletedAction;
+type Actions = CreatedAction | UpdatedAction | DeletedAction;
 
 export default function cardsReducer(cards: CardDataProps[], action: Actions) {
   switch (action.type) {
-    case "added": {
+    case "created": {
       return [...cards, action.card];
     }
     case "updated": {

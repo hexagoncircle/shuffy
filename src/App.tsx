@@ -30,9 +30,9 @@ function App() {
     ]);
   };
 
-  const addCard = (card: CardDataProps) => {
+  const createCard = (card: CardDataProps) => {
     dispatch({
-      type: "added",
+      type: "created",
       card,
     });
   };
@@ -55,7 +55,7 @@ function App() {
     <main className="flow">
       <h1>Current deck</h1>
 
-      <CardAddForm categories={categories} addCard={addCard} />
+      <CardAddForm categories={categories} onCreate={createCard} />
 
       <section className="flow">
         <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
@@ -67,7 +67,7 @@ function App() {
       </section>
 
       <CategoriesContext.Provider value={categories}>
-        <Deck cards={cards} updateCard={updateCard} deleteCard={deleteCard} />
+        <Deck cards={cards} onDelete={deleteCard} onUpdate={updateCard} />
       </CategoriesContext.Provider>
 
       <CardSelectForm cards={activeCards}></CardSelectForm>
