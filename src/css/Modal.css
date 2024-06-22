@@ -1,0 +1,18 @@
+dialog {
+  margin: auto;
+  padding: var(--space-m);
+  width: 100%;
+  max-inline-size: min(90vw, 500px);
+  color: inherit;
+  border: none;
+  background: var(--surface-2);
+  border-radius: var(--radius-s);
+}
+
+dialog[open] {
+  margin: auto;
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(8px);
+}

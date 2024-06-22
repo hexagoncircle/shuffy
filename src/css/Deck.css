@@ -1,0 +1,16 @@
+.deck {
+  padding-inline-start: unset;
+}
+
+.deck li {
+  width: 100%;
+}
+
+.deck > * + * {
+  margin-block-start: var(--space-xs);
+}
+
+label {
+  display: block;
+  margin-block-end: var(--space-xs);
+}
