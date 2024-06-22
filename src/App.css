@@ -90,28 +90,6 @@ body {
   font-size: 0.85em;
 }
 
-/* :where(input:not([type="checkbox"], [type="radio"]), select) {
-  padding: var(--space-xs);
-}
-
-button {
-  border-radius: 4px;
-  border: 1px solid transparent;
-  padding: var(--space-xs) var(--space-m);
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: var(--text-9);
-  background-color: var(--surface-2);
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button[aria-pressed="true"] {
-  color: var(--button-text-active);
-  background-color: var(--button-bg-active);
-} */
-
 .btn-reset {
   all: unset;
   outline: revert;

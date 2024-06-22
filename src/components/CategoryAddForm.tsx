@@ -40,31 +40,23 @@ export default function CategoryAddForm({ categories, addCategory }: CategoryAdd
   };
 
   return (
-    <section className="flow">
-      <form id="add-category-form" onSubmit={handleSubmit} autoComplete="off">
-        <div>
-          <label htmlFor="add-category">Add new category</label>
-          <input
-            id="add-category"
-            type="text"
-            value={categoryValue}
-            onInput={handleCategoryInput}
-            aria-labelledby="add-category-hint"
-          />
+    <form id="add-category-form" onSubmit={handleSubmit} autoComplete="off">
+      <div>
+        <label htmlFor="add-category">Add new category</label>
+        <input
+          id="add-category"
+          type="text"
+          value={categoryValue}
+          onInput={handleCategoryInput}
+          aria-labelledby="add-category-hint"
+        />
+      </div>
+      <button>Add</button>
+      {isError && (
+        <div id="add-category-hint" className="hint">
+          This category already exists.
         </div>
-        <button>Add</button>
-        {isError && (
-          <div id="add-category-hint" className="hint">
-            This category already exists.
-          </div>
-        )}
-      </form>
-
-      <ul style={{ columnCount: 2, paddingInlineStart: "1em" }}>
-        {categories.map((category) => (
-          <li key={category.id}>{category.name}</li>
-        ))}
-      </ul>
-    </section>
+      )}
+    </form>
   );
 }

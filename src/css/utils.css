@@ -18,3 +18,7 @@
 .flow > * + * {
   margin-block-start: var(--space, var(--space-l));
 }
+
+.multi-column {
+  columns: var(--cols, 2);
+}

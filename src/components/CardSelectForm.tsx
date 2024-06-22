@@ -16,14 +16,15 @@ export default function CardSelectForm({ cards }: CardSelectFormProps) {
 
   const handleClick = () => {
     function getCard() {
-      const card = getRandomCard();
+      const selectedCard = getRandomCard();
 
-      if (card === card) {
+      if (card === selectedCard) {
         getCard();
       } else {
-        setCard(card);
+        setCard(selectedCard);
       }
     }
+
     getCard();
   };
 

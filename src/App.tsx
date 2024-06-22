@@ -21,9 +21,13 @@ function App() {
   const activeCards = cards.filter((card) => card.isActive);
 
   const addCategory = (name: string) => {
-    const newCategory = { id: uuid(), name };
-
-    setCategories([...categories, newCategory]);
+    setCategories([
+      ...categories,
+      {
+        id: uuid(),
+        name,
+      },
+    ]);
   };
 
   const addCard = (card: CardDataProps) => {
@@ -50,11 +54,22 @@ function App() {
   return (
     <main className="flow">
       <h1>Current deck</h1>
+
       <CardAddForm categories={categories} addCard={addCard} />
-      <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
+
+      <section className="flow">
+        <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
+        <ul className="multi-column" role="list">
+          {categories.map((category) => (
+            <li key={category.id}>{category.name}</li>
+          ))}
+        </ul>
+      </section>
+
       <CategoriesContext.Provider value={categories}>
         <Deck cards={cards} updateCard={updateCard} deleteCard={deleteCard} />
       </CategoriesContext.Provider>
+
       <CardSelectForm cards={activeCards}></CardSelectForm>
     </main>
   );

@@ -28,13 +28,11 @@ export default function CardEditForm({ card, onCancel, onDelete, onUpdate }: Car
 
     if (!nameValue) return;
 
-    const updatedCard = {
+    onUpdate({
       ...card,
       name: nameValue,
       category: categoryValue,
-    };
-
-    onUpdate(updatedCard);
+    });
   };
 
   return (
