@@ -1,6 +1,6 @@
-import { FormEvent, SyntheticEvent, useContext, useState } from "react";
+import { FormEvent, SyntheticEvent, useState } from "react";
 import { CardDataProps } from "@components/Card";
-import { CategoriesContext, CategoryProps } from "@/contexts/CategoriesContext";
+import CategorySelect from "./CategorySelect";
 
 interface CardEditForm {
   card: CardDataProps;
@@ -11,7 +11,6 @@ interface CardEditForm {
 
 export default function CardEditForm({ card, onCancel, onDelete, onUpdate }: CardEditForm) {
   const { id, name, category } = card;
-  const categories = useContext<CategoryProps[]>(CategoriesContext);
   const [nameValue, setNameValue] = useState(name);
   const [categoryValue, setCategoryValue] = useState(category);
 
@@ -19,7 +18,7 @@ export default function CardEditForm({ card, onCancel, onDelete, onUpdate }: Car
     setNameValue(e.currentTarget.value);
   };
 
-  const handleCategorySelect = (e: FormEvent<HTMLSelectElement>) => {
+  const handleCategoryChange = (e: FormEvent<HTMLSelectElement>) => {
     setCategoryValue(e.currentTarget.value);
   };
 
@@ -57,13 +56,11 @@ export default function CardEditForm({ card, onCancel, onDelete, onUpdate }: Car
 
       <div>
         <label htmlFor="edit-card-category">Category</label>
-        <select id="edit-card-category" value={categoryValue} onChange={handleCategorySelect}>
-          {categories.map((category) => (
-            <option key={category.id} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </select>
+        <CategorySelect
+          id="edit-card-category"
+          selectedValue={categoryValue}
+          onChange={handleCategoryChange}
+        />
       </div>
 
       <div className="cluster">

@@ -54,23 +54,19 @@ function App() {
   return (
     <main className="flow">
       <h1>Current deck</h1>
-
-      <CardAddForm categories={categories} onCreate={createCard} />
-
-      <section className="flow">
-        <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
-        <ul className="multi-column" role="list">
-          {categories.map((category) => (
-            <li key={category.id}>{category.name}</li>
-          ))}
-        </ul>
-      </section>
-
       <CategoriesContext.Provider value={categories}>
+        <CardAddForm onCreate={createCard} />
+        <section className="flow">
+          <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
+          <ul className="multi-column" role="list">
+            {categories.map((category) => (
+              <li key={category.id}>{category.name}</li>
+            ))}
+          </ul>
+        </section>
         <Deck cards={cards} onDelete={deleteCard} onUpdate={updateCard} />
+        <CardSelectForm cards={activeCards}></CardSelectForm>
       </CategoriesContext.Provider>
-
-      <CardSelectForm cards={activeCards}></CardSelectForm>
     </main>
   );
 }
