@@ -26,10 +26,6 @@ export default function Deck({ cards, deleteCard, updateCard }: DeckProps) {
         {cards.map((card) => (
           <li key={card.id}>
             <Card
-              // id={card.id}
-              // name={card.name}
-              // category={card.category}
-              // isActive={card.isActive}
               card={card}
               setIsActive={toggleCardActiveState}
               onUpdate={updateCard}

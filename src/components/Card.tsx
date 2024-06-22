@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import EditCardForm from "./EditCardForm";
 import "@css/Card.css";
 import { useClickAway } from "@uidotdev/usehooks";
@@ -18,7 +18,6 @@ export interface CardProps {
 }
 
 export default function Card({ card, onUpdate, onDelete }: CardProps) {
-  const isMounted = useRef(false);
   const ref = useClickAway<HTMLElement>(() => setIsEditing(false));
   const nameRef = useRef<HTMLButtonElement>(null);
   const [isEditing, setIsEditing] = useState(false);
