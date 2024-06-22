@@ -3,10 +3,10 @@ import { v4 as uuid } from "uuid";
 import { CategoriesContext } from "./contexts/CategoriesContext";
 import { CardDataProps } from "./components/Card";
 import cardsReducer from "./reducers/cardsReducer";
-import AddCategoryForm from "./components/AddCategoryForm";
-import AddCardForm from "./components/AddCardForm";
+import CategoryAddForm from "./components/CategoryAddForm";
+import CardAddForm from "./components/CardAddForm";
+import CardSelectForm from "./components/CardSelectForm";
 import Deck from "./components/Deck";
-import GetCardForm from "./components/GetCardForm";
 import "./css/reset.css";
 import "./css/utils.css";
 import "./App.css";
@@ -50,12 +50,12 @@ function App() {
   return (
     <main className="flow">
       <h1>Current deck</h1>
-      <AddCardForm categories={categories} addCard={addCard} />
-      <AddCategoryForm categories={categories} addCategory={addCategory}></AddCategoryForm>
+      <CardAddForm categories={categories} addCard={addCard} />
+      <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
       <CategoriesContext.Provider value={categories}>
         <Deck cards={cards} updateCard={updateCard} deleteCard={deleteCard} />
       </CategoriesContext.Provider>
-      <GetCardForm cards={activeCards}></GetCardForm>
+      <CardSelectForm cards={activeCards}></CardSelectForm>
     </main>
   );
 }

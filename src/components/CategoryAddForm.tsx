@@ -1,13 +1,13 @@
 import { FormEvent, SyntheticEvent, useState } from "react";
-import { CategoryProps } from "../contexts/CategoriesContext";
+import { CategoryProps } from "@/contexts/CategoriesContext";
 
-interface AddCategoryFormProps {
+interface CategoryAddFormProps {
   categories: CategoryProps[];
   addCategory(value: string): void;
 }
 
-export default function AddCategoryForm({ categories, addCategory }: AddCategoryFormProps) {
-  const [inputValue, setInputValue] = useState("");
+export default function CategoryAddForm({ categories, addCategory }: CategoryAddFormProps) {
+  const [categoryValue, setCategoryValue] = useState("");
   const [isError, setIsError] = useState(false);
 
   const ifCategoryExists = (value: string) => {
@@ -16,9 +16,10 @@ export default function AddCategoryForm({ categories, addCategory }: AddCategory
     );
   };
 
-  const handleInput = (e: FormEvent<HTMLInputElement>) => {
-    setInputValue(e.currentTarget.value);
+  const handleCategoryInput = (e: FormEvent<HTMLInputElement>) => {
+    setCategoryValue(e.currentTarget.value);
 
+    // Remove error message when typing resumes
     if (isError) {
       setIsError(false);
     }
@@ -27,15 +28,15 @@ export default function AddCategoryForm({ categories, addCategory }: AddCategory
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (ifCategoryExists(inputValue)) {
+    if (ifCategoryExists(categoryValue)) {
       setIsError(true);
       return;
     }
 
-    if (!inputValue) return;
+    if (!categoryValue) return;
 
-    addCategory(inputValue);
-    setInputValue("");
+    addCategory(categoryValue);
+    setCategoryValue("");
   };
 
   return (
@@ -46,15 +47,15 @@ export default function AddCategoryForm({ categories, addCategory }: AddCategory
           <input
             id="add-category"
             type="text"
-            value={inputValue}
-            onInput={handleInput}
+            value={categoryValue}
+            onInput={handleCategoryInput}
             aria-labelledby="add-category-hint"
           />
         </div>
         <button>Add</button>
         {isError && (
           <div id="add-category-hint" className="hint">
-            Category already exists!
+            This category already exists.
           </div>
         )}
       </form>

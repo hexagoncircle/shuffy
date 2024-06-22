@@ -1,38 +1,37 @@
 import { FormEvent, SyntheticEvent, useContext, useState } from "react";
-import { CardDataProps } from "./Card";
-import { CategoriesContext, CategoryProps } from "../contexts/CategoriesContext";
+import { CardDataProps } from "@components/Card";
+import { CategoriesContext, CategoryProps } from "@/contexts/CategoriesContext";
 
-interface EditCardForm {
+interface CardEditForm {
   card: CardDataProps;
   onCancel(): void;
   onDelete(id: string): void;
   onUpdate(card: CardDataProps): void;
 }
 
-export default function EditCardForm({ card, onCancel, onDelete, onUpdate }: EditCardForm) {
+export default function CardEditForm({ card, onCancel, onDelete, onUpdate }: CardEditForm) {
   const { id, name, category } = card;
-
-  const categoryList = useContext<CategoryProps[]>(CategoriesContext);
-  const [inputValue, setInputValue] = useState(name);
-  const [categorySelectValue, setCategorySelectValue] = useState(category);
+  const categories = useContext<CategoryProps[]>(CategoriesContext);
+  const [nameValue, setNameValue] = useState(name);
+  const [categoryValue, setCategoryValue] = useState(category);
 
   const handleInput = (e: FormEvent<HTMLInputElement>) => {
-    setInputValue(e.currentTarget.value);
+    setNameValue(e.currentTarget.value);
   };
 
   const handleCategorySelect = (e: FormEvent<HTMLSelectElement>) => {
-    setCategorySelectValue(e.currentTarget.value);
+    setCategoryValue(e.currentTarget.value);
   };
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (!inputValue) return;
+    if (!nameValue) return;
 
     const updatedCard = {
       ...card,
-      name: inputValue,
-      category: categorySelectValue,
+      name: nameValue,
+      category: categoryValue,
     };
 
     onUpdate(updatedCard);
@@ -53,15 +52,15 @@ export default function EditCardForm({ card, onCancel, onDelete, onUpdate }: Edi
           type="text"
           required
           autoFocus
-          value={inputValue}
+          value={nameValue}
           onChange={handleInput}
         />
       </div>
 
       <div>
         <label htmlFor="edit-card-category">Category</label>
-        <select id="edit-card-category" value={categorySelectValue} onChange={handleCategorySelect}>
-          {categoryList.map((category) => (
+        <select id="edit-card-category" value={categoryValue} onChange={handleCategorySelect}>
+          {categories.map((category) => (
             <option key={category.id} value={category.name}>
               {category.name}
             </option>

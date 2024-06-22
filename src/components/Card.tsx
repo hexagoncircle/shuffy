@@ -1,7 +1,7 @@
 import { ChangeEvent, useRef, useState } from "react";
-import EditCardForm from "./EditCardForm";
-import "@css/Card.css";
 import { useClickAway } from "@uidotdev/usehooks";
+import CardEditForm from "@components/CardEditForm";
+import "@css/Card.css";
 
 export interface CardDataProps {
   id: string;
@@ -12,12 +12,11 @@ export interface CardDataProps {
 
 export interface CardProps {
   card: CardDataProps;
-  onUpdate(card: CardDataProps): void;
   onDelete(id: string): void;
-  setIsActive(id: string): void;
+  onUpdate(card: CardDataProps): void;
 }
 
-export default function Card({ card, onUpdate, onDelete }: CardProps) {
+export default function Card({ card, onDelete, onUpdate }: CardProps) {
   const ref = useClickAway<HTMLElement>(() => setIsEditing(false));
   const nameRef = useRef<HTMLButtonElement>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -36,9 +35,9 @@ export default function Card({ card, onUpdate, onDelete }: CardProps) {
   };
 
   return (
-    <article ref={ref} tabIndex={-1} className="card | cluster">
+    <article ref={ref} className="card | cluster">
       {isEditing ? (
-        <EditCardForm
+        <CardEditForm
           card={card}
           onUpdate={handleUpdate}
           onDelete={onDelete}
