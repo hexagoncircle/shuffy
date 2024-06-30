@@ -1,14 +1,8 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { useClickAway } from "@uidotdev/usehooks";
+import { CardDataProps } from "@contexts/CardsContext";
 import CardEditForm from "@components/CardEditForm";
 import "@css/Card.css";
-
-export interface CardDataProps {
-  id: string;
-  name: string;
-  isActive: boolean;
-  category: string;
-}
 
 export interface CardProps {
   card: CardDataProps;

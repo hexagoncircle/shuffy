@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="Layer_2" viewBox="0 0 391.646 609.425">
+  <defs>
+    <style>
+      .cls-1,
+      .cls-5 {
+        fill: #fff;
+        stroke: #231f20;
+        stroke-width: 4px;
+        stroke-miterlimit: 10;
+      }
+      .cls-5 {
+        stroke-linecap: round;
+        fill: #e5a9ff;
+      }
+      .cls-6 {
+        fill: #231f20;
+        stroke-width: 0;
+      }
+    </style>
+  </defs>
+  <g id="MainCard">
+    <rect
+      width="387.646"
+      height="569.265"
+      x="2"
+      y="38.16"
+      fill="#c070ff"
+      stroke="#231f20"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="4"
+      rx="18"
+      ry="18"
+    />
+    <path
+      fill="#e5a9ff"
+      stroke="#231f20"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="4"
+      d="M63.636 64.096H30.992a4 4 0 0 0-4 4V579.89a4 4 0 0 0 4 4h329.663a4 4 0 0 0 4-4V68.096a4 4 0 0 0-4-4h-27.756"
+    />
+  </g>
+  <path
+    id="Mouth"
+    fill="none"
+    stroke="#231f20"
+    stroke-linecap="round"
+    stroke-miterlimit="10"
+    stroke-width="4"
+    d="M189.704 162.778s1.067 25.588 11.241 25.588 11.818-25.588 11.818-25.588"
+  />
+  <circle id="RightEye" cx="251.834" cy="64.129" r="62.129" class="cls-1" />
+  <circle id="RightPupil" cx="233.89" cy="57.087" r="27.362" class="cls-6" />
+  <circle id="LeftEye" cx="150.633" cy="64.129" r="62.129" class="cls-1" />
+  <circle id="LeftPupil" cx="115.866" cy="57.087" r="27.362" class="cls-6" />
+  <path
+    id="RightCheek"
+    d="M255.716 142.29s.838-23.621 24.014-30.496c27.456-8.145 40.609 19.311 40.609 19.311"
+    class="cls-5"
+  />
+  <path
+    id="LeftCheek"
+    d="M88.504 129.998s15.26-21.063 41.341-12.643c25.375 8.192 19.792 31.442 19.792 31.442"
+    class="cls-5"
+  />
+  <path
+    id="Nose"
+    d="M196.39 106.15s36.69-29.343 50.855-6.31c16.246 26.418-41.67 37.623-41.67 37.623"
+    class="cls-5"
+  />
+</svg>

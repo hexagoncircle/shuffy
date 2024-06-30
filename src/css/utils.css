@@ -5,6 +5,15 @@
   gap: var(--gap, 0.2rem);
 }
 
+.stack {
+  display: grid;
+  grid-template-areas: "stack";
+}
+
+.stack > * {
+  grid-area: stack;
+}
+
 .visually-hidden {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -21,4 +30,8 @@
 
 .multi-column {
   columns: var(--cols, 2);
+}
+
+.font-display {
+  font-family: var(--font-display);
 }

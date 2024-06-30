@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
+  <g clip-path="url(#a)">
+    <path
+      fill="#E5A9FF"
+      d="M11.644 0H4.356A4.356 4.356 0 0 0 0 4.356v7.288A4.356 4.356 0 0 0 4.356 16h7.288A4.356 4.356 0 0 0 16 11.644V4.356A4.356 4.356 0 0 0 11.644 0Z"
+    />
+    <path
+      stroke="#231F20"
+      stroke-linecap="round"
+      stroke-miterlimit="10"
+      stroke-width=".435"
+      d="M7.582 11.85s.057 1.362.598 1.362c.541 0 .629-1.361.629-1.361"
+    />
+    <path
+      fill="#fff"
+      stroke="#231F20"
+      stroke-miterlimit="10"
+      stroke-width=".435"
+      d="M10.887 9.909a3.304 3.304 0 1 0 0-6.609 3.304 3.304 0 0 0 0 6.609Z"
+    />
+    <path fill="#231F20" d="M9.932 7.685a1.455 1.455 0 1 0 0-2.91 1.455 1.455 0 0 0 0 2.91Z" />
+    <path
+      fill="#fff"
+      stroke="#231F20"
+      stroke-miterlimit="10"
+      stroke-width=".435"
+      d="M5.504 9.909a3.304 3.304 0 1 0 0-6.609 3.304 3.304 0 0 0 0 6.609Z"
+    />
+    <path fill="#231F20" d="M3.655 7.685a1.455 1.455 0 1 0 0-2.91 1.455 1.455 0 0 0 0 2.91Z" />
+    <path
+      fill="#E5A9FF"
+      d="M11.093 10.761s.045-1.256 1.277-1.622c1.46-.433 2.16 1.027 2.16 1.027"
+    />
+    <path
+      stroke="#231F20"
+      stroke-linecap="round"
+      stroke-miterlimit="10"
+      stroke-width=".435"
+      d="M11.093 10.761s.045-1.256 1.277-1.622c1.46-.433 2.16 1.027 2.16 1.027"
+    />
+    <path fill="#E5A9FF" d="M2.2 10.107s.812-1.12 2.199-.672c1.35.436 1.052 1.672 1.052 1.672" />
+    <path
+      stroke="#231F20"
+      stroke-linecap="round"
+      stroke-miterlimit="10"
+      stroke-width=".435"
+      d="M2.2 10.107s.812-1.12 2.199-.672c1.35.436 1.052 1.672 1.052 1.672"
+    />
+    <path fill="#E5A9FF" d="M7.938 8.84s1.951-1.561 2.705-.336c.864 1.405-2.217 2-2.217 2" />
+    <path
+      stroke="#231F20"
+      stroke-linecap="round"
+      stroke-miterlimit="10"
+      stroke-width=".435"
+      d="M7.938 8.84s1.951-1.561 2.705-.336c.864 1.405-2.217 2-2.217 2"
+    />
+  </g>
+  <defs>
+    <clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z" /></clipPath>
+  </defs>
+</svg>
