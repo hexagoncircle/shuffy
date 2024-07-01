@@ -1,7 +1,7 @@
 .intro {
   margin: auto;
   width: 100%;
-  max-inline-size: 100vmin;
+  max-inline-size: 90vmin;
   text-align: center;
 }
 
@@ -43,4 +43,9 @@
   width: 100%;
   overflow: visible;
   transform-origin: center;
+}
+
+.tagline {
+  font-size: clamp(0.8rem, 0.6rem + 2vmin, 1.5rem);
+  text-wrap: pretty;
 }

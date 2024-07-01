@@ -83,6 +83,7 @@ body {
   margin: 0 auto;
   padding: 2rem;
   background-color: var(--surface-1);
+  overflow: hidden;
 }
 
 :where([id="add-card-form"], [id="add-category-form"], [id="edit-card-form"]) {

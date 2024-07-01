@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="shuffy-card" viewBox="0 0 391.646 609.425">
+<svg xmlns="http://www.w3.org/2000/svg" id="shuffy-card" viewBox="0 0 391.646 609.425">
   <g id="main-card">
     <rect
       width="387.646"
@@ -32,17 +32,28 @@
       stroke-width="4"
       d="M189.704 162.778s1.067 25.588 11.241 25.588 11.818-25.588 11.818-25.588"
     />
-    <circle
-      id="right-eye"
-      cx="251.834"
-      cy="64.129"
-      r="62.129"
-      fill="#fff"
-      stroke="#231f20"
-      stroke-width="4px"
-      stroke-miterlimit="10"
-    />
-    <circle id="right-pupil" cx="233.89" cy="57.087" r="27.362" fill="#231f20" stroke-width="0" />
+    <g class="eye">
+      <circle
+        id="right-eye"
+        class="eyeball"
+        cx="251.834"
+        cy="64.129"
+        r="62.129"
+        fill="#fff"
+        stroke="#231f20"
+        stroke-width="4px"
+        stroke-miterlimit="10"
+      />
+      <circle
+        id="right-pupil"
+        class="pupil"
+        cx="233.89"
+        cy="57.087"
+        r="27.362"
+        fill="#231f20"
+        stroke-width="0"
+      />
+    </g>
     <path
       id="nose"
       data-animate="nose"
@@ -53,17 +64,28 @@
       stroke-linecap="round"
       fill="#e5a9ff"
     />
-    <circle
-      id="left-eye"
-      cx="150.633"
-      cy="64.129"
-      r="62.129"
-      fill="#fff"
-      stroke="#231f20"
-      stroke-width="4px"
-      stroke-miterlimit="10"
-    />
-    <circle id="left-pupil" cx="115.866" cy="57.087" r="27.362" fill="#231f20" stroke-width="0" />
+    <g class="eye">
+      <circle
+        id="left-eye"
+        class="eyeball"
+        cx="150.633"
+        cy="64.129"
+        r="62.129"
+        fill="#fff"
+        stroke="#231f20"
+        stroke-width="4px"
+        stroke-miterlimit="10"
+      />
+      <circle
+        id="left-pupil"
+        class="pupil"
+        cx="115.866"
+        cy="57.087"
+        r="27.362"
+        fill="#231f20"
+        stroke-width="0"
+      />
+    </g>
     <g data-animate="cheeks">
       <path
         id="right-cheek"
