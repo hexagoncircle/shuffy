@@ -12,7 +12,7 @@ export default function IntroScreen() {
   const ref = useRef(null);
 
   useGSAP(() => {
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
     const ease = "expo.out";
     const elasticEase = "elastic.out(0.15,0.12)";
     const duration = 0.5;
