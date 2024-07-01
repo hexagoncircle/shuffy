@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import Logo from "@assets/logo.svg?react";
+import Card from "@assets/card.svg?react";
 
 gsap.registerPlugin(useGSAP);
 
@@ -11,116 +12,136 @@ export default function IntroScreen() {
   const ref = useRef(null);
 
   useGSAP(() => {
-    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1, ease: "elastic.out(1,0.3)" });
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2, ease: "elastic.out(1,0.3)" });
     const ease = "expo.out";
-    const duration = 0.8;
+    const elasticEase = "elastic.out(0.15,0.12)";
+    const duration = 0.5;
+    const pull = 40;
     const rotation = 11;
-    const pull = 30;
-    const letterCount = 6;
-    const letterCountMid = letterCount / 2;
-    const letterRotate = 5;
-    const letterOffset = 0.1;
-    const letterPull = 20;
 
     tl
-      .set("[data-animate=figure]", {
+      .set("[data-animate=scene]", {
         transformOrigin: "bottom center",
-        yPercent: 20,
-        scale: 1
-      })
-      .set("[data-animate=letter]", {
-        opacity: 0
+        yPercent: -30
       })
       .set("[data-animate=logo]", {
         transformOrigin: "bottom center",
-        scaleX: 0.8,
-        scaleY: 0.8,
-      }, "<")
-      .to("[data-animate=figure]", {
-        yPercent: -pull / 2,
-        scale: 1,
-        duration,
-        delay: 0.5,
-        ease,
+        scale: 0.6,
       })
-      .to("[data-animate=letter]", {
-        opacity: 1,
+      .set("[data-animate=cards]", {
         transformOrigin: "bottom center",
-        rotate: (i) => {
-          if (i < letterCountMid) {
-            return (letterCountMid - i) * -letterRotate;
-          } else {
-            return (i - letterCountMid + 1) * letterRotate;
-          }
-        },
-        yPercent: (i) => {
-          if (i < letterCountMid) {
-            return (i + 1) * -letterPull;
-          } else {
-            return (letterCount - i) * -letterPull;
-          }
-        },
-        scaleY: (i) => {
-          if (i < letterCountMid) {
-            return (i + 1) * letterOffset + 1;
-          } else {
-            return (letterCount - i) * letterOffset + 1;
-          }
-        },
-        duration: duration / 4,
-        ease,
-      }, "<")
-      .fromTo("[data-animate=main]", {
-        yPercent: 100,
-        rotate: 40
-      }, {
+        scale: 0.8,
+      })
+      .set("[data-animate=letter-group]", {
+        opacity: 0,
+        yPercent: -50
+      })
+      .set("[data-animate=letter]", {
+        xPercent: 11,
+        yPercent: 4,
+      })
+      .to("[data-animate=scene]", {
+        scale: 1,
+        yPercent: -10,
+        duration,
+        delay: 1,
+        ease
+      })
+      .to("[data-animate=logo]", {
+        transformOrigin: "bottom center",
+        scale: 1,
         yPercent: 0,
-        rotate: 0,
-        duration: duration / 2,
-        ease,
+        duration: duration * 3,
+        ease
       }, "<")
-      .fromTo("[data-animate=side]", {
-        yPercent: 120
+      .to("[data-animate=letter-group]", {
+        opacity: 1,
+        duration: 0.1,
+        stagger: 0.04
+      }, "<")
+      .to("[data-animate=letter-group]", {
+        xPercent: 0,
+        yPercent: 0,
+        duration,
+        ease,
+        stagger: 0.03
+      }, "<")
+      .to("[data-animate=letter]", {
+        xPercent: 0,
+        yPercent: 0,
+        duration,
+        ease: "back.out(4)",
+        stagger: 0.04
+      }, "<+=25%")
+      .to("[data-animate=cards]", {
+        scale: 1,
+        yPercent: 0,
+        duration: duration * 2,
+        ease
+      }, "<+=5%")
+      .fromTo("[data-animate=main]", {
+        transformOrigin: 'bottom center',
+        yPercent: 150,
       }, {
         yPercent: 20,
-        x: (i) => i === 0 ? pull : -pull,
-        duration: duration / 2,
-        ease
+        duration: duration * 2,
+        ease: elasticEase,
       }, "<+=10%")
+      .to("[data-animate=face]", {
+        yPercent: -15,
+        duration: duration,
+        ease: "power2.in",
+      }, "<-=30%")
+      .to("[data-animate=face]", {
+        yPercent: 0,
+        duration: duration,
+        ease: "back.out(3)",
+      }, ">")
+      .to("[data-animate=cheeks]", {
+        yPercent: -35,
+        duration: duration,
+        ease: "power2.in",
+      }, "<-=90%")
+      .to("[data-animate=cheeks]", {
+        yPercent: 0,
+        duration: duration,
+        ease: "back.out(3)",
+      }, ">")
+      .to("[data-animate=nose]", {
+        transformOrigin: "60% left",
+        rotate: -15,
+        duration: duration,
+        ease: "power4.in",
+      }, "<-=95%")
+      .to("[data-animate=nose]", {
+        rotate: 0,
+        duration: duration * 2,
+        ease: "elastic.out(1.2,0.3)",
+      }, ">")
+      .fromTo("[data-animate=side]", {
+        yPercent: 100
+      }, {
+        yPercent: 40,
+        x: (i) => i === 0 ? pull : -pull,
+        duration: duration * 1.5,
+        ease: elasticEase,
+        stagger: 0.08
+      }, "<-=25%")
       .to("[data-animate=side]", {
         rotate: (i) => i === 0 ? rotation : -rotation,
-        duration: duration / 2,
-        ease
-      }, "<+=10%")
-      .to("[data-animate=letter]", {
-        opacity: 1,
-        rotate: 0,
-        yPercent: 0,
-        scaleY: 1,
-        duration,
+        duration: duration * 2,
         ease,
-      }, "<")
-      .to("[data-animate=logo]", {
-        scaleX: 1,
-        scaleY: 1,
-        duration,
-        ease
-      }, "<")
-      .to("[data-animate=figure]", {
-        yPercent: 0,
-        duration,
-        ease: "elastic.out(1, 0.3)",
-      }, "<+=40%")
+      }, "<+=10%")
 
   }, { scope: ref })
 
   return (
     <article ref={ref} className={clsx(styles.intro, "flow")}>
-      <figure className={clsx(styles.figure, "stack")} data-animate="figure">
-        <div className={clsx(styles.wrapper, "stack")} data-animate="wrapper">
+      <figure className={clsx(styles.scene, "stack")} data-animate="scene">
+        <div className={clsx(styles.cards, "stack")} data-animate="cards">
           <img className={styles.left} data-animate="side" src="card-alt.svg" />
           <img className={styles.right} data-animate="side" src="card-alt.svg" />
-          <img className={styles.main} data-animate="main" src="card.svg" />
+          <Card className={styles.main} data-animate="main" />
         </div>
         <Logo className={styles.logo} data-animate="logo" />
       </figure>

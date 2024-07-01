@@ -3,30 +3,26 @@
   width: 100%;
   max-inline-size: 100vmin;
   text-align: center;
-
-  img {
-    width: 100%;
-    height: auto;
-  }
 }
 
-.figure {
+.scene {
   place-items: end center;
 }
 
-.wrapper {
+.cards {
   --stop: 100%;
   position: relative;
   top: -35%;
   width: 100%;
-  height: 60%;
+  height: 80%;
   /* background-image: linear-gradient(rgb(0 0 0 / 100%) var(--stop), transparent var(--stop)); */
   mask-image: linear-gradient(rgb(0 0 0 / 100%) var(--stop), transparent var(--stop));
 
-  img {
+  > * {
     width: 40%;
     height: auto;
     margin-inline: auto;
+    overflow: visible;
   }
 }
 
