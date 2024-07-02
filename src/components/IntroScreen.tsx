@@ -6,20 +6,28 @@ import { useRef } from "react";
 import Logo from "@assets/logo.svg?react";
 import Card from "@assets/card.svg?react";
 
+type CardDOMElement = HTMLElement & SVGGraphicsElement;
+
 gsap.registerPlugin(useGSAP);
 
 export default function IntroScreen() {
   const ref = useRef(null);
 
   useGSAP(() => {
-    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+    const svg: CardDOMElement = document.getElementById("ShuffyCard") as CardDOMElement;
+    const eyes = svg?.querySelectorAll("[data-animate=eye]");
+    const duration = 0.5;
     const ease = "expo.out";
     const elasticEase = "elastic.out(0.15,0.12)";
-    const duration = 0.5;
     const sidePull = 12;
     const sideRotation = 11;
+    const tlIntro = gsap.timeline();
+    const tlBlinking = gsap.timeline({ repeat: -1, repeatDelay: 6 })
+    let isIntroComplete = false;
+    let isFollowCursorActive = false;
 
-    tl
+    // Appearing animation
+    tlIntro
       .set("[data-animate=scene]", {
         transformOrigin: "bottom center",
         yPercent: -30
@@ -43,6 +51,9 @@ export default function IntroScreen() {
       .set("[data-animate=tagline]", {
         opacity: 0,
         scale: 0.95
+      })
+      .set("[data-animate=eye-blink]", {
+        opacity: 0
       })
       .to("[data-animate=scene]", {
         scale: 1,
@@ -72,7 +83,7 @@ export default function IntroScreen() {
       .to("[data-animate=letter]", {
         xPercent: 0,
         yPercent: 0,
-        duration,
+        duration: duration / 1.5,
         ease: "back.out(5)",
         stagger: 0.04
       }, "<+=25%")
@@ -109,12 +120,12 @@ export default function IntroScreen() {
         duration,
         ease: "back.out(3)",
       }, ">")
-      .to("[data-animate=cheeks]", {
+      .to("[data-animate=cheek]", {
         yPercent: -35,
         duration,
         ease: "power2.in",
       }, "<-=90%")
-      .to("[data-animate=cheeks]", {
+      .to("[data-animate=cheek]", {
         yPercent: 0,
         duration,
         ease: "back.out(3)",
@@ -149,8 +160,86 @@ export default function IntroScreen() {
         scale: 1,
         duration,
         ease,
+        onComplete: () => {
+          isIntroComplete = true;
+        }
       }, "<+=70%")
 
+    // Blinking animation
+    tlBlinking.set("[data-animate=eye-blink]", {
+      opacity: 1,
+      onComplete: () => {
+        // Once intro is complete, allow eyeballs to follow pointer
+        if (!isIntroComplete || isFollowCursorActive) return;
+        isFollowCursorActive = true;
+      }
+    }).set("[data-animate=eye-blink]", {
+      opacity: 0,
+      delay: 0.175
+    }).paused(true);
+
+    function movePupils(e: PointerEvent) {
+      eyes?.forEach((eye) => {
+        const eyeball = eye.querySelector("[data-animate=eyeball]");
+        const pupil = eye.querySelector("[data-animate=pupil]");
+
+        if (!eyeball || !pupil) return;
+
+        const pCenter = {
+          x: parseFloat(eyeball.getAttribute("cx") || "0"),
+          y: parseFloat(eyeball.getAttribute("cy") || "0")
+        };
+        const rEyeball = parseFloat(eyeball.getAttribute("r") || "0");
+        const rPupil = parseFloat(pupil.getAttribute("r") || "0");
+
+        // Translate pointer coordinates to SVG units
+        let pPointer = new DOMPoint(e.clientX, e.clientY);
+        pPointer = pPointer.matrixTransform(svg.getScreenCTM()?.inverse());
+
+        // Calculate angle and distance between pointer and eyeball center
+        const angle = Math.atan2(pPointer.y - pCenter.y, pPointer.x - pCenter.x);
+        const distance = Math.hypot(pPointer.x - pCenter.x, pPointer.y - pCenter.y);
+
+        // Allow pupil movement within eyeball boundaries
+        const offset = Math.min(distance / rEyeball, 1);
+        const radius = (rEyeball - rPupil) * offset;
+
+        // Calculate new pupil position
+        const pMovePupil = {
+          x: pCenter.x + Math.cos(angle) * radius,
+          y: pCenter.y + Math.sin(angle) * radius
+        };
+
+        // Update pupil position
+        pupil.setAttribute("cx", pMovePupil.x.toString());
+        pupil.setAttribute("cy", pMovePupil.y.toString());
+      });
+    }
+
+    function handleFirstBlink() {
+      if (!isIntroComplete) return;
+      tlBlinking.restart();
+      document.removeEventListener("pointermove", handleFirstBlink);
+    }
+
+    function handleFollowCursor(e: PointerEvent) {
+      if (!isFollowCursorActive) return;
+      movePupils(e);
+    }
+
+    function handlePointerEnter() {
+      if (!isFollowCursorActive) return;
+      tlBlinking.restart();
+    }
+
+    document.addEventListener("pointermove", handleFirstBlink);
+    document.addEventListener("pointermove", handleFollowCursor);
+    document.addEventListener("pointerenter", handlePointerEnter);
+
+    return () => {
+      document.removeEventListener("pointermove", handleFollowCursor);
+      document.removeEventListener("pointerenter", handlePointerEnter);
+    }
   }, { scope: ref })
 
   return (
