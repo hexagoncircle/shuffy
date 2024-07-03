@@ -21,10 +21,16 @@ export default function IntroScreen() {
     const elasticEase = "elastic.out(0.15,0.12)";
     const sidePull = 12;
     const sideRotation = 11;
-    const tlIntro = gsap.timeline();
-    const tlBlinking = gsap.timeline({ repeat: -1, repeatDelay: 6 })
     let isIntroComplete = false;
     let isFollowCursorActive = false;
+
+    // Set up timelines
+    const tlIntro = gsap.timeline({
+      onComplete: () => {
+        isIntroComplete = true;
+      }
+    });
+    const tlBlinking = gsap.timeline({ repeat: -1, repeatDelay: 6 })
 
     // Appearing animation
     tlIntro
@@ -160,16 +166,13 @@ export default function IntroScreen() {
         scale: 1,
         duration,
         ease,
-        onComplete: () => {
-          isIntroComplete = true;
-        }
       }, "<+=70%")
 
     // Blinking animation
     tlBlinking.set("[data-animate=eye-blink]", {
       opacity: 1,
       onComplete: () => {
-        // Once intro is complete, allow eyeballs to follow pointer
+        // After intro finishes, allow eyeballs to follow pointer
         if (!isIntroComplete || isFollowCursorActive) return;
         isFollowCursorActive = true;
       }
@@ -246,8 +249,8 @@ export default function IntroScreen() {
     <article ref={ref} className={styles.intro}>
       <figure className={clsx(styles.scene, "stack")} data-animate="scene">
         <div className={clsx(styles.cards, "stack")} data-animate="cards">
-          <img className={styles.left} data-animate="side" src="card-alt.svg" />
-          <img className={styles.right} data-animate="side" src="card-alt.svg" />
+          <img className={styles.left} data-animate="side" src="card-alt.svg" alt="" width="103" height="150" />
+          <img className={styles.right} data-animate="side" src="card-alt.svg" alt="" width="103" height="150" />
           <Card className={styles.main} data-animate="main" />
         </div>
         <Logo className={styles.logo} data-animate="logo" />
