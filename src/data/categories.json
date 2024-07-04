@@ -1,18 +1,18 @@
 [
   {
-    "id": "1",
-    "name": "Music"
+    "value": "music",
+    "label": "Music"
   },
   {
-    "id": "2",
-    "name": "Design"
+    "value": "design",
+    "label": "Design"
   },
   {
-    "id": "3",
-    "name": "Code"
+    "value": "code",
+    "label": "Code"
   },
   {
-    "id": "4",
-    "name": "Exercise"
+    "value": "exercise",
+    "label": "Exercise"
   }
 ]

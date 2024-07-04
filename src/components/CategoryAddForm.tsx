@@ -12,7 +12,7 @@ export default function CategoryAddForm({ categories, addCategory }: CategoryAdd
 
   const ifCategoryExists = (value: string) => {
     return categories.some(
-      (category: CategoryProps) => category.name.toLowerCase() === value.toLowerCase()
+      (category: CategoryProps) => category.label.toLowerCase() === value.toLowerCase()
     );
   };
 

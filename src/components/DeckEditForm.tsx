@@ -1,7 +1,8 @@
 import { useReducer, useState } from "react";
 import { v4 as uuid } from "uuid";
+import slugify from "slugify";
 import { CategoriesContext } from "@contexts/CategoriesContext";
-import { CardDataProps } from "@components/Card";
+import { CardProps } from "@components/Card";
 import cardsReducer from "@reducers/cardsReducer";
 import CategoryAddForm from "@components/CategoryAddForm";
 import CardAddForm from "@components/CardAddForm";
@@ -17,24 +18,24 @@ export default function DeckEditForm() {
   const [cards, dispatch] = useReducer(cardsReducer, CARDS);
   const activeCards = cards.filter((card) => card.isActive);
 
-  const addCategory = (name: string) => {
+  const addCategory = (label: string) => {
     setCategories([
       ...categories,
       {
-        id: uuid(),
-        name,
+        value: slugify(label),
+        label,
       },
     ]);
   };
 
-  const createCard = (card: CardDataProps) => {
+  const createCard = (card: CardProps) => {
     dispatch({
       type: "created",
       card,
     });
   };
 
-  const updateCard = (card: CardDataProps) => {
+  const updateCard = (card: CardProps) => {
     dispatch({
       type: "updated",
       card,
@@ -56,8 +57,8 @@ export default function DeckEditForm() {
         <section className="flow">
           <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
           <ul className="multi-column" role="list">
-            {categories.map((category) => (
-              <li key={category.id}>{category.name}</li>
+            {categories.map(({ value, label }) => (
+              <li key={value}>{label}</li>
             ))}
           </ul>
         </section>

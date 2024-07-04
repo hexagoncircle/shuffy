@@ -1,8 +1,28 @@
 .cluster {
   display: flex;
+  flex-wrap: wrap;
   align-items: var(--align, initial);
   justify-content: var(--justify, initial);
-  gap: var(--gap, 0.2rem);
+  gap: var(--gap, var(--space-m));
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--repeat, auto-fill),
+    minmax(min(var(--min, 10rem), 100%), 1fr)
+  );
+  gap: var(--gap, var(--space-s));
+}
+
+.page {
+  margin-block: var(--space-3xl);
+  padding-inline: var(--space-l);
+}
+
+.center {
+  max-inline-size: var(--max, 60rem);
+  margin-inline: auto;
 }
 
 .stack {
@@ -34,4 +54,12 @@
 
 .font-display {
   font-family: var(--font-display);
+}
+
+.fill-viewport {
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
 }

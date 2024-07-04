@@ -1,0 +1,45 @@
+.select {
+  display: grid;
+  grid-template-areas: "select";
+  align-items: center;
+  border: var(--border-2);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  color: var(--black);
+  background-color: var(--white);
+  min-inline-size: 10rem;
+  max-inline-size: 20rem;
+}
+
+.select > * {
+  grid-area: select;
+}
+
+.select svg {
+  --size: 1.25em;
+  flex-shrink: 0;
+  justify-self: end;
+  margin-inline-end: calc(var(--space-l) - 0.2em);
+  width: var(--size);
+  height: var(--size);
+  pointer-events: none;
+  user-select: none;
+}
+
+select {
+  appearance: none;
+  margin: 0;
+  padding: var(--space-m) var(--space-2xl) var(--space-m) var(--space-l);
+  width: 100%;
+  height: auto;
+  font: inherit;
+  text-overflow: ellipsis;
+  cursor: inherit;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+select::-ms-expand {
+  display: none;
+}

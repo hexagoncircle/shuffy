@@ -1,0 +1,73 @@
+.switch {
+  --button-bg: var(--color-bg-inverse);
+  --button-color: var(--color-text-inverse);
+  --icon-size: var(--text-m);
+  --switch-text-color-inactive: var(--dark-gray);
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: unset;
+  padding: unset;
+  overflow: hidden;
+  font-size: var(--text-s);
+  font-weight: var(--font-semibold);
+  border-radius: var(--radius-s);
+}
+
+:is(.switch-on, .switch-off) {
+  display: grid;
+  padding: var(--space-s) var(--space-m);
+  background-color: var(--switch-text-bg);
+  color: var(--switch-text-color, var(--switch-text-color-inactive));
+  border-radius: var(--radius-xs);
+  pointer-events: none;
+  user-select: none;
+}
+
+.switch-icon {
+  padding: var(--space-xs);
+}
+
+.switch-on {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.switch-off {
+  --switch-text-bg: var(--white);
+  --switch-text-color: var(--color-text);
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.switch-on.switch-icon svg {
+  opacity: 0;
+}
+
+.switch :where([role="switch"]:checked) {
+  ~ .switch-on {
+    --switch-text-bg: var(--color-action);
+    --switch-text-color: var(--color-text);
+  }
+
+  ~ .switch-off {
+    --switch-text-bg: inherit;
+    --switch-text-color: initial;
+  }
+
+  ~ .switch-on.switch-icon svg {
+    opacity: 1;
+  }
+
+  ~ .switch-off.switch-icon svg {
+    opacity: 0;
+  }
+}
+
+.switch :where([role="switch"]) {
+  all: unset;
+  grid-row: 1;
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}

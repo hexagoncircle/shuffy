@@ -1,25 +1,27 @@
-import { useState } from "react";
-import DeckEditForm from "./components/DeckEditForm";
-import IntroScreen from "./components/IntroScreen";
-import "./css/reset.css";
-import "./css/utils.css";
-import "./App.css";
+import { Link, Route, Routes } from "react-router-dom";
+import Home from "./Home";
+import DeckEditForm from "@components/DeckEditForm";
+import DesignReview from "./DesignReview";
+import "@css/reset.css";
+import "@css/fonts.css";
+import "@css/utils.css";
+import "@css/ds.css";
 
 function App() {
-  const [display, setDisplay] = useState("intro");
-
   return (
     <>
       <h1 className="visually-hidden">Shuffy</h1>
+      <nav id="main-nav" className="cluster">
+        <Link to="/">Home</Link>
+        <Link to='/edit'>Edit</Link>
+        <Link to="/design-review">Design Review</Link>
+      </nav>
 
-      {/* <section className="cluster">
-        <button onClick={() => setDisplay("intro")}>Home</button>
-        <button onClick={() => setDisplay("edit")}>Edit deck</button>
-        <button onClick={() => setDisplay("shuffle")}>Shuffle</button>
-      </section> */}
-
-      {display === "intro" && <IntroScreen />}
-      {display === "edit" && <DeckEditForm />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/edit" element={<DeckEditForm />} />
+        <Route path="/design-review" element={<DesignReview />} />
+      </Routes>
     </>
   )
 }

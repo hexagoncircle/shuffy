@@ -15,35 +15,6 @@
     U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-:root {
-  color-scheme: light dark;
-
-  --font-base: "Inter", sans-serif;
-  --font-display: "Unbounded", sans-serif;
-
-  --text: #213547;
-  --surface-1: #fffbe5;
-  --surface-2: #f5f5f5;
-  --surface-3: #e5e5e5;
-  --surface-4: #d4d4d4;
-  --bg-accent: #ffd506;
-  --button-bg: #d6d3d1;
-  --button-text: #171717;
-  --button-bg-active: #2563eb;
-  --button-text-active: #fafafa;
-
-  --space-xs: 0.25rem;
-  --space-s: 0.5rem;
-  --space-m: 1rem;
-  --space-l: 1.5rem;
-  --space-xl: 2rem;
-
-  --radius-s: 0.25rem;
-  --radius-m: 0.5rem;
-  --radius-round: 50%;
-  --radius-pill: 360px;
-}
-
 /* @media (prefers-color-scheme: dark) {
   :root {
     --text: #f5f5f5;
@@ -78,12 +49,9 @@ body {
 #root {
   display: grid;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   min-block-size: 100svh;
   margin: 0 auto;
-  padding: 2rem;
-  background-color: var(--surface-1);
-  overflow: hidden;
 }
 
 :where([id="add-card-form"], [id="add-category-form"], [id="edit-card-form"]) {
@@ -107,4 +75,11 @@ body {
   all: unset;
   outline: revert;
   font: inherit;
+}
+
+[id="main-nav"] {
+  --gap: 0.5rem;
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
 }
