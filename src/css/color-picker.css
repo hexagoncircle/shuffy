@@ -1,0 +1,94 @@
+.color-picker {
+  --border-width: var(--border-2-width);
+  --gap: var(--space-s);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: calc(var(--gap) * 2);
+}
+
+.color-picker-face {
+  --size: 3.75rem;
+  display: grid;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  border-radius: var(--radius-xl);
+  color: var(--theme);
+  background-color: var(--theme);
+
+  svg {
+    position: relative;
+    left: 0.1em;
+    margin: 0.6875rem 0.5625rem 0.875rem;
+  }
+}
+
+.color-picker-swatch {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  place-items: center;
+  row-gap: var(--gap);
+  column-gap: calc(var(--gap) - var(--border-width));
+  max-inline-size: 15rem;
+}
+
+.color-picker-option {
+  --size: calc(1.5rem - var(--border-width) * 2);
+  --button-push: 0;
+  appearance: none;
+  display: flex;
+  cursor: pointer;
+  height: var(--size);
+  width: var(--size);
+  font-size: var(--text-m);
+  margin: 0;
+  padding: 0;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-round);
+  background-color: var(--color);
+}
+
+.color-picker-option:is([aria-pressed="true"], [aria-selected="true"]) {
+  outline: var(--border-2);
+  background-clip: padding-box;
+}
+
+.color-picker-option[data-color="custom"] {
+  height: calc(var(--size) + var(--border-width) * 2);
+  width: calc(var(--size) + var(--border-width) * 2);
+  border-radius: var(--radius-round);
+  background-color: transparent;
+
+  &::after {
+    --stop: 35%;
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(
+      from 90deg,
+      #ff1a1a,
+      #ff8e16,
+      #f1ff53,
+      #43f815,
+      #4e5eef,
+      #7b1ed7,
+      #f213c3,
+      #ff1a1a
+    );
+    mask-image: radial-gradient(circle, transparent var(--stop), black calc(var(--stop) + 0.5px));
+    rotate: 110deg;
+    border-radius: inherit;
+  }
+}
+
+.color-picker-option:last-of-type {
+  grid-column: 4;
+  grid-row: 2;
+}
+
+.color-picker-input-label {
+  opacity: 0;
+  pointer-events: none;
+}

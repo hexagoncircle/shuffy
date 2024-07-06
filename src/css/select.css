@@ -5,10 +5,10 @@
   border: var(--border-2);
   border-radius: var(--radius-pill);
   cursor: pointer;
-  color: var(--black);
   background-color: var(--white);
-  min-inline-size: 10rem;
-  max-inline-size: 20rem;
+  inline-size: 100%;
+  font-size: var(--text-l);
+  font-weight: var(--font-semibold);
 }
 
 .select > * {
@@ -37,6 +37,7 @@ select {
   cursor: inherit;
   outline: none;
   border: none;
+  color: var(--black);
   background-color: transparent;
 }
 

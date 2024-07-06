@@ -1,24 +1,18 @@
 [
   {
     "id": "1",
-    "name": "Write a verse for a song",
-    "isActive": true,
-    "category": "Music"
-  },
-  {
-    "id": "2",
     "name": "Practice guitar noodling",
     "isActive": true,
     "category": "Music"
   },
   {
-    "id": "3",
+    "id": "2",
     "name": "Build a Web Component",
     "isActive": false,
     "category": "Code"
   },
   {
-    "id": "4",
+    "id": "3",
     "name": "Paint a picture of a kangaroo wearing boxing gloves",
     "isActive": false,
     "category": "Design"

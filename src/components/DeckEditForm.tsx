@@ -24,6 +24,7 @@ export default function DeckEditForm() {
       {
         value: slugify(label),
         label,
+        theme: "purple"
       },
     ]);
   };
@@ -52,19 +53,17 @@ export default function DeckEditForm() {
   return (
     <main className="flow">
       <h1>Current deck</h1>
-      <CategoriesContext.Provider value={categories}>
-        <CardAddForm onCreate={createCard} />
-        <section className="flow">
-          <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
-          <ul className="multi-column" role="list">
-            {categories.map(({ value, label }) => (
-              <li key={value}>{label}</li>
-            ))}
-          </ul>
-        </section>
-        <Deck cards={cards} onDelete={deleteCard} onUpdate={updateCard} />
-        <CardSelectForm cards={activeCards}></CardSelectForm>
-      </CategoriesContext.Provider>
+      <CardAddForm onCreate={createCard} />
+      <section className="flow">
+        <CategoryAddForm categories={categories} addCategory={addCategory}></CategoryAddForm>
+        <ul className="multi-column" role="list">
+          {categories.map(({ value, label }) => (
+            <li key={value}>{label}</li>
+          ))}
+        </ul>
+      </section>
+      <Deck cards={cards} onDelete={deleteCard} onUpdate={updateCard} />
+      <CardSelectForm cards={activeCards}></CardSelectForm>
     </main>
   );
 }

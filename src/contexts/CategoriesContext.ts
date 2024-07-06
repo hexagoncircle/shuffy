@@ -1,8 +1,9 @@
 import { createContext } from "react";
 
-export interface CategoryProps {
+export interface CategoryDataProps {
   value: string;
   label: string;
+  theme: string;
 }
 
-export const CategoriesContext = createContext<CategoryProps[]>([]);
+export const CategoriesContext = createContext<CategoryDataProps[]>([]);

@@ -178,7 +178,7 @@ export default function IntroScreen() {
       }
     }).set("[data-animate=eye-blink]", {
       opacity: 0,
-      delay: 0.175
+      delay: 0.15
     }).paused(true);
 
     function movePupils(e: PointerEvent) {

@@ -9,7 +9,7 @@
   padding: unset;
   overflow: hidden;
   font-size: var(--text-s);
-  font-weight: var(--font-semibold);
+  font-weight: var(--font-bold);
   border-radius: var(--radius-s);
 }
 

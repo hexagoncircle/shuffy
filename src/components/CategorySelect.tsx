@@ -13,7 +13,7 @@ export default function CategorySelect({ id, selectedValue, onChange }: Category
   return (
     <select id={id} onChange={onChange} value={selectedValue}>
       {categories.map((category) => (
-        <option key={category.id} value={category.value}>
+        <option key={category.value} value={category.value}>
           {category.label}
         </option>
       ))}

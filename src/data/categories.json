@@ -1,18 +1,22 @@
 [
   {
     "value": "music",
-    "label": "Music"
+    "label": "Music",
+    "theme": "#c070ff"
   },
   {
     "value": "design",
-    "label": "Design"
+    "label": "Design",
+    "theme": "#8ae0e0"
   },
   {
     "value": "code",
-    "label": "Code"
+    "label": "Code",
+    "theme": "#231f20"
   },
   {
     "value": "exercise",
-    "label": "Exercise"
+    "label": "Exercise",
+    "theme": "#ffd506"
   }
 ]
