@@ -1,11 +1,16 @@
 import PlusIcon from "@assets/plus.svg?react";
+import clsx from "clsx";
 import { CSSProperties } from "react";
 
-export default function CardStarter() {
+interface CardStarterProps {
+  className?: string;
+}
+
+export default function CardStarter({ className }: CardStarterProps) {
   return (
-    <article className="card card-starter stack center-xy">
+    <article className={clsx("card card-starter stack center-xy", className)}>
       <img src="card-dashed.svg" width="329" height="446" alt="" />
-      <div className="center flow" style={{ "--max": "15ch" } as CSSProperties}>
+      <div className="center flow" style={{ "--max": "10ch" } as CSSProperties}>
         <button className="icon-button action raised">
           <PlusIcon />
         </button>

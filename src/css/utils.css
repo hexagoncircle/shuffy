@@ -15,11 +15,6 @@
   gap: var(--gap, var(--space-s));
 }
 
-.page {
-  margin-block: var(--space-4xl);
-  padding-inline: var(--space-l);
-}
-
 .center {
   max-inline-size: var(--max, 60rem);
   margin-inline: auto;
@@ -67,6 +62,11 @@
 
 .multi-column {
   columns: var(--cols, 2);
+}
+
+.page {
+  margin-block: var(--space-3xl);
+  padding-inline: var(--space-l);
 }
 
 .visually-hidden {

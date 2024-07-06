@@ -1,0 +1,34 @@
+.app-header {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: var(--space-s);
+  padding-block: clamp(var(--space-m), 0.5rem + 2vw, var(--space-l));
+  padding-inline: clamp(var(--space-l), 0.75rem + 4vw, var(--space-3xl));
+  background-color: var(--white);
+  border-block-end: var(--border);
+}
+
+.app-header .settings-toggle {
+  margin-inline-end: calc(var(--button-padding) * -1);
+}
+
+.app-header .callout {
+  max-inline-size: 22rem;
+}
+
+.app-header-info {
+  margin-inline-end: auto;
+}
+
+.app-header-card-count {
+  color: var(--color-text-subtle);
+}
+
+@media (max-width: 43rem) {
+  .app-header .callout {
+    justify-self: center;
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}

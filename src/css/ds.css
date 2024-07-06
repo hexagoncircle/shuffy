@@ -20,6 +20,7 @@
   --white: #fafafa;
 
   --color-text: var(--black);
+  --color-text-subtle: var(--dark-gray);
   --color-text-inverse: var(--white);
   --color-bg: var(--light-gray);
   --color-bg-inverse: var(--black);
