@@ -1,0 +1,117 @@
+.modal {
+  --gutter: var(--space-xl);
+  display: block;
+  inset-block-start: auto;
+  padding: 0;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-block-size: 15rem;
+  max-block-size: calc(100% - var(--gutter) * 2);
+  border: unset;
+  border-radius: var(--radius-m) var(--radius-m) 0 0;
+  background-color: var(--white);
+}
+
+.modal:not([open]) {
+  opacity: 0;
+  pointer-events: none !important;
+}
+
+html:has(.modal[open]) {
+  overflow: hidden;
+}
+
+.modal::backdrop {
+  background: var(--black);
+}
+
+.modal form {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: var(--gutter);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-close {
+  --padding: var(--space-s);
+  margin-inline-start: auto;
+  margin-block-start: calc(var(--padding) * -1);
+  margin-inline-end: calc(var(--padding) * -1);
+  padding: var(--padding);
+  border: 0;
+}
+
+.modal-content {
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+.modal-actions {
+  display: grid;
+  gap: var(--space-m);
+  padding-block-start: var(--space-xl);
+  margin-inline: auto;
+  inline-size: 100%;
+}
+
+.modal::backdrop {
+  opacity: 0;
+  transition: opacity, overlay allow-discrete, display allow-discrete;
+  transition-duration: var(--duration-2);
+}
+
+.modal[open]::backdrop {
+  opacity: 0.5;
+}
+
+@starting-style {
+  .modal[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 35rem) {
+  .modal {
+    inset-block-start: 0;
+    inline-size: min(25rem, 100%);
+    max-inline-size: calc(100% - var(--gutter) * 2);
+    border-radius: var(--radius-m);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .modal {
+    translate: 0 100%;
+  }
+
+  .modal[open] {
+    --duration: 400ms;
+    --duration-2: calc(var(--duration) / 3);
+    --delay: calc(var(--duration) / 4);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+    translate: 0 0;
+    transition: scale var(--duration), translate var(--duration), opacity var(--duration-2),
+      box-shadow var(--duration-2);
+    transition-timing-function: var(--ease);
+    transition-delay: var(--delay);
+  }
+}
+
+@media (min-width: 35rem) and (prefers-reduced-motion: no-preference) {
+  .modal {
+    translate: 0 0;
+    scale: 0.8;
+  }
+
+  .modal[open] {
+    --duration: 300ms;
+    scale: 1;
+  }
+}

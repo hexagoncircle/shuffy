@@ -1,0 +1,20 @@
+.callout {
+  --theme: var(--light-purple);
+  --gutter: var(--space-l);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--gutter);
+  padding: var(--gutter);
+  inline-size: fit-content;
+  font-weight: var(--font-semibold);
+  line-height: 1.3;
+  border-radius: var(--radius-l);
+  background-color: var(--theme);
+}
+
+.callout svg {
+  width: 54px;
+  height: auto;
+  color: var(--theme);
+}

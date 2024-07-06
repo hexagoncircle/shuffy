@@ -1,0 +1,26 @@
+.deck-display-control {
+  --inner-radius: calc(var(--radius-s) - var(--border-2-width));
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: var(--radius-s);
+  border: var(--border-2);
+  background-color: var(--white);
+}
+
+.deck-display-control button {
+  --button-push: 0;
+  --button-border-width: 0;
+  --button-radius: 0;
+  --button-icon-size: 1.125rem;
+  --button-bg: transparent;
+  --button-color: var(--black);
+}
+
+.deck-display-control button:focus-visible {
+  z-index: 1;
+}
+
+.deck-display-control button[aria-pressed="true"] {
+  --button-bg: var(--black);
+  --button-color: var(--white);
+}

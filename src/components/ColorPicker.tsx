@@ -61,7 +61,7 @@ export default function ColorPicker({ id, onChange }: ColorPickerProps) {
   const openColorPicker = () => {
     /**
      * click() not opening native color picker in iOS Safari
-     * Workaround: Set click on label element instead ¯\_(ツ)_/¯
+     * Workaround: Call click on label element instead ¯\_(ツ)_/¯
      */
     if (!colorPickerRef.current || !colorPickerLabelRef.current) return;
 

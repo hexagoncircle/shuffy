@@ -1,19 +1,23 @@
-import { CSSProperties, ChangeEvent, useEffect, useRef } from "react";
+import { CSSProperties, ChangeEvent, useEffect, useRef, useState } from "react";
 import slugify from "slugify";
-import "@css/ds.css";
 import Select from "./components/Select";
 import Switch from "./components/Switch";
-import TrashIcon from "@assets/trash.svg?react";
-import PlusIcon from "@assets/close.svg?react";
 import Card from "./components/Card";
-import CARDS from "@data/cards.json";
-import CATEGORIES from "@data/categories.json";
-import COLORS from "@data/colors.app.json";
 import Category from "./components/Category";
 import ColorPicker from "./components/ColorPicker";
 import CardStarter from "./components/CardStarter";
 import CategoryStarter from "./components/CategoryStarter";
 import CardEditor from "./components/CardEditor";
+import Modal from "./components/Modal";
+import TrashIcon from "@assets/trash.svg?react";
+import PlusIcon from "@assets/close.svg?react";
+import CARDS from "@data/cards.json";
+import CATEGORIES from "@data/categories.json";
+import COLORS from "@data/colors.app.json";
+import "@css/ds.css";
+import Callout from "./components/Callout";
+import SettingsToggle from "./components/SettingsToggle";
+import DeckDisplayControl from "./components/DeckDisplayControl";
 
 const SELECT_OPTIONS = [
   {
@@ -26,6 +30,8 @@ const SELECT_OPTIONS = [
 
 export default function DesignReview() {
   const checkboxRef = useRef<HTMLInputElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasNotification, setHasNotification] = useState(false);
 
   useEffect(() => {
     if (!checkboxRef.current) return;
@@ -38,6 +44,10 @@ export default function DesignReview() {
 
   const handleSwitchChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(`${e.target.id}:`, e.target.checked)
+  }
+
+  const handleDeckDisplayUpdate = (value: string) => {
+    console.log("Deck display:", value)
   }
 
   const handleColorPickerChange = (color: string) => {
@@ -77,6 +87,10 @@ export default function DesignReview() {
           <li>Mix ingredients in a large bowl.</li>
           <li>Bake!</li>
         </ol>
+
+        <Callout>
+          <p>Lots of cards to add? Consider setting up deck categories first.</p>
+        </Callout>
       </article>
 
       <article className="page-section flow flow-xl">
@@ -147,7 +161,34 @@ export default function DesignReview() {
       </article>
 
       <article className="page-section flow">
-        <h2 className="section-title">Actions</h2>
+        <h2 className="section-title">Controllers</h2>
+
+        <section className="cluster" style={{ "--align": "center", "--gap": "var(--space-s)" } as CSSProperties}>
+          <SettingsToggle hasNotification={hasNotification} />
+          <button className="primary small" onClick={() => setHasNotification(!hasNotification)}>
+            Toggle notification beacon
+          </button>
+        </section>
+
+        <section>
+          <button className="raised action" onClick={() => setIsModalOpen(true)}>Open modal</button>
+          <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} actions={(
+            <>
+              <button className="primary">Got it, delete this category</button>
+              <button>Cancel</button>
+            </>
+          )}>
+            <div className="flow text-center">
+              <h2 className="text-2xl">Heads up!</h2>
+              <p>3 of your cards are categorized under <strong>Design</strong>. They’ll be uncategorized for now, but you can always set a new category.</p>
+            </div>
+          </Modal>
+        </section>
+
+        <section>
+          <DeckDisplayControl onUpdate={handleDeckDisplayUpdate} defaultView="list" />
+        </section>
+
         <section className="actions">
           <button className="raised action">Add card to deck</button>
           <button>Cancel</button>

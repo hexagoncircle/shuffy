@@ -1,0 +1,12 @@
+.settings-toggle {
+  --button-icon-size: 1.75rem;
+  --button-bg: transparent;
+  --button-border-color: transparent;
+}
+
+.settings-toggle .beacon {
+  --offset: -2px;
+  place-self: start end;
+  margin-block-start: var(--offset);
+  margin-inline-end: var(--offset);
+}

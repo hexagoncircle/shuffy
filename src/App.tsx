@@ -4,9 +4,6 @@ import DeckEditForm from "@components/DeckEditForm";
 import DesignReview from "./DesignReview";
 import { CategoriesContext } from "./contexts/CategoriesContext";
 import CATEGORIES from "@data/categories.json";
-import "@css/reset.css";
-import "@css/fonts.css";
-import "@css/utils.css";
 import "@css/ds.css";
 
 function App() {

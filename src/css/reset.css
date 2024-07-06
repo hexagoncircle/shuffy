@@ -74,10 +74,7 @@ picture {
 }
 
 /* Inherit fonts for inputs and buttons */
-input,
-button,
-textarea,
-select {
+:where(input, button, textarea, select) {
   font: inherit;
 }
 
