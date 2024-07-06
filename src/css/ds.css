@@ -190,7 +190,7 @@ label + :is(input, .select) {
 }
 
 input:not([type="checkbox"], [type="radio"], [type="color"]) {
-  padding: var(--input-padding, var(--space-m));
+  padding: var(--input-padding, var(--space-m) var(--space-l));
   inline-size: 100%;
   font-size: var(--input-fontSize, var(--text-l));
   font-weight: var(--font-semibold);
@@ -338,7 +338,7 @@ button:disabled {
   background: var(--white);
 }
 
-.dashbox {
+.dash-box {
   --offset: 4px;
   font-size: var(--text-xl);
   font-weight: var(--font-semibold);
@@ -364,6 +364,39 @@ button:disabled {
     width: 100%;
     height: 100%;
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23333' stroke-width='4' stroke-dasharray='8%2c18' stroke-dashoffset='30' stroke-linecap='square'/%3e%3c/svg%3e");
+  }
+}
+
+.editor-box {
+  display: grid;
+  position: relative;
+  border: 1px solid var(--dark-gray);
+}
+
+.editor-box-corner {
+  --size: 10px;
+
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  background-color: var(--white);
+  border: inherit;
+
+  &:nth-child(1) {
+    top: calc(var(--size) / -2);
+    left: calc(var(--size) / -2);
+  }
+  &:nth-child(2) {
+    top: calc(var(--size) / -2);
+    right: calc(var(--size) / -2);
+  }
+  &:nth-child(3) {
+    bottom: calc(var(--size) / -2);
+    left: calc(var(--size) / -2);
+  }
+  &:nth-child(4) {
+    bottom: calc(var(--size) / -2);
+    right: calc(var(--size) / -2);
   }
 }
 

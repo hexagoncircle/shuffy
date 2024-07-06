@@ -4,16 +4,18 @@ import { CardDataProps } from "@contexts/CardsContext";
 import { CategoriesContext, CategoryProps } from "@/contexts/CategoriesContext";
 import CardEditForm from "@components/CardEditForm";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
+import Blot from "@assets/card-blot.svg?react";
 import "@css/card.css";
 import clsx from "clsx";
 
 export interface CardProps {
   card: CardDataProps;
+  hidden?: boolean;
   onDelete?(id: string): void;
   onUpdate?(card: CardDataProps): void;
 }
 
-export default function Card({ card, onDelete, onUpdate }: CardProps) {
+export default function Card({ card, hidden, onDelete, onUpdate }: CardProps) {
   const { name, category, isActive } = card;
   const categories = useContext<CategoryProps[]>(CategoriesContext);
   const theme = categories.find(category => category.label === card.category)?.theme;
@@ -53,16 +55,23 @@ export default function Card({ card, onDelete, onUpdate }: CardProps) {
     //   )}
     // </article>
     <article
-      className={clsx("card", isActive && "active")}
+      className={clsx("card stack", isActive && "active", hidden && "hidden")}
       style={{ "--theme": theme } as CSSProperties}
     >
-      <div className="card-display">
-        <figure className="card-face">
-          <ShuffyFace />
-        </figure>
-        {category && <div className="card-category">{category}</div>}
-        <h2 className="card-name">{name}</h2>
-      </div>
+      <section className="card-front">
+        <div className="card-display">
+          <figure className="card-figure stack">
+            <Blot className="card-blot" />
+            <ShuffyFace className="card-face" />
+          </figure>
+          {category && <div className="card-category">{category}</div>}
+          <h2 className="card-name">{name}</h2>
+        </div>
+      </section>
+
+      <section className="card-back">
+        <img src="card-back.svg" width="462" height="615" alt="" />
+      </section>
     </article>
   );
 }

@@ -8,13 +8,13 @@
   {
     "id": "2",
     "name": "Build a Web Component",
-    "isActive": false,
+    "isActive": true,
     "category": "Code"
   },
   {
     "id": "3",
     "name": "Paint a picture of a kangaroo wearing boxing gloves",
-    "isActive": false,
+    "isActive": true,
     "category": "Design"
   }
 ]

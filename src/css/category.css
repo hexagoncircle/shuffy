@@ -28,7 +28,12 @@
   font-size: var(--text-m);
   font-weight: var(--font-medium);
 
-  > * {
-    padding: var(--space-l);
+  img {
+    width: 100%;
+    height: auto;
   }
+}
+
+.category-starter-content {
+  padding: var(--space-m);
 }

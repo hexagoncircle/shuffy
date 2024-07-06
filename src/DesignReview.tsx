@@ -13,6 +13,7 @@ import Category from "./components/Category";
 import ColorPicker from "./components/ColorPicker";
 import CardStarter from "./components/CardStarter";
 import CategoryStarter from "./components/CategoryStarter";
+import CardEditor from "./components/CardEditor";
 
 const SELECT_OPTIONS = [
   {
@@ -82,20 +83,20 @@ export default function DesignReview() {
         <h2 className="section-title">Form inputs</h2>
         <section className="flow" style={{ maxInlineSize: "22rem" }}>
           <div>
-            <label htmlFor="input-1" className="visually-hidden">Enter deck name</label>
-            <input id="input-1" className="text-center" type="text" placeholder="Enter a name for your deck" />
-          </div>
-          <div>
-            <label htmlFor="input-2">Deck name</label>
-            <input id="input-2" type="text" defaultValue="Creative Time" />
-          </div>
-          <div>
-            <label htmlFor="input-3" className="visually-hidden">Compact variant</label>
-            <input className="compact" id="input-3" type="text" placeholder="Enter a category title..." />
+            <label htmlFor="input-with-label">Deck name</label>
+            <input id="input-with-label" type="text" defaultValue="Creative Time" />
           </div>
           <div>
             <label htmlFor="select-category" className="visually-hidden">Category</label>
             <Select id="select-category" onChange={handleSelectChange} options={SELECT_OPTIONS} selected={SELECT_OPTIONS[0]} />
+          </div>
+          <div>
+            <label htmlFor="input-compact" className="visually-hidden">Compact variant</label>
+            <input className="compact" id="input-compact" type="text" placeholder="Enter a category title..." />
+          </div>
+          <div>
+            <label htmlFor="input-center" className="visually-hidden">Enter deck name</label>
+            <input id="input-center" className="text-center" type="text" placeholder="Enter a name for your deck" />
           </div>
         </section>
 
@@ -190,7 +191,13 @@ export default function DesignReview() {
           {CARDS.map((card) => (
             <Card key={card.id} card={card} />
           ))}
+          <Card hidden card={{
+            name: "Flipped card",
+            isActive: true,
+            category: "Music"
+          }} />
           <CardStarter />
+          <CardEditor category="Music" name="Practice guitar noodling" />
         </div>
       </article>
 
