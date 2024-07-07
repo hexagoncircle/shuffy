@@ -5,25 +5,22 @@ import { CategoriesContext, CategoryDataProps } from "@components/CategoriesCont
 import ColorPicker from "./ColorPicker";
 import GripIcon from "@assets/grip.svg?react";
 import COLORS from "@data/colors.theme.json";
-import "@css/category.css";
+import { useClickAway } from "@uidotdev/usehooks";
 
-export interface CategoryProps {
-  category: CategoryDataProps;
+interface CategoryCreatorProps {
+  onComplete(): void;
 }
 
 const getRandomColor = () => {
   return COLORS[Math.floor(Math.random() * COLORS.length)].value;
 }
 
-interface CategoryCreatorProps {
-  onComplete(): void;
-}
-
 export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
   const { createCategory } = useContext(CategoriesContext);
-  const [color, setColor] = useState(getRandomColor());
+  const [colorValue, setColorValue] = useState(getRandomColor());
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const ref = useClickAway<HTMLDivElement>(() => onComplete())
 
   const handleContainerKeydown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Escape") {
@@ -50,15 +47,15 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
   const handleSaveClick = () => {
     createCategory({
       id: uuid(),
+      theme: colorValue,
       label: inputValue,
-      value: slugify(inputValue, { lower: true }),
-      theme: color
+      value: slugify(inputValue, { lower: true })
     })
     onComplete();
   }
 
   return (
-    <div className="category-creator category box" style={{ "--theme": color } as CSSProperties} onKeyDown={handleContainerKeydown}>
+    <div ref={ref} className="category-creator category box" style={{ "--theme": colorValue } as CSSProperties} onKeyDown={handleContainerKeydown}>
       <section className="category-content">
         <GripIcon className="grip" />
         <label htmlFor="add-category-label" className="visually-hidden">Category</label>
@@ -77,7 +74,7 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
         <div className="dot"></div>
       </section>
       <section className="category-editor">
-        <ColorPicker onChange={(color) => setColor(color)} defaultColor={color} />
+        <ColorPicker onChange={(color) => setColorValue(color)} defaultColor={colorValue} />
         <footer className="category-editor-actions cluster">
           <button type="button" className="cancel-button text small" onClick={() => onComplete()}>Cancel</button>
           <button type="button" className="primary small" onClick={handleSaveClick} disabled={!inputValue}>Add category</button>

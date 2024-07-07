@@ -3,21 +3,21 @@ import slugify from "slugify";
 import Select from "./components/Select";
 import Switch from "./components/Switch";
 import Card from "./components/Card";
-import Category from "./components/Category";
-import ColorPicker from "./components/ColorPicker";
 import CardStarter from "./components/CardStarter";
-import CategoryStarter from "./components/CategoryStarter";
 import CardEditor from "./components/CardEditor";
+import Category from "./components/Category";
+import CategoryStarter from "./components/CategoryStarter";
+import ColorPicker from "./components/ColorPicker";
 import Modal from "./components/Modal";
+import Callout from "./components/Callout";
+import SettingsToggle from "./components/SettingsToggle";
+import DeckDisplayControl from "./components/DeckDisplayControl";
 import TrashIcon from "@assets/trash.svg?react";
 import PlusIcon from "@assets/close.svg?react";
 import CARDS from "@data/cards.json";
 import CATEGORIES from "@data/categories.json";
 import COLORS from "@data/colors.app.json";
 import "@css/ds.css";
-import Callout from "./components/Callout";
-import SettingsToggle from "./components/SettingsToggle";
-import DeckDisplayControl from "./components/DeckDisplayControl";
 
 const SELECT_OPTIONS = [
   {
@@ -244,7 +244,7 @@ export default function DesignReview() {
 
       <article className="page-section flow">
         <h2 className="section-title">Category</h2>
-        <section style={{ maxInlineSize: "25rem" }}>
+        <section className="flow" style={{ maxInlineSize: "25rem" }}>
           <ul className="flow flow-xs" role="list">
             {CATEGORIES.map((category) => (
               <li key={category.value}>

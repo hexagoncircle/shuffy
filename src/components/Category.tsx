@@ -3,6 +3,7 @@ import slugify from "slugify";
 import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
 import ColorPicker from "./ColorPicker";
 import GripIcon from "@assets/grip.svg?react";
+import { useClickAway } from "@uidotdev/usehooks";
 import "@css/category.css";
 
 export interface CategoryProps {
@@ -12,16 +13,19 @@ export interface CategoryProps {
 export default function Category({ category }: CategoryProps) {
   const { updateCategory, deleteCategory } = useContext(CategoriesContext);
   const { id, label, theme } = category;
-  const [color, setColor] = useState(theme);
+  const [colorValue, setColorValue] = useState(theme);
   const [inputValue, setInputValue] = useState(label);
   const [openEditor, setOpenEditor] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const editRef = useRef<HTMLButtonElement>(null);
+  const ref = useClickAway<HTMLDivElement>(() => {
+    openEditor && handleCancelClick()
+  })
 
   const handleContainerKeydown = (e: KeyboardEvent<HTMLElement>) => {
     if (openEditor && e.key === "Escape") {
       e.preventDefault();
-      setColor(theme);
+      setColorValue(theme);
       setInputValue(label);
       setOpenEditor(false);
     }
@@ -47,7 +51,7 @@ export default function Category({ category }: CategoryProps) {
       ...category,
       label: inputValue,
       value: slugify(inputValue, { lower: true }),
-      theme: color
+      theme: colorValue
     })
   }
 
@@ -57,7 +61,7 @@ export default function Category({ category }: CategoryProps) {
   }
 
   const handleCancelClick = () => {
-    setColor(theme);
+    setColorValue(theme);
     setInputValue(label);
     setOpenEditor(false);
   }
@@ -72,7 +76,7 @@ export default function Category({ category }: CategoryProps) {
   }, [openEditor]);
 
   return (
-    <div className="category box" style={{ "--theme": color } as CSSProperties} onKeyDown={handleContainerKeydown}>
+    <div ref={ref} className="category box" style={{ "--theme": colorValue } as CSSProperties} onKeyDown={handleContainerKeydown}>
       <section className="category-content">
         <GripIcon className="grip" />
         {!openEditor ? (
@@ -105,7 +109,7 @@ export default function Category({ category }: CategoryProps) {
       </section>
       {openEditor ? (
         <section className="category-editor">
-          <ColorPicker onChange={(color) => setColor(color)} defaultColor={theme} />
+          <ColorPicker onChange={(color) => setColorValue(color)} defaultColor={theme} />
           <footer className="category-editor-actions cluster">
             <button type="button" className="danger small" onClick={handleDeleteClick}>Delete</button>
             <button type="button" className="cancel-button text small" onClick={handleCancelClick}>Cancel</button>
