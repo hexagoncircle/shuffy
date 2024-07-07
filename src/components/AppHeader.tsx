@@ -9,6 +9,7 @@ import PlusIcon from "@assets/plus.svg?react";
 import "@css/app-header.css";
 import { CategoriesContext } from "./CategoriesContext";
 import CategoryCreator from "./CategoryCreator";
+import CategoryStarter from "./CategoryStarter";
 
 interface AppHeaderProps {
   deckName: string;
@@ -28,7 +29,7 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
   }
 
   useEffect(() => {
-    // Refocus "Add category" button if CategoryCreator action is canceled
+    // Refocus "Add category" button if category create action is canceled
     if (addCategoryButtonRef.current && !isCreatingCategory) {
       addCategoryButtonRef.current?.focus();
     }
@@ -57,7 +58,7 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
 
           {isCreatingCategory ? (
             <CategoryCreator onComplete={() => setIsCreatingCategory(false)} />
-          ) : (
+          ) : categories.length > 0 ? (
             <button
               ref={addCategoryButtonRef}
               type="button"
@@ -67,6 +68,8 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
               <PlusIcon />
               Add a category
             </button>
+          ) : (
+            <CategoryStarter ref={addCategoryButtonRef} onClick={() => setIsCreatingCategory(true)} />
           )}
         </section>
 

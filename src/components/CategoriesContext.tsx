@@ -30,7 +30,7 @@ export const CategoriesContext = createContext<CategoriesContextType>({
 });
 
 export default function CategoriesProvider({ children }: CategoriesProviderProps) {
-  const [state, dispatch] = useReducer(categoriesReducer, CATEGORIES);
+  const [state, dispatch] = useReducer(categoriesReducer, []);
 
   const createCategory = (category: CategoryDataProps) => {
     dispatch({

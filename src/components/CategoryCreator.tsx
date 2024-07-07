@@ -1,23 +1,20 @@
-import { CSSProperties, FormEvent, KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, FormEvent, KeyboardEvent, useContext, useRef, useState } from "react";
+import { useClickAway } from "@uidotdev/usehooks";
 import slugify from "slugify";
 import { v4 as uuid } from "uuid";
-import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
+import { CategoriesContext } from "@components/CategoriesContext";
 import ColorPicker from "./ColorPicker";
 import GripIcon from "@assets/grip.svg?react";
 import COLORS from "@data/colors.theme.json";
-import { useClickAway } from "@uidotdev/usehooks";
+import { getRandomValue } from "@js/utils";
 
 interface CategoryCreatorProps {
   onComplete(): void;
 }
 
-const getRandomColor = () => {
-  return COLORS[Math.floor(Math.random() * COLORS.length)].value;
-}
-
 export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
   const { createCategory } = useContext(CategoriesContext);
-  const [colorValue, setColorValue] = useState(getRandomColor());
+  const [colorValue, setColorValue] = useState(getRandomValue(COLORS).value as string);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const ref = useClickAway<HTMLDivElement>(() => onComplete())
@@ -55,7 +52,12 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
   }
 
   return (
-    <div ref={ref} className="category-creator category box" style={{ "--theme": colorValue } as CSSProperties} onKeyDown={handleContainerKeydown}>
+    <div
+      ref={ref}
+      className="category-creator category box"
+      style={{ "--theme": colorValue } as CSSProperties}
+      onKeyDown={handleContainerKeydown}
+    >
       <section className="category-content">
         <GripIcon className="grip" />
         <label htmlFor="add-category-label" className="visually-hidden">Category</label>
