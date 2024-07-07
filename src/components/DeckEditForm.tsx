@@ -1,17 +1,16 @@
 import { useReducer, useState } from "react";
 import { v4 as uuid } from "uuid";
 import slugify from "slugify";
-import { CategoriesContext } from "@contexts/CategoriesContext";
-import { CardProps } from "@components/Card";
 import cardsReducer from "@reducers/cardsReducer";
 import CategoryAddForm from "@components/CategoryAddForm";
 import CardAddForm from "@components/CardAddForm";
 import CardSelectForm from "@components/CardSelectForm";
-import Deck from "@components/Deck";
+import Deck from "@components/Deck.prototype";
 
 /** Example data */
 import CATEGORIES from "@data/categories.json";
 import CARDS from "@data/cards.json";
+import { CardDataProps } from "@contexts/CardsContext";
 
 export default function DeckEditForm() {
   const [categories, setCategories] = useState(CATEGORIES);
@@ -22,6 +21,7 @@ export default function DeckEditForm() {
     setCategories([
       ...categories,
       {
+        id: uuid(),
         value: slugify(label),
         label,
         theme: "purple"
@@ -29,14 +29,14 @@ export default function DeckEditForm() {
     ]);
   };
 
-  const createCard = (card: CardProps) => {
+  const createCard = (card: CardDataProps) => {
     dispatch({
       type: "created",
       card,
     });
   };
 
-  const updateCard = (card: CardProps) => {
+  const updateCard = (card: CardDataProps) => {
     dispatch({
       type: "updated",
       card,

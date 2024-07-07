@@ -1,16 +1,15 @@
 import "@css/ds.css";
 import { Link, Route, Routes } from "react-router-dom";
-import { CategoriesContext } from "./contexts/CategoriesContext";
-import CATEGORIES from "@data/categories.json";
 import Home from "./Home";
 import Deck from "./Deck";
 import DesignReview from "./DesignReview";
+import CategoriesProvider from "@components/CategoriesContext";
 
 function App() {
   return (
     <>
       <h1 className="visually-hidden">Shuffy</h1>
-      <CategoriesContext.Provider value={CATEGORIES}>
+      <CategoriesProvider>
         <Routes>
           <Route
             path="/"
@@ -23,7 +22,7 @@ function App() {
           <Route path="/design-review" element={<DesignReview />} />
 
         </Routes>
-      </CategoriesContext.Provider>
+      </CategoriesProvider>
 
       <nav id="main-nav" className="cluster">
         <Link to="/">Home</Link>

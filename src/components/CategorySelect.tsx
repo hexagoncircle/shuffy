@@ -1,5 +1,5 @@
 import { FormEvent, useContext } from "react";
-import { CategoriesContext, CategoryProps } from "@/contexts/CategoriesContext";
+import { CategoriesContext, CategoryProps } from "@contexts/CategoriesContext";
 
 interface CategorySelect {
   id: string;

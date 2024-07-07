@@ -1,12 +1,12 @@
 import { CSSProperties, ChangeEvent, useContext, useRef, useState } from "react";
 import { useClickAway } from "@uidotdev/usehooks";
 import { CardDataProps } from "@contexts/CardsContext";
-import { CategoriesContext, CategoryProps } from "@/contexts/CategoriesContext";
 import CardEditForm from "@components/CardEditForm";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
 import Blot from "@assets/card-blot.svg?react";
 import "@css/card.css";
 import clsx from "clsx";
+import { CategoriesContext } from "./CategoriesContext";
 
 export interface CardProps {
   card: CardDataProps;
@@ -17,7 +17,7 @@ export interface CardProps {
 
 export default function Card({ card, hidden, onDelete, onUpdate }: CardProps) {
   const { name, category, isActive } = card;
-  const categories = useContext<CategoryProps[]>(CategoriesContext);
+  const { categories } = useContext(CategoriesContext);
   const theme = categories.find(category => category.label === card.category)?.theme;
   // const ref = useClickAway<HTMLElement>(() => setIsEditing(false));
   // const nameRef = useRef<HTMLButtonElement>(null);

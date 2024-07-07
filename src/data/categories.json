@@ -1,20 +1,24 @@
 [
   {
+    "id": "1",
     "value": "music",
     "label": "Music",
-    "theme": "#c070ff"
+    "theme": "#1fcecb"
   },
   {
+    "id": "2",
     "value": "design",
     "label": "Design",
     "theme": "#8ae0e0"
   },
   {
+    "id": "3",
     "value": "code",
     "label": "Code",
     "theme": "#231f20"
   },
   {
+    "id": "4",
     "value": "exercise",
     "label": "Exercise",
     "theme": "#ffd506"

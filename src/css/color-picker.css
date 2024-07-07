@@ -30,6 +30,7 @@
   place-items: center;
   row-gap: var(--gap);
   column-gap: calc(var(--gap) - var(--border-width));
+  inline-size: fit-content;
   max-inline-size: 15rem;
 }
 

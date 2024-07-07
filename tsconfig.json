@@ -24,14 +24,14 @@
     /* Path aliases */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@css/*": ["src/css/*"],
       "@js/*": ["src/js/*"],
       "@data/*": ["src/data/*"],
       "@contexts/*": ["src/contexts/*"],
-      "@reducers/*": ["src/reducers/*"]
+      "@reducers/*": ["src/reducers/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   },
   "include": ["src"],

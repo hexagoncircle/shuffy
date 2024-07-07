@@ -7,7 +7,6 @@ import path from "path";
 export default defineConfig({
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
       "@assets": path.resolve(__dirname, "./src/assets"),
       "@components": path.resolve(__dirname, "./src/components"),
       "@css": path.resolve(__dirname, "./src/css"),
@@ -15,6 +14,7 @@ export default defineConfig({
       "@data": path.resolve(__dirname, "./src/data"),
       "@contexts": path.resolve(__dirname, "./src/contexts"),
       "@reducers": path.resolve(__dirname, "./src/reducers"),
+      "@hooks": path.resolve(__dirname, "./src/hooks"),
     },
   },
   plugins: [react(), svgr()],

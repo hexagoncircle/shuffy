@@ -1,6 +1,5 @@
 .modal {
   --gutter: var(--space-xl);
-  display: block;
   inset-block-start: auto;
   padding: 0;
   inline-size: 100%;
@@ -13,7 +12,6 @@
 }
 
 .modal:not([open]) {
-  opacity: 0;
   pointer-events: none !important;
 }
 
@@ -22,22 +20,42 @@ html:has(.modal[open]) {
 }
 
 .modal::backdrop {
-  background: var(--black);
+  background: hsla(0 0% 0% / 0.5);
 }
 
 .modal form {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  padding: var(--gutter);
+  gap: var(--gutter);
+  padding-block: var(--gutter);
+  min-height: 100%;
 }
 
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-inline: var(--gutter);
+  margin-block-end: calc(var(--gutter) * -0.5);
+}
+
+.modal-content {
+  overflow-y: auto;
+  max-block-size: 100%;
+  overscroll-behavior-y: contain;
+  padding-inline: var(--gutter);
+}
+
+.modal-actions {
+  display: grid;
+  gap: var(--space-m);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  inline-size: 100%;
 }
 
 .modal-close {
+  --button-bg: transparent;
   --padding: var(--space-s);
   margin-inline-start: auto;
   margin-block-start: calc(var(--padding) * -1);
@@ -46,34 +64,14 @@ html:has(.modal[open]) {
   border: 0;
 }
 
-.modal-content {
-  max-height: 100%;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-}
-
-.modal-actions {
-  display: grid;
-  gap: var(--space-m);
-  padding-block-start: var(--space-xl);
-  margin-inline: auto;
-  inline-size: 100%;
-}
-
-.modal::backdrop {
-  opacity: 0;
-  transition: opacity, overlay allow-discrete, display allow-discrete;
-  transition-duration: var(--duration-2);
-}
-
-.modal[open]::backdrop {
-  opacity: 0.5;
-}
-
-@starting-style {
-  .modal[open]::backdrop {
-    opacity: 0;
-  }
+.modal[data-variant="drawer"] {
+  height: 100%;
+  max-inline-size: unset;
+  max-block-size: unset;
+  inset-inline-start: auto;
+  border-radius: 0;
+  inline-size: min(38rem, 100%);
+  background-color: var(--light-gray);
 }
 
 @media (min-width: 35rem) {
@@ -85,33 +83,74 @@ html:has(.modal[open]) {
   }
 }
 
+/* Tighter viewport transitions */
 @media (prefers-reduced-motion: no-preference) {
   .modal {
+    --duration: 350ms;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    transition: display allow-discrete, overlay allow-discrete, translate, scale, opacity;
+    transition-duration: var(--duration);
+    transition-timing-function: var(--ease);
     translate: 0 100%;
   }
 
-  .modal[open] {
-    --duration: 400ms;
-    --duration-2: calc(var(--duration) / 3);
-    --delay: calc(var(--duration) / 4);
-    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  .modal[data-variant="drawer"] {
+    --duration: 450ms;
+    translate: 100% 0;
+  }
 
+  .modal[open] {
     translate: 0 0;
-    transition: scale var(--duration), translate var(--duration), opacity var(--duration-2),
-      box-shadow var(--duration-2);
+  }
+
+  ::backdrop {
+    transition: display allow-discrete, overlay allow-discrete, opacity;
+    transition-duration: var(--duration);
     transition-timing-function: var(--ease);
-    transition-delay: var(--delay);
+    opacity: 0;
+  }
+
+  [open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .modal[open] {
+      translate: 0 100%;
+    }
+
+    .modal[data-variant="drawer"][open] {
+      translate: 100% 0;
+    }
+
+    [open]::backdrop {
+      opacity: 0;
+    }
   }
 }
 
+/* Wider viewport transitions */
 @media (min-width: 35rem) and (prefers-reduced-motion: no-preference) {
-  .modal {
-    translate: 0 0;
-    scale: 0.8;
+  .modal:not([data-variant="drawer"]) {
+    scale: 0.9;
+    opacity: 0;
+    translate: unset;
   }
 
   .modal[open] {
-    --duration: 300ms;
     scale: 1;
+    opacity: 1;
+  }
+
+  @starting-style {
+    .modal:not([data-variant="drawer"])[open] {
+      scale: 0.9;
+      opacity: 0;
+      translate: unset;
+    }
+
+    [open]::backdrop {
+      opacity: 0;
+    }
   }
 }

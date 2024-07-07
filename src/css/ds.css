@@ -11,7 +11,7 @@
   --teal: #8ae0e0;
   --yellow: #ffd506;
   --light-yellow: #fffbe5;
-  --blue: dodgerblue;
+  --blue: #3b82f6;
   --red: #d62217;
   --black: #231f20;
   --gray: #c0c0c0;
@@ -24,10 +24,13 @@
   --color-text-inverse: var(--white);
   --color-bg: var(--light-gray);
   --color-bg-inverse: var(--black);
+  --color-link: var(--blue);
   --color-focus: var(--blue);
   --color-danger: var(--red);
   --color-action: var(--yellow);
   --color-disabled: var(--dark-gray);
+
+  --focus-shadow: 0 0 0 3px var(--color-focus);
 
   --space-xs: 0.25rem;
   --space-s: 0.4375rem;
@@ -113,6 +116,10 @@ main {
 }
 
 /* --- Typography --- */
+:where(h1, h2, h3, h4, h5) {
+  font-weight: var(--font-semibold);
+}
+
 .text-2xl {
   font-size: var(--text-2xl);
 }
@@ -179,7 +186,7 @@ main {
     .custom-color-select:has(:focus-visible)
   ) {
   outline: none;
-  box-shadow: 0 0 0 3px var(--color-focus);
+  box-shadow: var(--focus-shadow);
 }
 
 /* --- Forms --- */
@@ -190,7 +197,7 @@ label {
   line-height: normal;
 }
 
-label + :is(input, .select) {
+label:not(.visually-hidden) + :is(input, .select) {
   margin-block-start: var(--space-xs);
 }
 
@@ -251,7 +258,7 @@ input[type="checkbox"]:not([role="switch"]):indeterminate {
   --button-shadow-color: var(--black);
   all: unset;
   touch-action: manipulation;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -291,6 +298,11 @@ button:disabled {
 .primary {
   --button-bg: var(--color-bg-inverse);
   --button-color: var(--color-text-inverse);
+}
+
+.text {
+  --button-bg: transparent;
+  --button-border-color: transparent;
 }
 
 .action {

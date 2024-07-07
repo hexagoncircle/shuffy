@@ -14,44 +14,53 @@ interface SwatchProps extends ColorDataProps {
 
 interface ColorPickerProps {
   id?: string;
-  onChange(selectedColor: string): void;
+  defaultColor: string;
+  onChange(value: string): void;
 }
 
 const SWATCH: SwatchProps[] = [];
 
 // Add selected state to theme colors
-COLORS.forEach((color, i) => {
-  SWATCH.push({ ...color, selected: i === 0 ? true : false })
+COLORS.forEach((color) => {
+  SWATCH.push({ ...color, selected: false })
 })
 
-// Add custom color
+// Include a custom color object
 SWATCH.push({ label: "Custom color", value: "custom", selected: false })
 
-export default function ColorPicker({ id, onChange }: ColorPickerProps) {
+/**
+ * Set selected item in swatch array
+ * @param value Initial or default color passed into component
+ * @returns Updated array
+ */
+const setupSwatch = (value: string) => {
+  const isInSwatch = SWATCH.some(color => color.value === value);
+
+  const colors = SWATCH.map((color) => {
+    const isColor = color.value === value;
+    const isCustom = !isInSwatch && color.value === "custom"
+
+    return {
+      ...color,
+      selected: isColor || isCustom ? true : false
+    };
+  });
+
+  return colors;
+}
+
+
+export default function ColorPicker({ id, defaultColor, onChange }: ColorPickerProps) {
   const colorPickerRef = useRef<HTMLInputElement>(null);
   const colorPickerLabelRef = useRef<HTMLLabelElement>(null);
-  const [swatch, setSwatch] = useState(SWATCH);
-  const [selectedColor, setSelectedColor] = useState(COLORS[0].value);
-  const [isColorPickerActive, setIsColorPickerActive] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(defaultColor);
+  const [swatch, setSwatch] = useState(setupSwatch(defaultColor));
 
-  const updateColors = (selectedColor: string) => {
+  const updateSwatch = (value: string) => {
     const updatedColors = swatch.map((color) => {
       return {
         ...color,
-        selected: color.value === selectedColor ? true : false
-      };
-    });
-
-    setIsColorPickerActive(false);
-    setSelectedColor(selectedColor);
-    setSwatch(updatedColors);
-  }
-
-  const selectCustomColor = () => {
-    const updatedColors = swatch.map((color) => {
-      return {
-        ...color,
-        selected: color.value === "custom" ? true : false
+        selected: color.value === value ? true : false
       };
     });
 
@@ -66,28 +75,22 @@ export default function ColorPicker({ id, onChange }: ColorPickerProps) {
     if (!colorPickerRef.current || !colorPickerLabelRef.current) return;
 
     colorPickerLabelRef.current.click();
-    selectCustomColor();
+    updateSwatch("custom");
     setSelectedColor(colorPickerRef.current.value);
   }
 
-  const handleColorPickerInput = (e: SyntheticEvent) => {
-    const target = e.target as HTMLInputElement;
+  const handleOptionClick = (e: SyntheticEvent<HTMLButtonElement>) => {
+    const color = e.currentTarget.dataset.color;
 
-    setSelectedColor(target.value);
-  }
+    if (!color) return;
 
-  const handleOptionClick = (e: SyntheticEvent) => {
-    const target = e.target as HTMLButtonElement;
-
-    if (target.dataset.color === "custom") {
-      if (isColorPickerActive) return;
+    if (color === "custom") {
       openColorPicker();
       return;
     }
 
-    const selectedColor = target.dataset.color;
-
-    selectedColor && updateColors(selectedColor);
+    updateSwatch(color);
+    setSelectedColor(color);
   }
 
   useEffect(() => {
@@ -116,13 +119,13 @@ export default function ColorPicker({ id, onChange }: ColorPickerProps) {
         ))}
 
         <label ref={colorPickerLabelRef} className="color-picker-option color-picker-input-label">
-          <span className="visually-hidden">Custom color</span>
+          <span>Custom color</span>
           <input
             ref={colorPickerRef}
-            onChange={handleColorPickerInput}
+            onChange={(e) => setSelectedColor(e.target.value)}
             id="select-custom-color"
             type="color"
-            defaultValue="#8AE0E0"
+            defaultValue={defaultColor}
             tabIndex={-1}
           />
         </label>

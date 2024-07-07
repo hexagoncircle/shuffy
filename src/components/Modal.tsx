@@ -6,11 +6,13 @@ import { useClickAway } from "@uidotdev/usehooks";
 interface ModalProps {
   open: boolean;
   onClose(): void;
+  title?: string;
   actions?: ReactNode;
   children: ReactNode;
+  variant?: "modal" | "drawer";
 }
 
-export default function Modal({ open, actions, children, onClose }: ModalProps) {
+export default function Modal({ open, actions, title, variant, children, onClose }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const formRef = useClickAway<HTMLFormElement>(() => onClose());
 
@@ -25,9 +27,15 @@ export default function Modal({ open, actions, children, onClose }: ModalProps) 
   }, [open]);
 
   return (
-    <dialog ref={ref} className="modal" onClose={() => onClose()}>
+    <dialog
+      ref={ref}
+      className="modal"
+      data-variant={variant}
+      onClose={() => onClose()}
+    >
       <form ref={formRef} method="dialog">
         <header className="modal-header">
+          {title && <h2 className="modal-title">{title}</h2>}
           <button className="modal-close icon-button" onClick={() => onClose()}>
             <span className="visually-hidden">Close</span>
             <CloseIcon aria-hidden="true" />

@@ -131,7 +131,7 @@ export default function DesignReview() {
 
         <section className="cluster">
           <label htmlFor="color-picker" className="visually-hidden">Color picker</label>
-          <ColorPicker id="color-picker" onChange={handleColorPickerChange} />
+          <ColorPicker id="color-picker" defaultColor="#1fcecb" onChange={handleColorPickerChange} />
         </section>
       </article>
 

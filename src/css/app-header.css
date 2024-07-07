@@ -17,12 +17,26 @@
   max-inline-size: 22rem;
 }
 
+.app-header .category-creator {
+  --space: var(--space-s);
+}
+
+.app-header-modal-section + .app-header-modal-section {
+  border-block-start: var(--border);
+  padding-block-start: var(--space-l);
+  margin-block-start: var(--space-xl);
+}
+
 .app-header-info {
   margin-inline-end: auto;
 }
 
 .app-header-card-count {
   color: var(--color-text-subtle);
+}
+
+[id="delete-deck"] {
+  margin-inline-start: auto;
 }
 
 @media (max-width: 43rem) {
