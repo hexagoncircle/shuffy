@@ -1,19 +1,19 @@
 [
   {
     "id": "1",
-    "name": "Practice guitar noodling",
+    "label": "Practice guitar noodling",
     "isActive": true,
     "category": "Music"
   },
   {
     "id": "2",
-    "name": "Build a Web Component",
+    "label": "Build a Web Component",
     "isActive": true,
     "category": "Code"
   },
   {
     "id": "3",
-    "name": "Paint a picture of a kangaroo wearing boxing gloves",
+    "label": "Paint a picture of a kangaroo wearing boxing gloves",
     "isActive": true,
     "category": "Design"
   }

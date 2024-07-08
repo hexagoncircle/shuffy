@@ -72,8 +72,10 @@
 
 .category-starter {
   --align: center;
+  position: relative;
   font-size: var(--text-m);
   font-weight: var(--font-medium);
+  isolation: isolate;
 
   img {
     width: 100%;
@@ -83,4 +85,19 @@
 
 .category-starter-content {
   padding: var(--space-m);
+}
+
+.category-starter-button {
+  place-self: center;
+  background-color: transparent;
+  border: 0;
+  padding: var(--space-xs);
+}
+
+.category-starter-button:focus-visible {
+  box-shadow: unset;
+
+  .icon-button {
+    box-shadow: var(--focus-shadow);
+  }
 }

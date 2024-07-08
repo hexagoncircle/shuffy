@@ -3,13 +3,15 @@
   --gutter: clamp(var(--space-xs), 5cqi, var(--space-m));
   --radius: var(--radius-xl);
   --bg: var(--white);
+  --card-name-fontSize: calc(0.6rem + 8cqi);
+  --card-name-fontWeight: var(--font-semibold);
   container-type: inline-size;
   position: relative;
   transform-style: preserve-3d;
   display: grid;
   border: var(--border);
   border-radius: var(--radius);
-  inline-size: min(22rem, 100%);
+  inline-size: var(--card-size);
   aspect-ratio: 154 / 202;
 }
 
@@ -79,8 +81,8 @@
   grid-column: 1 / -1;
   margin-block-start: auto;
   padding: calc(var(--gutter) * 2);
-  font-size: calc(0.6rem + 8cqi);
-  font-weight: var(--font-semibold);
+  font-size: var(--card-name-fontSize);
+  font-weight: var(--card-name-fontWeight);
 }
 
 :is(.card-front, .card-back) {
@@ -100,7 +102,7 @@
   }
 }
 
-:where(.card).hidden {
+:where(.card).flipped {
   transform: rotateY(-180deg);
 }
 
@@ -120,10 +122,49 @@
 }
 
 .card-editor {
+  --max: 22rem;
+}
+
+.card-editor .card {
   padding: var(--space-l);
   background-color: var(--bg);
 }
 
 .card-editor .editor-box {
   align-self: end;
+}
+
+.card-editor-category-select {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.card-editor-category-select button {
+  --button-bg: transparent;
+  --button-border-width: 0;
+  --button-padding: var(--space-xs);
+}
+
+.card-name-wrapper::after {
+  content: attr(data-value) " ";
+  white-space: pre-wrap;
+  visibility: hidden;
+}
+
+.card-name-wrapper > textarea {
+  resize: none;
+  overflow: hidden;
+  height: 100%;
+  outline: none;
+}
+
+.card-name-wrapper > textarea,
+.card-name-wrapper::after {
+  border: 0;
+  background-color: transparent;
+  line-height: 1.1;
+  font-size: var(--card-name-fontSize);
+  font-weight: var(--card-name-fontWeight);
+  padding: var(--gutter);
 }

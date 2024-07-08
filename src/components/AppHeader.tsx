@@ -1,15 +1,15 @@
 import { SyntheticEvent, useContext, useEffect, useRef, useState } from "react";
 import { pluralize } from "@js/utils";
-import { v4 as uuid } from "uuid";
 import Callout from "./Callout";
 import SettingsToggle from "./SettingsToggle";
 import Modal from "./Modal";
 import Category from "./Category";
 import PlusIcon from "@assets/plus.svg?react";
-import "@css/app-header.css";
-import { CategoriesContext } from "./CategoriesContext";
-import CategoryCreator from "./CategoryCreator";
+import { CategoriesContext } from "@components/CategoriesContext";
+import { SettingsContext } from "@components/SettingsContext";
 import CategoryStarter from "./CategoryStarter";
+import CategoryCreator from "./CategoryCreator";
+import "@css/app-header.css";
 
 interface AppHeaderProps {
   deckName: string;
@@ -17,15 +17,23 @@ interface AppHeaderProps {
 }
 
 export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
+  const { isSettingsActive, setIsSettingsActive } = useContext(SettingsContext);
   const { categories } = useContext(CategoriesContext);
-  const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
-  const [openModal, setOpenModal] = useState(false);
+  const [hasNotification, setHasNotification] = useState(true);
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
+  const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
   const count = categories.length;
+  const hasCategories = categories.length > 0;
 
   const handleDeckNameChange = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement;
+
     onNameUpdate(target.value);
+  }
+
+  const handleSettingsToggleClick = () => {
+    setIsSettingsActive(true)
+    if (hasNotification) setHasNotification(false);
   }
 
   useEffect(() => {
@@ -41,32 +49,35 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
         <h1 className="text-2xl font-semibold">{deckName}</h1>
         <p className="app-header-card-count">{count} {pluralize("card", "cards", count)}</p>
       </section>
-      <Callout>
-        <p>Lots of cards to add? Consider setting up deck categories first.</p>
-      </Callout>
-      <SettingsToggle hasNotification onClick={() => setOpenModal(true)} />
 
-      <Modal title="Deck Settings" variant="drawer" open={openModal} onClose={() => setOpenModal(false)}>
+      {hasNotification ? (
+        <Callout>
+          <p>Lots of cards to add? Consider setting up deck categories first.</p>
+        </Callout>
+      ) : null}
+
+      <SettingsToggle hasNotification={hasNotification} onClick={handleSettingsToggleClick} />
+
+      <Modal title="Deck Settings" variant="drawer" open={isSettingsActive} onClose={() => setIsSettingsActive(false)}>
         <section className="app-header-modal-section flow">
-          <ul className="flow flow-s" role="list">
+          {hasCategories ? <ul className="flow flow-s" role="list">
             {categories.map((category) => (
               <li key={category.id}>
                 <Category category={category} />
               </li>
             ))}
-          </ul>
+          </ul> : null}
 
           {isCreatingCategory ? (
             <CategoryCreator onComplete={() => setIsCreatingCategory(false)} />
-          ) : categories.length > 0 ? (
+          ) : hasCategories ? (
             <button
               ref={addCategoryButtonRef}
               type="button"
               className="primary small center"
               onClick={() => setIsCreatingCategory(true)}
             >
-              <PlusIcon />
-              Add a category
+              <PlusIcon /> Add a category
             </button>
           ) : (
             <CategoryStarter ref={addCategoryButtonRef} onClick={() => setIsCreatingCategory(true)} />

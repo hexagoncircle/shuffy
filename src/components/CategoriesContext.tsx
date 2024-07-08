@@ -30,7 +30,7 @@ export const CategoriesContext = createContext<CategoriesContextType>({
 });
 
 export default function CategoriesProvider({ children }: CategoriesProviderProps) {
-  const [state, dispatch] = useReducer(categoriesReducer, []);
+  const [categories, dispatch] = useReducer(categoriesReducer, CATEGORIES);
 
   const createCategory = (category: CategoryDataProps) => {
     dispatch({
@@ -54,7 +54,7 @@ export default function CategoriesProvider({ children }: CategoriesProviderProps
   };
 
   const value: CategoriesContextType = {
-    categories: state,
+    categories,
     createCategory,
     updateCategory,
     deleteCategory

@@ -9,12 +9,14 @@ const CategoryStarter = forwardRef<HTMLButtonElement, CategoryStarterProps>(({ o
   return (
     <article className="category-starter stack center-xy">
       <img src="category-dashed.svg" width="331" height="65" alt="" />
-      <div className="category-starter-content cluster">
-        <button ref={ref} className="icon-button action small" onClick={onClick}>
-          <PlusIcon />
-        </button>
-        <p>Add a category</p>
-      </div>
+      <button ref={ref} type="button" className="category-starter-button" onClick={onClick}>
+        <div className="category-starter-content cluster">
+          <div className="button icon-button action small">
+            <PlusIcon />
+          </div>
+          <p>Add a category</p>
+        </div>
+      </button>
     </article>
   );
 })

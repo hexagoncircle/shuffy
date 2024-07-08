@@ -12,7 +12,6 @@ export default defineConfig({
       "@css": path.resolve(__dirname, "./src/css"),
       "@js": path.resolve(__dirname, "./src/js"),
       "@data": path.resolve(__dirname, "./src/data"),
-      "@contexts": path.resolve(__dirname, "./src/contexts"),
       "@reducers": path.resolve(__dirname, "./src/reducers"),
       "@hooks": path.resolve(__dirname, "./src/hooks"),
     },

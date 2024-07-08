@@ -29,7 +29,6 @@
       "@css/*": ["src/css/*"],
       "@js/*": ["src/js/*"],
       "@data/*": ["src/data/*"],
-      "@contexts/*": ["src/contexts/*"],
       "@reducers/*": ["src/reducers/*"],
       "@hooks/*": ["src/hooks/*"]
     }

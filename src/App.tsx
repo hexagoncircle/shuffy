@@ -4,25 +4,25 @@ import Home from "./Home";
 import Deck from "./Deck";
 import DesignReview from "./DesignReview";
 import CategoriesProvider from "@components/CategoriesContext";
+import SettingsProvider from "@components/SettingsContext";
+import CardsProvider from "@components/CardsContext";
 
 function App() {
   return (
     <>
       <h1 className="visually-hidden">Shuffy</h1>
-      <CategoriesProvider>
-        <Routes>
-          <Route
-            path="/"
-            element={<Home />}
-            handle={{
-              bodyClass: ({ bodyClass }: { bodyClass: string }) => bodyClass,
-            }}
-          />
-          <Route path="/deck" element={<Deck />} />
-          <Route path="/design-review" element={<DesignReview />} />
 
-        </Routes>
-      </CategoriesProvider>
+      <SettingsProvider>
+        <CategoriesProvider>
+          <CardsProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/deck" element={<Deck />} />
+              <Route path="/design-review" element={<DesignReview />} />
+            </Routes>
+          </CardsProvider>
+        </CategoriesProvider>
+      </SettingsProvider>
 
       <nav id="main-nav" className="cluster">
         <Link to="/">Home</Link>

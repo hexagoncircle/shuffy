@@ -12,14 +12,14 @@ interface SelectOptionProps {
 interface SelectProps {
   id: string;
   options: SelectOptionProps[];
-  selected?: SelectOptionProps
+  selected?: string;
   onChange?(e: ChangeEvent<HTMLSelectElement>): void;
 }
 
 export default function Select({ id, options, selected, onChange }: SelectProps) {
   return (
     <div className="select">
-      <select id={id} onChange={onChange} defaultValue={selected?.value}>
+      <select id={id} onChange={onChange} defaultValue={selected}>
         {options.map(({ value, label, disabled }) => (
           <option key={value} value={value} disabled={disabled}>{label}</option>
         ))}

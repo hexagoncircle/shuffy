@@ -54,6 +54,14 @@ export default function DesignReview() {
     console.log("Color picker change", color)
   }
 
+  const handleCardStarterClick = () => {
+    console.log("CardStarter clicked")
+  }
+
+  const handleCategoryStarterClick = () => {
+    console.log("CategoryStarter clicked")
+  }
+
   return (
     <main className="page center">
       <article className="page-section flow">
@@ -102,7 +110,7 @@ export default function DesignReview() {
           </div>
           <div>
             <label htmlFor="select-category" className="visually-hidden">Category</label>
-            <Select id="select-category" onChange={handleSelectChange} options={SELECT_OPTIONS} selected={SELECT_OPTIONS[0]} />
+            <Select id="select-category" onChange={handleSelectChange} options={SELECT_OPTIONS} selected={SELECT_OPTIONS[0].value} />
           </div>
           <div>
             <label htmlFor="input-compact" className="visually-hidden">Compact variant</label>
@@ -228,18 +236,18 @@ export default function DesignReview() {
 
       <article className="page-section flow">
         <h2 className="section-title">Cards</h2>
-        <div className="cluster">
+        <section className="cluster">
           {CARDS.map((card) => (
             <Card key={card.id} card={card} />
           ))}
-          <Card hidden card={{
-            name: "Flipped card",
+          <Card flipped card={{
+            id: "flipped",
+            label: "Flipped card",
             isActive: true,
             category: "Music"
           }} />
-          <CardStarter />
-          <CardEditor category="Music" name="Practice guitar noodling" />
-        </div>
+          <CardStarter onClick={handleCardStarterClick} />
+        </section>
       </article>
 
       <article className="page-section flow">
@@ -252,7 +260,7 @@ export default function DesignReview() {
               </li>
             ))}
           </ul>
-          <CategoryStarter />
+          <CategoryStarter onClick={handleCategoryStarterClick} />
         </section>
       </article>
     </main>

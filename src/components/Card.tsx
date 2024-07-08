@@ -1,61 +1,28 @@
-import { CSSProperties, ChangeEvent, useContext, useRef, useState } from "react";
-import { useClickAway } from "@uidotdev/usehooks";
-import { CardDataProps } from "@contexts/CardsContext";
-import CardEditForm from "@components/CardEditForm";
+import { CSSProperties, useContext } from "react";
+import { CardDataProps } from "@components/CardsContext";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
 import Blot from "@assets/card-blot.svg?react";
 import "@css/card.css";
 import clsx from "clsx";
-import { CategoriesContext } from "./CategoriesContext";
+import { CategoriesContext } from "@components/CategoriesContext";
 
 export interface CardProps {
   card: CardDataProps;
-  hidden?: boolean;
+  flipped?: boolean;
   onDelete?(id: string): void;
   onUpdate?(card: CardDataProps): void;
 }
 
-export default function Card({ card, hidden, onDelete, onUpdate }: CardProps) {
-  const { name, category, isActive } = card;
+export default function Card({ card, flipped }: CardProps) {
+  const { label, category, isActive } = card;
   const { categories } = useContext(CategoriesContext);
-  const theme = categories.find(category => category.label === card.category)?.theme;
-  // const ref = useClickAway<HTMLElement>(() => setIsEditing(false));
-  // const nameRef = useRef<HTMLButtonElement>(null);
-  // const [isEditing, setIsEditing] = useState(false);
-
-  // const handleIsActiveChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   onUpdate({
-  //     ...card,
-  //     isActive: e.target.checked,
-  //   });
-  // };
-
-  // const handleUpdate = (card: CardDataProps) => {
-  //   onUpdate(card);
-  //   setIsEditing(false);
-  // };
+  const cardCategory = categories.find(c => c.id === category);
+  const theme = cardCategory?.theme;
+  const categoryLabel = cardCategory?.label;
 
   return (
-    // <article ref={ref} className="card | cluster">
-    //   {isEditing ? (
-    //     <CardEditForm
-    //       card={card}
-    //       onUpdate={handleUpdate}
-    //       onDelete={onDelete}
-    //       onCancel={() => setIsEditing(false)}
-    //     />
-    //   ) : (
-    //     <>
-    //       <input type="checkbox" checked={isActive} onChange={handleIsActiveChange} />
-    //       <button ref={nameRef} className="card-name" onClick={() => setIsEditing(true)}>
-    //         {name}
-    //       </button>
-    //       <div>{category}</div>
-    //     </>
-    //   )}
-    // </article>
     <article
-      className={clsx("card stack", isActive && "active", hidden && "hidden")}
+      className={clsx("card stack", isActive && "active", flipped && "flipped")}
       style={{ "--theme": theme } as CSSProperties}
     >
       <section className="card-front">
@@ -64,8 +31,8 @@ export default function Card({ card, hidden, onDelete, onUpdate }: CardProps) {
             <Blot className="card-blot" />
             <ShuffyFace className="card-face" />
           </figure>
-          {category && <div className="card-category">{category}</div>}
-          <h2 className="card-name">{name}</h2>
+          {categoryLabel && <div className="card-category">{categoryLabel}</div>}
+          <h2 className="card-name">{label}</h2>
         </div>
       </section>
 
