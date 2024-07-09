@@ -10,6 +10,7 @@ import { SettingsContext } from "@components/SettingsContext";
 import CategoryStarter from "./CategoryStarter";
 import CategoryCreator from "./CategoryCreator";
 import "@css/app-header.css";
+import { CardsContext } from "./CardsContext";
 
 interface AppHeaderProps {
   deckName: string;
@@ -19,11 +20,13 @@ interface AppHeaderProps {
 export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
   const { isSettingsActive, setIsSettingsActive } = useContext(SettingsContext);
   const { categories } = useContext(CategoriesContext);
+  const { cards } = useContext(CardsContext);
+
   const [hasNotification, setHasNotification] = useState(true);
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
   const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
-  const count = categories.length;
   const hasCategories = categories.length > 0;
+  const cardCount = cards.length;
 
   const handleDeckNameChange = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement;
@@ -47,7 +50,7 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
     <header className="app-header">
       <section className="app-header-info">
         <h1 className="text-2xl font-semibold">{deckName}</h1>
-        <p className="app-header-card-count">{count} {pluralize("card", "cards", count)}</p>
+        <p className="app-header-card-count">{cardCount} {pluralize("card", "cards", cardCount)}</p>
       </section>
 
       {hasNotification ? (

@@ -6,20 +6,27 @@ interface SettingsProviderProps {
 
 interface SettingsContextType {
   isSettingsActive: boolean;
-  setIsSettingsActive(value: boolean): void;
+  lastSelectedCategory: string;
+  setIsSettingsActive(isActive: boolean): void;
+  setLastSelectedCategory(categoryId: string): void
 }
 
 export const SettingsContext = createContext<SettingsContextType>({
   isSettingsActive: false,
-  setIsSettingsActive: () => { }
+  lastSelectedCategory: "",
+  setIsSettingsActive: () => { },
+  setLastSelectedCategory: () => { }
 });
 
 export default function SettingsProvider({ children }: SettingsProviderProps) {
   const [isSettingsActive, setIsSettingsActive] = useState(false)
+  const [lastSelectedCategory, setLastSelectedCategory] = useState("")
 
   const value: SettingsContextType = {
     isSettingsActive,
-    setIsSettingsActive
+    setIsSettingsActive,
+    lastSelectedCategory,
+    setLastSelectedCategory
   };
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;

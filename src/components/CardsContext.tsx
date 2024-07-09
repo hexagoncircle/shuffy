@@ -2,7 +2,7 @@ import { ReactNode, createContext, useReducer } from "react";
 import cardsReducer from "@reducers/cardsReducer";
 
 // Testing data
-import CARDS from "@data/cards.json";
+import CARDS from "@data/deck.json";
 
 export interface CardDataProps {
   id: string;
@@ -30,31 +30,31 @@ export const CardsContext = createContext<CardsContextType>({
 });
 
 export default function CardsProvider({ children }: CardsProviderProps) {
-  const [cards, dispatch] = useReducer(cardsReducer, []);
+  const [cards, dispatch] = useReducer(cardsReducer, CARDS);
 
   const createCard = (card: CardDataProps) => {
-    console.log("CARDS_CREATED", card);
+    console.log("CARD_CREATED", card);
 
     dispatch({
-      type: "CARDS_CREATED",
+      type: "CARD_CREATED",
       card,
     });
   };
 
   const updateCard = (card: CardDataProps) => {
-    console.log("CARDS_UPDATED", card);
+    console.log("CARD_UPDATED", card);
 
     dispatch({
-      type: "CARDS_UPDATED",
+      type: "CARD_UPDATED",
       card,
     });
   };
 
   const deleteCard = (id: string) => {
-    console.log("CARDS_DELETED", cards.find((card) => card.id === id));
+    console.log("CARD_DELETED", cards.find((card) => card.id === id));
 
     dispatch({
-      type: "CARDS_DELETED",
+      type: "CARD_DELETED",
       id,
     });
   };

@@ -1,40 +1,44 @@
 import { CSSProperties, useContext } from "react";
+import clsx from "clsx";
 import { CardDataProps } from "@components/CardsContext";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
 import Blot from "@assets/card-blot.svg?react";
-import "@css/card.css";
-import clsx from "clsx";
 import { CategoriesContext } from "@components/CategoriesContext";
+import "@css/card.css";
+import { useIntersectionObserver } from "@uidotdev/usehooks";
 
 export interface CardProps {
   card: CardDataProps;
   flipped?: boolean;
-  onDelete?(id: string): void;
-  onUpdate?(card: CardDataProps): void;
+  onClick?(card: CardDataProps): void;
 }
 
-export default function Card({ card, flipped }: CardProps) {
-  const { label, category, isActive } = card;
+export default function Card({ card, flipped, onClick }: CardProps) {
+  const [ref, entry] = useIntersectionObserver({
+    threshold: 1,
+  });
   const { categories } = useContext(CategoriesContext);
-  const cardCategory = categories.find(c => c.id === category);
-  const theme = cardCategory?.theme;
-  const categoryLabel = cardCategory?.label;
+  const { label, category, isActive } = card;
+  const categoryObj = categories.find(c => c.id === category);
+  const theme = categoryObj?.theme;
+  const categoryLabel = categoryObj?.label;
 
   return (
     <article
-      className={clsx("card stack", isActive && "active", flipped && "flipped")}
+      ref={ref}
+      className={clsx("card stack", entry?.isIntersecting && "in-view", isActive && "active", flipped && "flipped")}
       style={{ "--theme": theme } as CSSProperties}
     >
-      <section className="card-front">
+      <button className="card-front" onClick={() => onClick?.(card)}>
         <div className="card-display">
-          <figure className="card-figure stack">
+          <figure className="card-figure stack" aria-hidden="true">
             <Blot className="card-blot" />
             <ShuffyFace className="card-face" />
           </figure>
           {categoryLabel && <div className="card-category">{categoryLabel}</div>}
           <h2 className="card-name">{label}</h2>
         </div>
-      </section>
+      </button>
 
       <section className="card-back">
         <img src="card-back.svg" width="462" height="615" alt="" />

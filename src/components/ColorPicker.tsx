@@ -119,7 +119,7 @@ export default function ColorPicker({ id, defaultColor, onChange }: ColorPickerP
         ))}
 
         <label ref={colorPickerLabelRef} className="color-picker-option color-picker-input-label">
-          <span>Custom color</span>
+          <span className="visually-hidden">Custom color</span>
           <input
             ref={colorPickerRef}
             onChange={(e) => setSelectedColor(e.target.value)}

@@ -3,7 +3,7 @@
   grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: var(--space-s);
-  padding-block: clamp(var(--space-m), 0.5rem + 2vw, var(--space-l));
+  padding-block: clamp(var(--space-s), 0.5rem + 2vw, var(--space-m));
   padding-inline: clamp(var(--space-l), 0.75rem + 4vw, var(--space-3xl));
   background-color: var(--white);
   border-block-end: var(--border);

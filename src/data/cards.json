@@ -3,18 +3,18 @@
     "id": "1",
     "label": "Practice guitar noodling",
     "isActive": true,
-    "category": "Music"
+    "category": "1"
   },
   {
     "id": "2",
     "label": "Build a Web Component",
     "isActive": true,
-    "category": "Code"
+    "category": "2"
   },
   {
     "id": "3",
     "label": "Paint a picture of a kangaroo wearing boxing gloves",
     "isActive": true,
-    "category": "Design"
+    "category": "3"
   }
 ]

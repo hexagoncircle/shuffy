@@ -6,24 +6,21 @@ import { CardDataProps, CardsContext } from "@components/CardsContext";
 import Select from "./Select";
 import CategorySelectIcon from "@assets/category-select.svg?react";
 import clsx from "clsx";
-import { getItemById } from "@js/utils";
 
-interface CardEditorProps {
-  card?: CardDataProps;
+interface CardCreatorProps {
   onComplete(): void;
 }
 
-export default function CardEditor({ card, onComplete }: CardEditorProps) {
+export default function CardCreator({ onComplete }: CardCreatorProps) {
+  const nameRef = useRef<HTMLTextAreaElement>(null);
   const { lastSelectedCategory, setIsSettingsActive, setLastSelectedCategory } = useContext(SettingsContext);
   const { categories } = useContext(CategoriesContext);
-  const { createCard, updateCard, deleteCard } = useContext(CardsContext);
-
-  const [nameValue, setNameValue] = useState(card?.label || "");
-  const nameRef = useRef<HTMLTextAreaElement>(null);
+  const { createCard } = useContext(CardsContext);
+  const [nameValue, setNameValue] = useState("");
   const nameMaxLength = 80;
 
-  const [selectedCategory, setSelectedCategory] = useState(card?.category || lastSelectedCategory);
-  const selectedCategoryObj = getItemById(categories, selectedCategory);
+  const [selectedCategory, setSelectedCategory] = useState(lastSelectedCategory);
+  const selectedCategoryObj = categories.find(c => c.id === selectedCategory);
   const categoryOptions = [
     { label: "Select a category", value: "" },
     ...categories.map(({ label, id }) => ({ label, value: id }))
@@ -34,7 +31,7 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
       e.preventDefault();
 
       if (e.currentTarget.value) {
-        card ? handleUpdate() : handleCreate();
+        handleCreateCard();
       }
     }
   }
@@ -46,7 +43,7 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
     }
   }
 
-  const handleCreate = () => {
+  const handleCreateCard = () => {
     createCard({
       id: uuid(),
       isActive: true,
@@ -54,24 +51,6 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
       category: selectedCategory
     });
     setLastSelectedCategory(selectedCategory);
-    onComplete();
-  }
-
-  const handleUpdate = () => {
-    if (!card) return;
-
-    updateCard({
-      ...card,
-      label: nameValue,
-      category: selectedCategory
-    });
-    onComplete();
-  }
-
-  const handleDelete = () => {
-    if (!card) return;
-
-    deleteCard(card.id);
     onComplete();
   }
 
@@ -121,17 +100,8 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
         <p className={clsx("character-count", nameValue.length >= nameMaxLength && "limit")}>{nameValue.length} / {nameMaxLength}</p>
       </section>
       <footer className="actions">
-        {card ? (
-          <>
-            <button className="primary" disabled={!nameValue} onClick={handleUpdate}>Update card</button>
-            <button className="danger" onClick={handleDelete}>Delete card</button>
-          </>
-        ) : (
-          <>
-            <button className="raised action" disabled={!nameValue} onClick={handleCreate}>Add card to deck</button>
-            <button onClick={onComplete}>Cancel</button>
-          </>
-        )}
+        <button className="raised action" disabled={!nameValue} onClick={handleCreateCard}>Add card to deck</button>
+        <button onClick={onComplete}>Cancel</button>
       </footer>
     </article>
   );

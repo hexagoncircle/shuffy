@@ -67,10 +67,10 @@ export default function Category({ category }: CategoryProps) {
   }
 
   useEffect(() => {
-    if (inputRef.current && openEditor) {
+    if (openEditor) {
       inputRef.current?.focus();
     }
-    if (editRef.current && !openEditor) {
+    if (!openEditor) {
       editRef.current?.focus();
     }
   }, [openEditor]);

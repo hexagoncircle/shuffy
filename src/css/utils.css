@@ -85,11 +85,6 @@
   overflow-x: scroll;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  scroll-snap-type: x proximity;
-
-  > * {
-    scroll-snap-align: center;
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

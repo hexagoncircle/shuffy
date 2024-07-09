@@ -1,11 +1,69 @@
 .deck {
-}
-.cards {
-  display: flex;
-  gap: var(--space-m);
+  padding-block: var(--space-l);
 }
 
-.cards > * {
-  flex: 1 0 auto;
-  inline-size: var(--card-size);
+.cards-wrapper {
+  --gutter: var(--space-m);
+  scroll-snap-type: x mandatory;
+  padding-block: var(--space-xs);
+  display: grid;
+  grid-template-columns:
+    [full-start] 1fr
+    [content-start]
+    min(var(--card-size), 100% - var(--gutter) * 2)
+    [content-end]
+    1fr [full-end];
 }
+
+.cards {
+  grid-area: content;
+  display: flex;
+  gap: var(--space-s);
+
+  &::after {
+    content: "";
+    align-self: stretch;
+    padding-inline-end: max(var(--gutter), (100vw - var(--card-size)) / 2 - var(--gutter));
+  }
+
+  > * {
+    flex-shrink: 0;
+    inline-size: var(--card-size);
+    scroll-snap-align: center;
+  }
+}
+
+.deck-controls {
+  --max: 35rem;
+  --justify: space-between;
+
+  border-block-end: var(--border);
+  margin-block-end: var(--space-l);
+  padding-block-end: var(--space-l);
+}
+
+@supports (animation-timeline: view()) {
+  .cards > * {
+    --scale: 0.94;
+    animation: card-scale linear both, card-fade linear both;
+    animation-timeline: view(inline);
+    animation-range: cover 30% cover 70%, cover 5% cover 95%;
+  }
+
+  @keyframes card-scale {
+    from, to {
+      scale: var(--scale);
+    }
+    50% {
+      scale: 1;
+    }
+  }
+
+  @keyframes card-fade {
+    from, to {
+      opacity: 0;
+    }
+    10%, 90% {
+      opacity: 1;
+    }
+  }

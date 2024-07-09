@@ -17,3 +17,12 @@ export function pluralize(singular: string, plural: string, count: number) {
 export const getRandomValue = (arr: { [key: string]: unknown }[]) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
+
+/**
+ * Find an object in an array that contains an id property with value
+ * @param {string} id The unique identifier
+ * @returns Object with matching id if it exists
+ */
+export const getItemById = <T extends { id: string }>(arr: T[], id: string): T | undefined => {
+  return arr.find((obj) => obj.id === id);
+};

@@ -32,6 +32,7 @@
 
   --focus-shadow: 0 0 0 3px var(--color-focus);
 
+  --space-2xs: 0.125rem;
   --space-xs: 0.25rem;
   --space-s: 0.4375rem;
   --space-m: 0.8125rem;
@@ -249,7 +250,7 @@ input[type="checkbox"]:not([role="switch"]):indeterminate {
 }
 
 /* --- Buttons --- */
-:where(button, .button, .switch) {
+:where(button:not(.reset-button), .button, .switch) {
   --button-icon-size: 1em;
   --button-push: 1px;
   --button-shadow-offset: 5px;
@@ -287,7 +288,7 @@ button:disabled {
   --button-shadow-offset: unset;
 }
 
-:is(button, .switch) svg {
+:where(button, .switch) svg {
   flex-shrink: 0;
   width: var(--button-icon-size);
   height: var(--button-icon-size);

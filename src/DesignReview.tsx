@@ -4,7 +4,6 @@ import Select from "./components/Select";
 import Switch from "./components/Switch";
 import Card from "./components/Card";
 import CardStarter from "./components/CardStarter";
-import CardEditor from "./components/CardEditor";
 import Category from "./components/Category";
 import CategoryStarter from "./components/CategoryStarter";
 import ColorPicker from "./components/ColorPicker";
@@ -13,7 +12,7 @@ import Callout from "./components/Callout";
 import SettingsToggle from "./components/SettingsToggle";
 import DeckDisplayControl from "./components/DeckDisplayControl";
 import TrashIcon from "@assets/trash.svg?react";
-import PlusIcon from "@assets/close.svg?react";
+import PlusIcon from "@assets/plus.svg?react";
 import CARDS from "@data/cards.json";
 import CATEGORIES from "@data/categories.json";
 import COLORS from "@data/colors.app.json";
@@ -255,7 +254,7 @@ export default function DesignReview() {
         <section className="flow" style={{ maxInlineSize: "25rem" }}>
           <ul className="flow flow-xs" role="list">
             {CATEGORIES.map((category) => (
-              <li key={category.value}>
+              <li key={category.id}>
                 <Category category={category} />
               </li>
             ))}
