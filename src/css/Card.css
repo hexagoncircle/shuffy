@@ -102,13 +102,8 @@
 }
 
 .card-front {
-  pointer-events: none;
   border: var(--border);
   border-radius: var(--radius);
-
-  &[data-selected="true"] {
-    pointer-events: auto;
-  }
 }
 
 .card-back {

@@ -28,7 +28,7 @@ const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected
       <button
         ref={ref}
         className="card-front"
-        data-selected={selected}
+        aria-selected={selected}
         onClick={onClick}
       >
         <div className="card-display">

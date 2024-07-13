@@ -1,5 +1,5 @@
 .chips {
-  --max: 35rem;
+  --max: min(35rem, 100% - var(--space-l));
 }
 
 .chip {

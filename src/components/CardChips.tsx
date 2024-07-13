@@ -7,7 +7,15 @@ interface CardChipsProps {
   onCardClick(id: string): void;
 }
 
-const groupCardsByCategory = (cards: CardDataProps[], categories: CategoryDataProps[]): Record<string, CardDataProps[]> => {
+/**
+ * Group cards into their respective categories.
+ * If a card doesn't have a category, it'll appear in an "uncategorized" group.
+ * If a category doesn't contain cards, it's removed from the final output
+ * @param {object[]} cards The array of cards
+ * @param {object[]} categories The array of categories
+ * @returns Card grouped by category
+ */
+const groupByCategory = (cards: CardDataProps[], categories: CategoryDataProps[]): Record<string, CardDataProps[]> => {
   const groups: Record<string, CardDataProps[]> = {};
   const uncategorizedLabel = "Uncategorized";
 
@@ -40,7 +48,7 @@ const groupCardsByCategory = (cards: CardDataProps[], categories: CategoryDataPr
 export default function CardChips({ onCardClick }: CardChipsProps) {
   const { cards } = useContext(CardsContext);
   const { categories } = useContext(CategoriesContext);
-  const groupedCards = groupCardsByCategory(cards, categories);
+  const groupedCards = groupByCategory(cards, categories);
 
   return (
     <ul className="chips center flow flow-xl" role="list">

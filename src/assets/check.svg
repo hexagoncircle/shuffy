@@ -1,11 +1,8 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="32"
-  height="32"
-  fill="currentcolor"
-  viewBox="0 0 256 256"
->
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
   <path
-    d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"
-  ></path>
+    fill="currentColor"
+    stroke="currentColor"
+    stroke-width=".25"
+    d="M11.697 3.385 5.25 9.83 2.74 7.32a.783.783 0 0 0-1.106 1.107l3.062 3.062a.781.781 0 0 0 1.107 0l6.911-6.911h.002l.088-.088a.783.783 0 1 0-1.107-1.106Z"
+  />
 </svg>
