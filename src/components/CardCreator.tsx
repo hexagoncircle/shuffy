@@ -1,8 +1,8 @@
-import { CSSProperties, ChangeEvent, KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { SettingsContext } from "@components/SettingsContext";
 import { v4 as uuid } from "uuid";
 import { CategoriesContext } from "@components/CategoriesContext";
-import { CardDataProps, CardsContext } from "@components/CardsContext";
+import { CardsContext } from "@components/CardsContext";
 import Select from "./Select";
 import CategorySelectIcon from "@assets/category-select.svg?react";
 import clsx from "clsx";

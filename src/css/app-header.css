@@ -42,9 +42,13 @@
 }
 
 @media (max-width: 43rem) {
+  .app-header {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .app-header .callout {
     justify-self: center;
-    grid-column: 1 / -1;
+    grid-column: span 2;
     grid-row: 2;
   }
 }

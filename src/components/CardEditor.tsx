@@ -1,6 +1,5 @@
-import { CSSProperties, ChangeEvent, KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { SettingsContext } from "@components/SettingsContext";
-import { v4 as uuid } from "uuid";
 import { CategoriesContext } from "@components/CategoriesContext";
 import { CardDataProps, CardsContext } from "@components/CardsContext";
 import Select from "./Select";
@@ -9,21 +8,21 @@ import clsx from "clsx";
 import { getItemById } from "@js/utils";
 
 interface CardEditorProps {
-  card?: CardDataProps;
+  card: CardDataProps;
   onComplete(): void;
 }
 
 export default function CardEditor({ card, onComplete }: CardEditorProps) {
-  const { lastSelectedCategory, setIsSettingsActive, setLastSelectedCategory } = useContext(SettingsContext);
+  const { setIsSettingsActive } = useContext(SettingsContext);
   const { categories } = useContext(CategoriesContext);
-  const { createCard, updateCard, deleteCard } = useContext(CardsContext);
+  const { cards, editCardId, updateCard, deleteCard } = useContext(CardsContext);
 
-  const [nameValue, setNameValue] = useState(card?.label || "");
+  const [nameValue, setNameValue] = useState(card?.label);
   const nameRef = useRef<HTMLTextAreaElement>(null);
   const nameMaxLength = 80;
 
-  const [selectedCategory, setSelectedCategory] = useState(card?.category || lastSelectedCategory);
-  const selectedCategoryObj = getItemById(categories, selectedCategory);
+  const [selectedCategory, setSelectedCategory] = useState(card?.category);
+  const selectedCategoryObj = selectedCategory && getItemById(categories, selectedCategory);
   const categoryOptions = [
     { label: "Select a category", value: "" },
     ...categories.map(({ label, id }) => ({ label, value: id }))
@@ -34,7 +33,7 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
       e.preventDefault();
 
       if (e.currentTarget.value) {
-        card ? handleUpdate() : handleCreate();
+        handleUpdate()
       }
     }
   }
@@ -44,17 +43,6 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
       e.preventDefault();
       onComplete();
     }
-  }
-
-  const handleCreate = () => {
-    createCard({
-      id: uuid(),
-      isActive: true,
-      label: nameValue,
-      category: selectedCategory
-    });
-    setLastSelectedCategory(selectedCategory);
-    onComplete();
   }
 
   const handleUpdate = () => {

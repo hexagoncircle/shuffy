@@ -53,6 +53,10 @@ export default function DesignReview() {
     console.log("Color picker change", color)
   }
 
+  const handleCardClick = () => {
+    console.log("Card clicked")
+  }
+
   const handleCardStarterClick = () => {
     console.log("CardStarter clicked")
   }
@@ -237,14 +241,18 @@ export default function DesignReview() {
         <h2 className="section-title">Cards</h2>
         <section className="cluster">
           {CARDS.map((card) => (
-            <Card key={card.id} card={card} />
+            <Card key={card.id} card={card} onClick={handleCardClick} />
           ))}
-          <Card flipped card={{
-            id: "flipped",
-            label: "Flipped card",
-            isActive: true,
-            category: "Music"
-          }} />
+          <Card
+            flipped
+            card={{
+              id: "flipped",
+              label: "Flipped card",
+              isActive: true,
+              category: "Music",
+            }}
+            onClick={handleCardClick}
+          />
           <CardStarter onClick={handleCardStarterClick} />
         </section>
       </article>

@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useReducer } from "react";
+import { ReactNode, createContext, useReducer, useState } from "react";
 import cardsReducer from "@reducers/cardsReducer";
 
 // Testing data
@@ -17,20 +17,25 @@ interface CardsProviderProps {
 
 interface CardsContextType {
   cards: CardDataProps[];
+  editCardId: string;
   createCard: (card: CardDataProps) => void;
   updateCard: (card: CardDataProps) => void;
   deleteCard: (id: string) => void;
+  setEditCardId: (id: string) => void;
 }
 
 export const CardsContext = createContext<CardsContextType>({
   cards: [],
+  editCardId: "",
   createCard: () => { },
   updateCard: () => { },
   deleteCard: () => { },
+  setEditCardId: () => { }
 });
 
 export default function CardsProvider({ children }: CardsProviderProps) {
   const [cards, dispatch] = useReducer(cardsReducer, CARDS);
+  const [editCardId, setEditCardId] = useState("");
 
   const createCard = (card: CardDataProps) => {
     console.log("CARD_CREATED", card);
@@ -61,9 +66,11 @@ export default function CardsProvider({ children }: CardsProviderProps) {
 
   const value: CardsContextType = {
     cards,
+    editCardId,
     createCard,
     updateCard,
-    deleteCard
+    deleteCard,
+    setEditCardId
   };
 
   return (

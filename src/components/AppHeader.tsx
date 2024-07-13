@@ -57,7 +57,7 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
         <Callout>
           <p>Lots of cards to add? Consider setting up deck categories first.</p>
         </Callout>
-      ) : null}
+      ) : <button className="action raised large">Shuffy this deck</button>}
 
       <SettingsToggle hasNotification={hasNotification} onClick={handleSettingsToggleClick} />
 

@@ -35,6 +35,7 @@
 
 .deck-controls {
   --max: 35rem;
+  --gutter: var(--space-m);
   --justify: space-between;
 
   border-block-end: var(--border);
@@ -51,7 +52,8 @@
   }
 
   @keyframes card-scale {
-    from, to {
+    from,
+    to {
       scale: var(--scale);
     }
     50% {
@@ -60,10 +62,13 @@
   }
 
   @keyframes card-fade {
-    from, to {
+    from,
+    to {
       opacity: 0;
     }
-    10%, 90% {
+    10%,
+    90% {
       opacity: 1;
     }
   }
+}

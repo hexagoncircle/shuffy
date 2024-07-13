@@ -14,7 +14,7 @@
   {
     "id": "3",
     "label": "Paint a picture of a kangaroo wearing boxing gloves",
-    "isActive": true,
+    "isActive": false,
     "category": "4"
   },
   {
@@ -62,13 +62,13 @@
   {
     "id": "11",
     "label": "Analyze some really nice lookin' data",
-    "isActive": true,
+    "isActive": false,
     "category": "2"
   },
   {
     "id": "12",
     "label": "One hundred push ups before bedtime",
-    "isActive": true,
+    "isActive": false,
     "category": "3"
   }
 ]

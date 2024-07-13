@@ -22,5 +22,11 @@
     "value": "design",
     "label": "Design",
     "theme": "#a1a1e2"
+  },
+  {
+    "id": "5",
+    "value": "relax",
+    "label": "Relax",
+    "theme": "#30ba8f"
   }
 ]

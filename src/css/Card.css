@@ -9,8 +9,6 @@
   position: relative;
   display: grid;
   inline-size: var(--card-size);
-  border: var(--border);
-  border-radius: var(--radius);
   aspect-ratio: 154 / 202;
   transform-style: preserve-3d;
 }
@@ -98,8 +96,19 @@
   border-radius: inherit;
 }
 
+.card.inactive :is(.card-front, .card-back) {
+  --theme: var(--color-bg);
+  color: var(--color-text-subtle);
+}
+
 .card-front {
-  border: 0;
+  pointer-events: none;
+  border: var(--border);
+  border-radius: var(--radius);
+
+  &[data-selected="true"] {
+    pointer-events: auto;
+  }
 }
 
 .card-back {

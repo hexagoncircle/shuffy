@@ -16,7 +16,7 @@
 }
 
 .center {
-  max-inline-size: var(--max, 60rem);
+  max-inline-size: min(var(--max, 60rem), 100% - var(--gutter, 0px) * 2);
   margin-inline: auto;
 }
 

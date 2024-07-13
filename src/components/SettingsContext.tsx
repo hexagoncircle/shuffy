@@ -24,8 +24,8 @@ export default function SettingsProvider({ children }: SettingsProviderProps) {
 
   const value: SettingsContextType = {
     isSettingsActive,
-    setIsSettingsActive,
     lastSelectedCategory,
+    setIsSettingsActive,
     setLastSelectedCategory
   };
 

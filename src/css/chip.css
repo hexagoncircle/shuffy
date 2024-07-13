@@ -1,0 +1,41 @@
+.chips {
+  --max: 35rem;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-s);
+  padding: var(--space-xs) var(--space-m) var(--space-xs) 0;
+  background-color: var(--white);
+}
+
+.chip.inactive {
+  --theme: var(--color-bg);
+  color: var(--color-text-subtle);
+  background-color: var(--color-bg-subtle);
+}
+
+.chip:has(button:focus-visible) {
+  box-shadow: var(--focus-shadow);
+}
+
+.chip-label {
+  flex-grow: 1;
+  border: 0;
+  text-align: start;
+  justify-content: flex-start;
+  border-radius: 0;
+  font-weight: var(--font-medium);
+  color: inherit;
+  background-color: transparent;
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+}
+
+.chip .switch {
+  flex-shrink: 0;
+}

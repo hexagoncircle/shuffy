@@ -1,35 +1,36 @@
-import { CSSProperties, useContext } from "react";
+import { CSSProperties, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { CardDataProps } from "@components/CardsContext";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
 import Blot from "@assets/card-blot.svg?react";
 import { CategoriesContext } from "@components/CategoriesContext";
 import "@css/card.css";
-import { useIntersectionObserver } from "@uidotdev/usehooks";
 
 export interface CardProps {
   card: CardDataProps;
   flipped?: boolean;
-  onClick?(card: CardDataProps): void;
+  selected?: boolean;
+  onClick(): void;
 }
 
-export default function Card({ card, flipped, onClick }: CardProps) {
-  const [ref, entry] = useIntersectionObserver({
-    threshold: 1,
-  });
+const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected, onClick }, ref) => {
   const { categories } = useContext(CategoriesContext);
   const { label, category, isActive } = card;
   const categoryObj = categories.find(c => c.id === category);
-  const theme = categoryObj?.theme;
   const categoryLabel = categoryObj?.label;
+  const theme = categoryObj?.theme;
 
   return (
     <article
-      ref={ref}
-      className={clsx("card stack", entry?.isIntersecting && "in-view", isActive && "active", flipped && "flipped")}
+      className={clsx("card stack", !isActive && "inactive", flipped && "flipped")}
       style={{ "--theme": theme } as CSSProperties}
     >
-      <button className="card-front" onClick={() => onClick?.(card)}>
+      <button
+        ref={ref}
+        className="card-front"
+        data-selected={selected}
+        onClick={onClick}
+      >
         <div className="card-display">
           <figure className="card-figure stack" aria-hidden="true">
             <Blot className="card-blot" />
@@ -45,4 +46,6 @@ export default function Card({ card, flipped, onClick }: CardProps) {
       </section>
     </article>
   );
-}
+})
+
+export default Card;

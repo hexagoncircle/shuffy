@@ -1,0 +1,57 @@
+import { useContext } from "react";
+import { CardDataProps, CardsContext } from "@components/CardsContext";
+import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
+import ChipGroup from "@components/ChipGroup";
+
+interface CardChipsProps {
+  onCardClick(id: string): void;
+}
+
+const groupCardsByCategory = (cards: CardDataProps[], categories: CategoryDataProps[]): Record<string, CardDataProps[]> => {
+  const groups: Record<string, CardDataProps[]> = {};
+  const uncategorizedLabel = "Uncategorized";
+
+  categories.forEach(category => {
+    groups[category.label] = [];
+  });
+
+  // Add a group for cards with no category
+  groups[uncategorizedLabel] = [];
+
+  cards.forEach(card => {
+    const category = categories.find(c => c.id === card.category);
+
+    if (category) {
+      groups[category.label].push(card);
+    } else {
+      groups[uncategorizedLabel].push(card);
+    }
+  });
+
+  Object.keys(groups).forEach(key => {
+    if (groups[key].length === 0) {
+      delete groups[key];
+    }
+  });
+
+  return groups;
+};
+
+export default function CardChips({ onCardClick }: CardChipsProps) {
+  const { cards } = useContext(CardsContext);
+  const { categories } = useContext(CategoriesContext);
+  const groupedCards = groupCardsByCategory(cards, categories);
+
+  return (
+    <ul className="chips center flow flow-xl" role="list">
+      {Object.keys(groupedCards).map(category => (
+        <ChipGroup
+          key={category}
+          category={category}
+          cards={groupedCards[category]}
+          onCardClick={onCardClick}
+        />
+      ))}
+    </ul>
+  )
+}

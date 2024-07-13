@@ -17,7 +17,7 @@ export default function Switch({ id, checked, onChange, variant }: SwitchProps) 
 
   return (
     <div className="switch">
-      <input id={id} type="checkbox" role="switch" defaultChecked={checked} onChange={onChange} />
+      <input id={id} type="checkbox" role="switch" checked={checked} onChange={onChange} />
       <div className={clsx("switch-on", isCompact && "switch-icon")} aria-hidden="true">
         {isCompact ? <OnIcon /> : "On"}
       </div>
