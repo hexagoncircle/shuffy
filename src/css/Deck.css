@@ -16,6 +16,7 @@
 }
 
 .cards {
+  --scale: 0.94;
   grid-area: content;
   display: flex;
   gap: var(--space-s);
@@ -43,9 +44,29 @@
   padding-block-end: var(--space-l);
 }
 
+.card-active-control {
+  --max: var(--card-size);
+  --align: center;
+  --justify: space-between;
+}
+
+.card-active-control label {
+  color: var(--color-text-subtle);
+}
+
+@supports not (animation-timeline: view()) {
+  .cards > * {
+    scale: var(--scale);
+    transition: scale 150ms ease-out;
+  }
+
+  .cards > *:has([aria-selected="true"]) {
+    scale: 1;
+  }
+}
+
 @supports (animation-timeline: view()) {
   .cards > * {
-    --scale: 0.94;
     animation: card-scale linear both, card-fade linear both;
     animation-timeline: view(inline);
     animation-range: cover 30% cover 70%, cover 5% cover 95%;

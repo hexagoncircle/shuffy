@@ -1,7 +1,8 @@
-import { CSSProperties, forwardRef, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, forwardRef, useContext } from "react";
 import clsx from "clsx";
 import { CardDataProps } from "@components/CardsContext";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
+import ShuffyFaceInactive from "@assets/shuffy-face-sleep.svg?react";
 import Blot from "@assets/card-blot.svg?react";
 import { CategoriesContext } from "@components/CategoriesContext";
 import "@css/card.css";
@@ -34,7 +35,10 @@ const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected
         <div className="card-display">
           <figure className="card-figure stack" aria-hidden="true">
             <Blot className="card-blot" />
-            <ShuffyFace className="card-face" />
+            {isActive
+              ? <ShuffyFace className="card-face" />
+              : <ShuffyFaceInactive className="card-face" />
+            }
           </figure>
           {categoryLabel && <div className="card-category break-words">{categoryLabel}</div>}
           <h2 className="card-name break-words">{label}</h2>

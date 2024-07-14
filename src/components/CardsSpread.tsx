@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { CardsContext } from "@components/CardsContext";
 import Card from "@components/Card";
+import Switch from "./Switch";
 
 interface CardsSpreadProps {
   scrollPosition: number;
@@ -8,7 +9,7 @@ interface CardsSpreadProps {
 }
 
 export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProps) {
-  const { cards, setEditCardId } = useContext(CardsContext);
+  const { cards, updateCard, setEditCardId } = useContext(CardsContext);
   const cardsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const cardsScrollRef = useRef<HTMLElement>(null);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
@@ -18,6 +19,15 @@ export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProp
 
     setEditCardId(id);
     onClick(cardsScrollRef.current.scrollLeft);
+  }
+
+  const handleActiveChange = () => {
+    const card = cards[activeCardIndex];
+
+    updateCard({
+      ...card,
+      isActive: !card.isActive
+    });
   }
 
   useEffect(() => {
@@ -46,7 +56,6 @@ export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProp
         if (entry.isIntersecting) {
           const index = cards.indexOf(entry.target as HTMLButtonElement);
           setActiveCardIndex(index);
-          console.log(index);
         }
       });
     }, options);
@@ -63,19 +72,25 @@ export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProp
   }, [scrollPosition]);
 
   return (
-    <section ref={cardsScrollRef} className="cards-wrapper scroll-x">
-      <ul className="cards" role="list">
-        {cards.map((card, index) => (
-          <li key={card.id}>
-            <Card
-              card={card}
-              ref={el => (cardsRef.current[index] = el)}
-              selected={index === activeCardIndex}
-              onClick={() => handleClick(card.id)}
-            />
-          </li>
-        ))}
-      </ul>
-    </section>
+    <>
+      <section ref={cardsScrollRef} className="cards-wrapper scroll-x">
+        <ul className="cards" role="list">
+          {cards.map((card, index) => (
+            <li key={card.id}>
+              <Card
+                card={card}
+                ref={el => (cardsRef.current[index] = el)}
+                selected={index === activeCardIndex}
+                onClick={() => handleClick(card.id)}
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className="card-active-control cluster center">
+        <label htmlFor="card-active-toggle">Card is shuffy-able</label>
+        <Switch id="card-active-toggle" checked={cards[activeCardIndex].isActive} onChange={handleActiveChange} />
+      </section>
+    </>
   )
 }

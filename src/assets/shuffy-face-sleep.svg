@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 69 56">
+  <path
+    fill="silver"
+    stroke="#231F20"
+    stroke-miterlimit="10"
+    stroke-width="1.021"
+    d="M48 37c9.941 0 18-7.611 18-17S57.941 3 48 3s-18 7.611-18 17 8.059 17 18 17Z"
+  />
+  <path
+    fill="silver"
+    stroke="#231F20"
+    stroke-miterlimit="10"
+    stroke-width="1.021"
+    d="M19 37c9.941 0 18-7.611 18-17S28.941 3 19 3 1 10.611 1 20s8.059 17 18 17Z"
+  />
+  <path
+    stroke="#231F20"
+    stroke-width="1.02"
+    d="M1.5 21.5c3-.816 7.5-3.5 17-4.184C28 16.63 33.5 18.5 37 20.5c3.667-1 8.024-2.114 16-1.5 6.5.5 10 2.833 12.5 4.5"
+  />
+  <path
+    fill="currentColor"
+    d="M31.948 31.9s10.557-8.442 14.632-1.816c4.675 7.602-11.989 10.825-11.989 10.825"
+  />
+  <path
+    stroke="#231F20"
+    stroke-linecap="round"
+    stroke-miterlimit="10"
+    stroke-width="1.021"
+    d="M31.948 31.9s10.557-8.442 14.632-1.816c4.675 7.602-11.989 10.825-11.989 10.825"
+  />
+  <path
+    fill="currentColor"
+    d="M49.018 41.721s.24-6.796 6.909-8.774c7.9-2.344 11.684 5.556 11.684 5.556"
+  />
+  <path
+    stroke="#231F20"
+    stroke-linecap="round"
+    stroke-miterlimit="10"
+    stroke-width="1.021"
+    d="M49.018 41.721s.24-6.796 6.909-8.774c7.9-2.344 11.684 5.556 11.684 5.556"
+  />
+  <path
+    fill="currentColor"
+    d="M.907 38.184s4.39-6.06 11.895-3.637c7.3 2.357 5.695 9.047 5.695 9.047"
+  />
+  <path
+    stroke="#231F20"
+    stroke-linecap="round"
+    stroke-miterlimit="10"
+    stroke-width="1.021"
+    d="M.907 38.184s4.39-6.06 11.895-3.637c7.3 2.357 5.695 9.047 5.695 9.047"
+  />
+  <path fill="currentColor" d="M30.025 47.616s.307 7.362 3.234 7.362c2.928 0 3.4-7.362 3.4-7.362" />
+  <path
+    stroke="#231F20"
+    stroke-linecap="round"
+    stroke-miterlimit="10"
+    stroke-width="1.021"
+    d="M30.025 47.616s.307 7.362 3.234 7.362c2.928 0 3.4-7.362 3.4-7.362"
+  />
+</svg>

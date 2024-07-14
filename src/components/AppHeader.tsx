@@ -37,7 +37,7 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
         <p className="app-header-card-count">{cardCount} {pluralize("card", "cards", cardCount)}</p>
       </section>
 
-      {hasNotification ? (
+      {hasNotification && cards.length === 0 ? (
         <Callout>
           <p>Lots of cards to add? Consider setting up deck categories first.</p>
         </Callout>

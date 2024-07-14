@@ -15,7 +15,8 @@
   --red: #d62217;
   --black: #231f20;
   --gray: #c0c0c0;
-  --light-gray: #e9e9e9;
+  --subtle-gray: #e9e9e9;
+  --light-gray: #d9d9d9;
   --dark-gray: #707070;
   --offwhite: #f0f0f0;
   --white: #fafafa;
@@ -23,7 +24,7 @@
   --color-text: var(--black);
   --color-text-inverse: var(--white);
   --color-text-subtle: var(--dark-gray);
-  --color-bg: var(--light-gray);
+  --color-bg: var(--subtle-gray);
   --color-bg-inverse: var(--black);
   --color-bg-subtle: var(--offwhite);
   --color-link: var(--blue);
