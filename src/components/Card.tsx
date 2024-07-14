@@ -36,8 +36,8 @@ const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected
             <Blot className="card-blot" />
             <ShuffyFace className="card-face" />
           </figure>
-          {categoryLabel && <div className="card-category">{categoryLabel}</div>}
-          <h2 className="card-name">{label}</h2>
+          {categoryLabel && <div className="card-category break-words">{categoryLabel}</div>}
+          <h2 className="card-name break-words">{label}</h2>
         </div>
       </button>
 

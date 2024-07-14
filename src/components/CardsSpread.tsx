@@ -2,12 +2,12 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { CardsContext } from "@components/CardsContext";
 import Card from "@components/Card";
 
-interface CardStackProps {
+interface CardsSpreadProps {
   scrollPosition: number;
   onClick(scrollPosition: number): void;
 }
 
-export default function CardStack({ onClick, scrollPosition }: CardStackProps) {
+export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProps) {
   const { cards, setEditCardId } = useContext(CardsContext);
   const cardsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const cardsScrollRef = useRef<HTMLElement>(null);
@@ -70,7 +70,7 @@ export default function CardStack({ onClick, scrollPosition }: CardStackProps) {
             <Card
               card={card}
               ref={el => (cardsRef.current[index] = el)}
-              selected={activeCardIndex === index}
+              selected={index === activeCardIndex}
               onClick={() => handleClick(card.id)}
             />
           </li>

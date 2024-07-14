@@ -87,6 +87,11 @@
   scrollbar-width: none;
 }
 
+.break-words {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .scroll-x:focus-within {
     scroll-behavior: smooth;

@@ -1,16 +1,12 @@
-import { SyntheticEvent, useContext, useEffect, useRef, useState } from "react";
+import { SyntheticEvent, useContext, useState } from "react";
 import { pluralize } from "@js/utils";
-import Callout from "./Callout";
-import SettingsToggle from "./SettingsToggle";
-import Modal from "./Modal";
-import Category from "./Category";
-import PlusIcon from "@assets/plus.svg?react";
-import { CategoriesContext } from "@components/CategoriesContext";
 import { SettingsContext } from "@components/SettingsContext";
-import CategoryStarter from "./CategoryStarter";
-import CategoryCreator from "./CategoryCreator";
-import "@css/app-header.css";
 import { CardsContext } from "./CardsContext";
+import SettingsToggle from "./SettingsToggle";
+import Categories from "./Categories";
+import Callout from "./Callout";
+import Modal from "./Modal";
+import "@css/app-header.css";
 
 interface AppHeaderProps {
   deckName: string;
@@ -19,13 +15,8 @@ interface AppHeaderProps {
 
 export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
   const { isSettingsActive, setIsSettingsActive } = useContext(SettingsContext);
-  const { categories } = useContext(CategoriesContext);
   const { cards } = useContext(CardsContext);
-
   const [hasNotification, setHasNotification] = useState(true);
-  const [isCreatingCategory, setIsCreatingCategory] = useState(false);
-  const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
-  const hasCategories = categories.length > 0;
   const cardCount = cards.length;
 
   const handleDeckNameChange = (e: SyntheticEvent) => {
@@ -38,13 +29,6 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
     setIsSettingsActive(true)
     if (hasNotification) setHasNotification(false);
   }
-
-  useEffect(() => {
-    // Refocus "Add category" button if category create action is canceled
-    if (addCategoryButtonRef.current && !isCreatingCategory) {
-      addCategoryButtonRef.current?.focus();
-    }
-  }, [isCreatingCategory]);
 
   return (
     <header className="app-header">
@@ -63,28 +47,7 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
 
       <Modal title="Deck Settings" variant="drawer" open={isSettingsActive} onClose={() => setIsSettingsActive(false)}>
         <section className="app-header-modal-section flow">
-          {hasCategories ? <ul className="flow flow-s" role="list">
-            {categories.map((category) => (
-              <li key={category.id}>
-                <Category category={category} />
-              </li>
-            ))}
-          </ul> : null}
-
-          {isCreatingCategory ? (
-            <CategoryCreator onComplete={() => setIsCreatingCategory(false)} />
-          ) : hasCategories ? (
-            <button
-              ref={addCategoryButtonRef}
-              type="button"
-              className="primary small center"
-              onClick={() => setIsCreatingCategory(true)}
-            >
-              <PlusIcon /> Add a category
-            </button>
-          ) : (
-            <CategoryStarter ref={addCategoryButtonRef} onClick={() => setIsCreatingCategory(true)} />
-          )}
+          <Categories />
         </section>
 
         <section className="app-header-modal-section flow">

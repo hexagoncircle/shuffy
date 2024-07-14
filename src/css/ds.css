@@ -98,23 +98,6 @@ body {
   background-color: hsla(0 0% 91% / 0.6);
 }
 
-:where([id="add-card-form"], [id="add-category-form"], [id="edit-card-form"]) {
-  display: flex;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: var(--space-s);
-
-  :where(input, select) {
-    width: 100%;
-  }
-}
-
-.hint {
-  display: block;
-  width: 100%;
-  font-size: 0.85em;
-}
-
 /* --- Typography --- */
 :where(h1, h2, h3, h4, h5) {
   font-weight: var(--font-semibold);
@@ -201,6 +184,11 @@ label:not(.visually-hidden) + :is(input, .select) {
   margin-block-start: var(--space-xs);
 }
 
+.hint {
+  font-size: var(--text-xs);
+  color: var(--color-hint, var(--color-danger));
+}
+
 input:not([type="checkbox"], [type="radio"], [type="color"]),
 textarea {
   padding: var(--input-padding, var(--space-m) var(--space-l));
@@ -219,6 +207,11 @@ textarea {
   &:focus::placeholder {
     color: var(--gray);
   }
+}
+
+:is(input, textarea):not(:focus-visible).is-error {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
 }
 
 :where(input).compact {
@@ -241,6 +234,7 @@ textarea {
   --size: 1.5rem;
   appearance: none;
   -webkit-appearance: none;
+  cursor: pointer;
   width: var(--size);
   height: var(--size);
   padding: var(--space-s);

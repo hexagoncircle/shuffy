@@ -1,19 +1,19 @@
-import { useEffect, useRef, useId, ChangeEvent, useContext, CSSProperties } from 'react';
-import { CardDataProps, CardsContext } from './CardsContext';
+import { useEffect, useRef, useId, ChangeEvent, useContext } from 'react';
 import { getItemById } from '@js/utils';
-import Chip from './Chip';
+import { CardDataProps, CardsContext } from '@components/CardsContext';
+import CardChip from '@components/CardChip';
 
-interface ChipGroupProps {
+interface CardsGroupProps {
   category: string;
   cards: CardDataProps[]
   onCardClick(id: string): void;
 }
 
-export default function ChipGroup({ category, cards, onCardClick }: ChipGroupProps) {
+export default function CardsGroup({ category, cards, onCardClick }: CardsGroupProps) {
   const id = useId();
   const { updateCard } = useContext(CardsContext);
   const parentRef = useRef<HTMLInputElement>(null);
-  const allChecked = cards.every(({ isActive }) => isActive);
+  const allChecked = cards.every(card => card.isActive);
   const someChecked = cards.some(card => card.isActive);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function ChipGroup({ category, cards, onCardClick }: ChipGroupPro
   return (
     <ul className="flow" role="list">
       <li className="flow flow-m">
-        <div className="checkbox-wrapper">
+        <div className="checkbox-wrapper break-words">
           <input
             ref={parentRef}
             id={`${id}-group-active-toggle`}
@@ -59,7 +59,7 @@ export default function ChipGroup({ category, cards, onCardClick }: ChipGroupPro
         <ul className="flow flow-s" role="list">
           {cards.map(({ label, isActive, id }) => (
             <li key={id}>
-              <Chip
+              <CardChip
                 label={label}
                 isActive={isActive}
                 onClick={() => onCardClick(id)}

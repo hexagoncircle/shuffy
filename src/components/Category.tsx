@@ -1,42 +1,44 @@
-import { CSSProperties, FormEvent, KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, FormEvent, KeyboardEvent, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import slugify from "slugify";
 import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
 import ColorPicker from "./ColorPicker";
 import GripIcon from "@assets/grip.svg?react";
-import { useClickAway } from "@uidotdev/usehooks";
 import "@css/category.css";
 
 export interface CategoryProps {
   category: CategoryDataProps;
+  isEditing?: boolean;
+  onIsEditing(): void;
+  onComplete(): void;
+  onDelete(): void;
 }
 
-export default function Category({ category }: CategoryProps) {
+const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditing, onIsEditing, onComplete, onDelete }, ref) => {
   const { updateCategory, deleteCategory } = useContext(CategoriesContext);
   const { id, label, theme } = category;
   const [colorValue, setColorValue] = useState(theme);
   const [inputValue, setInputValue] = useState(label);
-  const [openEditor, setOpenEditor] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const editRef = useRef<HTMLButtonElement>(null);
-  const ref = useClickAway<HTMLDivElement>(() => {
-    openEditor && handleCancelClick()
-  })
 
-  const handleContainerKeydown = (e: KeyboardEvent<HTMLElement>) => {
-    if (openEditor && e.key === "Escape") {
+  const handleCancel = () => {
+    setColorValue(theme);
+    setInputValue(label);
+    onComplete();
+  }
+
+  const handleEscapeCancel = (e: KeyboardEvent<HTMLElement>) => {
+    if (isEditing && e.key === "Escape") {
       e.preventDefault();
-      setColorValue(theme);
-      setInputValue(label);
-      setOpenEditor(false);
+      handleCancel();
     }
   }
 
   const handleInputKeydown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (openEditor && e.key === "Enter") {
+    if (isEditing && e.key === "Enter") {
       e.preventDefault();
 
       if (e.currentTarget.value) {
-        handleSaveClick();
+        handleSave();
       }
     }
   }
@@ -45,46 +47,45 @@ export default function Category({ category }: CategoryProps) {
     setInputValue(e.currentTarget.value);
   }
 
-  const handleSaveClick = () => {
-    setOpenEditor(false);
+  const handleEdit = () => {
+    onIsEditing();
+  }
+
+  const handleSave = () => {
     updateCategory({
       ...category,
       label: inputValue,
       value: slugify(inputValue, { lower: true }),
       theme: colorValue
     })
+    onComplete();
   }
 
-  const handleDeleteClick = () => {
-    setOpenEditor(false);
+  const handleDelete = () => {
     deleteCategory(category.id)
-  }
-
-  const handleCancelClick = () => {
-    setColorValue(theme);
-    setInputValue(label);
-    setOpenEditor(false);
+    onDelete();
   }
 
   useEffect(() => {
-    if (openEditor) {
+    if (isEditing) {
       inputRef.current?.focus();
     }
-    if (!openEditor) {
-      editRef.current?.focus();
-    }
-  }, [openEditor]);
+  }, [isEditing]);
 
   return (
-    <div ref={ref} className="category box" style={{ "--theme": colorValue } as CSSProperties} onKeyDown={handleContainerKeydown}>
+    <div
+      ref={ref}
+      className="category box"
+      style={{ "--theme": colorValue } as CSSProperties}
+      onKeyDown={handleEscapeCancel}
+    >
       <section className="category-content">
-        <GripIcon className="grip" />
-        {!openEditor ? (
+        <GripIcon className="grip icon" />
+        {!isEditing ? (
           <button
-            ref={editRef}
             type="button"
-            className="category-edit-button"
-            onClick={() => setOpenEditor(true)}
+            className="category-edit-button break-words"
+            onClick={handleEdit}
           >
             {label}
           </button>
@@ -107,16 +108,18 @@ export default function Category({ category }: CategoryProps) {
         )}
         <div className="dot"></div>
       </section>
-      {openEditor ? (
+      {isEditing ? (
         <section className="category-editor">
           <ColorPicker onChange={(color) => setColorValue(color)} defaultColor={theme} />
           <footer className="category-editor-actions cluster">
-            <button type="button" className="danger small" onClick={handleDeleteClick}>Delete</button>
-            <button type="button" className="cancel-button text small" onClick={handleCancelClick}>Cancel</button>
-            <button type="button" className="primary small" onClick={handleSaveClick} disabled={!inputValue}>Save changes</button>
+            <button type="button" className="danger small" onClick={handleDelete}>Delete</button>
+            <button type="button" className="cancel-button text small" onClick={handleCancel}>Cancel</button>
+            <button type="button" className="primary small" onClick={handleSave} disabled={!inputValue}>Save changes</button>
           </footer>
         </section>
       ) : null}
     </div>
   )
-}
+})
+
+export default Category;

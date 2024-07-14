@@ -4,20 +4,23 @@ import slugify from "slugify";
 import { v4 as uuid } from "uuid";
 import { CategoriesContext } from "@components/CategoriesContext";
 import ColorPicker from "./ColorPicker";
-import GripIcon from "@assets/grip.svg?react";
+import CategorySelectIcon from "@assets/category-select.svg?react";
 import COLORS from "@data/colors.theme.json";
 import { getRandomValue } from "@js/utils";
+import clsx from "clsx";
 
 interface CategoryCreatorProps {
   onComplete(): void;
 }
 
 export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
-  const { createCategory } = useContext(CategoriesContext);
+  const { categories, createCategory } = useContext(CategoriesContext);
   const [colorValue, setColorValue] = useState(getRandomValue(COLORS).value as string);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const ref = useClickAway<HTMLDivElement>(() => onComplete())
+  const slugifiedValue = slugify(inputValue, { lower: true });
+  const isDuplicate = categories.find(c => c.value === slugifiedValue);
 
   const handleContainerKeydown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Escape") {
@@ -28,10 +31,12 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
 
   const handleInputKeydown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      const value = e.currentTarget.value;
+
       e.preventDefault();
 
-      if (e.currentTarget.value) {
-        handleSaveClick();
+      if (value && !isDuplicate) {
+        handleSave();
         onComplete();
       }
     }
@@ -41,12 +46,14 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
     setInputValue(e.currentTarget.value);
   }
 
-  const handleSaveClick = () => {
+  const handleSave = () => {
+    if (isDuplicate) return;
+
     createCategory({
       id: uuid(),
       theme: colorValue,
       label: inputValue,
-      value: slugify(inputValue, { lower: true })
+      value: slugifiedValue
     })
     onComplete();
   }
@@ -59,12 +66,12 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
       onKeyDown={handleContainerKeydown}
     >
       <section className="category-content">
-        <GripIcon className="grip" />
+        <CategorySelectIcon className="category-icon icon" />
         <label htmlFor="add-category-label" className="visually-hidden">Category</label>
         <input
           ref={inputRef}
           id="add-category-label"
-          className="compact"
+          className={clsx("compact", isDuplicate && "is-error")}
           type="text"
           autoFocus
           autoComplete="off"
@@ -73,13 +80,14 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
           onChange={handleInputChange}
           onKeyDown={handleInputKeydown}
         />
+        <div className="hint" hidden={!isDuplicate}>This category already exists</div>
         <div className="dot"></div>
       </section>
       <section className="category-editor">
         <ColorPicker onChange={(color) => setColorValue(color)} defaultColor={colorValue} />
         <footer className="category-editor-actions cluster">
           <button type="button" className="cancel-button text small" onClick={() => onComplete()}>Cancel</button>
-          <button type="button" className="primary small" onClick={handleSaveClick} disabled={!inputValue}>Add category</button>
+          <button type="button" className="primary small" onClick={handleSave} disabled={!inputValue}>Add category</button>
         </footer>
       </section>
     </div>

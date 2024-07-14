@@ -3,8 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { CardsContext } from "@components/CardsContext";
 import DeckDisplayControl, { DeckDisplayControlView } from "@components/DeckDisplayControl";
 import CardStarter from "@components/CardStarter";
-import CardStack from "@components/CardStack";
-import CardChips from "@components/CardChips";
+import CardsSpread from "@components/CardsSpread";
+import CardsList from "@components/CardsList";
 import PlusIcon from "@assets/plus.svg?react";
 import CardManager from "@components/CardManager";
 import { getItemById } from "@js/utils";
@@ -69,12 +69,12 @@ export default function DeckDisplay() {
       </section>
 
       {view === "stack" ? (
-        <CardStack
+        <CardsSpread
           scrollPosition={scrollPosition}
           onClick={handleStackCardClick}
         />
       ) : (
-        <CardChips onCardClick={handleListCardClick} />
+        <CardsList onCardClick={handleListCardClick} />
       )}
     </>
   );

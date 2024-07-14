@@ -15,14 +15,14 @@ interface CardEditorProps {
 export default function CardEditor({ card, onComplete }: CardEditorProps) {
   const { setIsSettingsActive } = useContext(SettingsContext);
   const { categories } = useContext(CategoriesContext);
-  const { cards, editCardId, updateCard, deleteCard } = useContext(CardsContext);
+  const { updateCard, deleteCard } = useContext(CardsContext);
 
   const [nameValue, setNameValue] = useState(card?.label);
   const nameRef = useRef<HTMLTextAreaElement>(null);
   const nameMaxLength = 80;
 
   const [selectedCategory, setSelectedCategory] = useState(card?.category);
-  const selectedCategoryObj = selectedCategory && getItemById(categories, selectedCategory);
+  const selectedCategoryObj = getItemById(categories, selectedCategory);
   const categoryOptions = [
     { label: "Select a category", value: "" },
     ...categories.map(({ label, id }) => ({ label, value: id }))
@@ -64,8 +64,13 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
   }
 
   useEffect(() => {
-    if (nameRef.current) {
-      nameRef.current?.focus();
+    const ref = nameRef.current;
+
+    if (ref) {
+      const length = ref.value.length;
+
+      ref?.focus();
+      ref.setSelectionRange(length, length);
     }
   }, []);
 
