@@ -10,10 +10,10 @@ export default function Categories() {
   const { categories } = useContext(CategoriesContext);
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
   const [editingCategoryIndex, setEditingCategoryIndex] = useState(-1);
-  const ref = useClickAway<HTMLUListElement>(() => setEditingCategoryIndex(-1));
   const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
   const activeElementRef = useRef<HTMLElement | null>(null);
   const categoriesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const clickAwayRef = useClickAway<HTMLUListElement>(() => setEditingCategoryIndex(-1));
   const hasCategories = categories.length > 0;
 
   const handleEdit = (index: number) => {
@@ -55,7 +55,7 @@ export default function Categories() {
   return (
     <>
       {hasCategories ? (
-        <ul ref={ref} className="flow flow-s" role="list" onKeyDown={handleClose}>
+        <ul ref={clickAwayRef} className="flow flow-s" role="list" onKeyDown={handleClose}>
           {categories.map((category, index) => (
             <li key={category.id}>
               <Category

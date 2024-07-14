@@ -4,6 +4,7 @@ import { CategoriesContext, CategoryDataProps } from "@components/CategoriesCont
 import ColorPicker from "./ColorPicker";
 import GripIcon from "@assets/grip.svg?react";
 import "@css/category.css";
+import clsx from "clsx";
 
 export interface CategoryProps {
   category: CategoryDataProps;
@@ -14,11 +15,13 @@ export interface CategoryProps {
 }
 
 const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditing, onIsEditing, onComplete, onDelete }, ref) => {
-  const { updateCategory, deleteCategory } = useContext(CategoriesContext);
+  const { categories, updateCategory, deleteCategory } = useContext(CategoriesContext);
   const { id, label, theme } = category;
   const [colorValue, setColorValue] = useState(theme);
   const [inputValue, setInputValue] = useState(label);
   const inputRef = useRef<HTMLInputElement>(null);
+  const slugifiedValue = slugify(inputValue, { lower: true });
+  const isDuplicate = categories.find(c => c.id !== id && c.value === slugifiedValue);
 
   const handleCancel = () => {
     setColorValue(theme);
@@ -34,7 +37,7 @@ const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditin
   }
 
   const handleInputKeydown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (isEditing && e.key === "Enter") {
+    if (isEditing && e.key === "Enter" && !isDuplicate) {
       e.preventDefault();
 
       if (e.currentTarget.value) {
@@ -52,6 +55,8 @@ const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditin
   }
 
   const handleSave = () => {
+    if (isDuplicate) return;
+
     updateCategory({
       ...category,
       label: inputValue,
@@ -80,7 +85,7 @@ const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditin
       onKeyDown={handleEscapeCancel}
     >
       <section className="category-content">
-        <GripIcon className="grip icon" />
+        <GripIcon className="grip icon" aria-hidden="true" />
         {!isEditing ? (
           <button
             type="button"
@@ -95,7 +100,7 @@ const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditin
             <input
               ref={inputRef}
               id={`category-edit-${id}`}
-              className="compact"
+              className={clsx("category-input compact", isDuplicate && "is-error")}
               type="text"
               required
               autoComplete="off"
@@ -104,6 +109,7 @@ const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditin
               onChange={handleInputChange}
               onKeyDown={handleInputKeydown}
             />
+            <div className="category-hint hint" hidden={!isDuplicate}>This category already exists</div>
           </>
         )}
         <div className="dot"></div>

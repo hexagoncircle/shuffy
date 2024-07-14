@@ -18,9 +18,9 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
   const [colorValue, setColorValue] = useState(getRandomValue(COLORS).value as string);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const ref = useClickAway<HTMLDivElement>(() => onComplete())
   const slugifiedValue = slugify(inputValue, { lower: true });
   const isDuplicate = categories.find(c => c.value === slugifiedValue);
+  const clickAwayRef = useClickAway<HTMLDivElement>(() => onComplete());
 
   const handleContainerKeydown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Escape") {
@@ -31,11 +31,9 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
 
   const handleInputKeydown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      const value = e.currentTarget.value;
-
       e.preventDefault();
 
-      if (value && !isDuplicate) {
+      if (e.currentTarget.value && !isDuplicate) {
         handleSave();
         onComplete();
       }
@@ -60,18 +58,18 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
 
   return (
     <div
-      ref={ref}
+      ref={clickAwayRef}
       className="category-creator category box"
       style={{ "--theme": colorValue } as CSSProperties}
       onKeyDown={handleContainerKeydown}
     >
       <section className="category-content">
-        <CategorySelectIcon className="category-icon icon" />
+        <CategorySelectIcon className="category-icon icon" aria-hidden="true" />
         <label htmlFor="add-category-label" className="visually-hidden">Category</label>
         <input
           ref={inputRef}
           id="add-category-label"
-          className={clsx("compact", isDuplicate && "is-error")}
+          className={clsx("category-input compact", isDuplicate && "is-error")}
           type="text"
           autoFocus
           autoComplete="off"
@@ -80,7 +78,7 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
           onChange={handleInputChange}
           onKeyDown={handleInputKeydown}
         />
-        <div className="hint" hidden={!isDuplicate}>This category already exists</div>
+        <div className="category-hint hint" hidden={!isDuplicate}>This category already exists</div>
         <div className="dot"></div>
       </section>
       <section className="category-editor">
