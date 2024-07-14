@@ -15,7 +15,7 @@ interface CategoryCreatorProps {
 
 export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
   const { categories, createCategory } = useContext(CategoriesContext);
-  const [colorValue, setColorValue] = useState(getRandomValue(COLORS).value as string);
+  const [colorValue, setColorValue] = useState(getRandomValue(COLORS).value);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const slugifiedValue = slugify(inputValue, { lower: true });

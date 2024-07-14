@@ -5,26 +5,33 @@ interface SettingsProviderProps {
 }
 
 interface SettingsContextType {
+  repeatCard: boolean;
   isSettingsActive: boolean;
   lastSelectedCategory: string;
-  setIsSettingsActive(isActive: boolean): void;
-  setLastSelectedCategory(categoryId: string): void
+  setRepeatCard(value: boolean): void;
+  setIsSettingsActive(value: boolean): void;
+  setLastSelectedCategory(id: string): void
 }
 
 export const SettingsContext = createContext<SettingsContextType>({
+  repeatCard: false,
   isSettingsActive: false,
   lastSelectedCategory: "",
+  setRepeatCard: () => { },
   setIsSettingsActive: () => { },
   setLastSelectedCategory: () => { }
 });
 
 export default function SettingsProvider({ children }: SettingsProviderProps) {
+  const [repeatCard, setRepeatCard] = useState(false)
   const [isSettingsActive, setIsSettingsActive] = useState(false)
   const [lastSelectedCategory, setLastSelectedCategory] = useState("")
 
   const value: SettingsContextType = {
+    repeatCard,
     isSettingsActive,
     lastSelectedCategory,
+    setRepeatCard,
     setIsSettingsActive,
     setLastSelectedCategory
   };

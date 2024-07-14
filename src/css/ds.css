@@ -156,7 +156,7 @@ body {
   text-align: center;
 }
 
-:is(a, .link) {
+:where(a, .link) {
   text-decoration: underline;
   text-underline-offset: 0.125em;
 }
@@ -267,6 +267,7 @@ textarea {
   align-items: center;
   justify-content: center;
   text-align: center;
+  text-decoration: none;
   gap: var(--space-xs);
   padding: var(--button-padding, var(--space-m) var(--space-l));
   font-family: var(--font-body);
@@ -330,12 +331,12 @@ button:disabled {
   --button-shadow-offset: 0;
 }
 
-:where(button).large {
+:where(button, .button).large {
   --button-padding: var(--space-l) var(--space-xl);
   --button-fontSize: var(--text-xl);
 }
 
-:where(button).small {
+:where(button, .button).small {
   --button-radius: var(--radius-s);
   --button-padding: var(--space-s) var(--space-m);
   --button-fontSize: var(--text-s);

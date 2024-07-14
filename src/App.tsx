@@ -1,11 +1,12 @@
 import "@css/ds.css";
 import { Link, Route, Routes } from "react-router-dom";
-import Home from "./Home";
-import Deck from "./Deck";
-import DesignReview from "./DesignReview";
 import CategoriesProvider from "@components/CategoriesContext";
 import SettingsProvider from "@components/SettingsContext";
 import CardsProvider from "@components/CardsContext";
+import Home from "./Home";
+import Deck from "./Deck";
+import Shuffle from "./Shuffle";
+import DesignReview from "./DesignReview";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/deck" element={<Deck />} />
+              <Route path="/shuffle" element={<Shuffle />} />
               <Route path="/design-review" element={<DesignReview />} />
             </Routes>
           </CardsProvider>

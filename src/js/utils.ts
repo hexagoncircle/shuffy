@@ -14,7 +14,7 @@ export function pluralize(singular: string, plural: string, count: number) {
  * @param {array} arr The array to randomize.
  * @returns Value from a random index.
  */
-export const getRandomValue = (arr: { [key: string]: unknown }[]) => {
+export const getRandomValue = <T>(arr: T[]): T => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 

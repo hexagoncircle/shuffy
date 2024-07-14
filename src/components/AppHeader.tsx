@@ -7,6 +7,8 @@ import Categories from "./Categories";
 import Callout from "./Callout";
 import Modal from "./Modal";
 import "@css/app-header.css";
+import { Link } from "react-router-dom";
+import Switch from "./Switch";
 
 interface AppHeaderProps {
   deckName: string;
@@ -14,7 +16,7 @@ interface AppHeaderProps {
 }
 
 export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
-  const { isSettingsActive, setIsSettingsActive } = useContext(SettingsContext);
+  const { isSettingsActive, repeatCard, setIsSettingsActive, setRepeatCard } = useContext(SettingsContext);
   const { cards } = useContext(CardsContext);
   const [hasNotification, setHasNotification] = useState(true);
   const cardCount = cards.length;
@@ -41,7 +43,9 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
         <Callout>
           <p>Lots of cards to add? Consider setting up deck categories first.</p>
         </Callout>
-      ) : <button className="action raised large">Shuffy this deck</button>}
+      ) : (
+        <Link className="button action raised large" to='/shuffle'>Shuffy this deck</Link>
+      )}
 
       <SettingsToggle hasNotification={hasNotification} onClick={handleSettingsToggleClick} />
 
@@ -61,6 +65,10 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
               placeholder="Add a name"
               onChange={handleDeckNameChange}
             />
+          </div>
+          <div className="checkbox-wrapper">
+            <Switch id="card-active-toggle" variant="compact" checked={repeatCard} onChange={() => setRepeatCard(!repeatCard)} />
+            <label htmlFor="card-active-toggle">Allow same card in back-to-back shuffies</label>
           </div>
         </section>
 
