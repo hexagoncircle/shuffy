@@ -8,13 +8,14 @@ import { CategoriesContext } from "@components/CategoriesContext";
 import "@css/card.css";
 
 export interface CardProps {
+  className?: string;
   card: CardDataProps;
   flipped?: boolean;
   selected?: boolean;
-  onClick(): void;
+  onClick?(): void;
 }
 
-const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected, onClick }, ref) => {
+const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected, className, onClick }, ref) => {
   const { categories } = useContext(CategoriesContext);
   const { label, category, isActive } = card;
   const categoryObj = categories.find(c => c.id === category);
@@ -23,7 +24,7 @@ const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected
 
   return (
     <article
-      className={clsx("card stack", !isActive && "inactive", flipped && "flipped")}
+      className={clsx("card stack", !isActive && "inactive", flipped && "flipped", className)}
       style={{ "--theme": theme } as CSSProperties}
     >
       <button

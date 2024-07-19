@@ -34,6 +34,12 @@ export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProp
     if (!cardsScrollRef.current) return;
 
     const scrollContainer = cardsScrollRef.current;
+    const cards = cardsRef.current;
+    const options = {
+      root: cardsScrollRef.current,
+      rootMargin: '0% -50%',
+      threshold: 0
+    };
 
     if (scrollPosition === -1) {
       // Set position to end for new card
@@ -42,14 +48,6 @@ export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProp
       // Set position to edited card
       scrollContainer.scrollLeft = scrollPosition;
     }
-
-
-    const cards = cardsRef.current;
-    const options = {
-      root: cardsScrollRef.current,
-      rootMargin: '0% -50%',
-      threshold: 0
-    };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {

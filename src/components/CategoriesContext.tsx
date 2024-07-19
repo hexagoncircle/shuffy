@@ -20,6 +20,7 @@ interface CategoriesContextType {
   createCategory: (category: CategoryDataProps) => void;
   updateCategory: (category: CategoryDataProps) => void;
   deleteCategory: (id: string) => void;
+  reorderCategories: (data: CategoryDataProps[]) => void;
 }
 
 export const CategoriesContext = createContext<CategoriesContextType>({
@@ -27,6 +28,7 @@ export const CategoriesContext = createContext<CategoriesContextType>({
   createCategory: () => { },
   updateCategory: () => { },
   deleteCategory: () => { },
+  reorderCategories: () => { },
 });
 
 export default function CategoriesProvider({ children }: CategoriesProviderProps) {
@@ -53,11 +55,19 @@ export default function CategoriesProvider({ children }: CategoriesProviderProps
     });
   };
 
+  const reorderCategories = (data: CategoryDataProps[]) => {
+    dispatch({
+      type: "CATEGORIES_REORDER",
+      data,
+    });
+  };
+
   const value: CategoriesContextType = {
     categories,
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    reorderCategories
   };
 
   return (

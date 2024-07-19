@@ -9,7 +9,7 @@
   position: relative;
   display: grid;
   inline-size: var(--card-size);
-  aspect-ratio: 154 / 202;
+  aspect-ratio: var(--card-aspect-ratio);
   border-radius: var(--radius);
   transform-style: preserve-3d;
 }
@@ -115,6 +115,20 @@
 
 :where(.card).flipped {
   transform: rotateY(-180deg);
+}
+
+:where(.card).is-flipping {
+  animation: card-flip 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes card-flip {
+  0% {
+    transform: rotateY(90deg);
+    scale: 0.6;
+  }
+  100% {
+    transform: rotateY(0);
+  }
 }
 
 .card-starter {

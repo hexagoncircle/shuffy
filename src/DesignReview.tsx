@@ -185,7 +185,9 @@ export default function DesignReview() {
           <button className="raised action" onClick={() => setIsModalOpen(true)}>Open modal</button>
           <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} actions={(
             <>
-              <button className="primary">Got it, delete this category</button>
+              <button className="primary">
+                Got it, delete this category
+              </button>
               <button>Cancel</button>
             </>
           )}>
@@ -197,7 +199,7 @@ export default function DesignReview() {
         </section>
 
         <section>
-          <DeckDisplayControl onUpdate={handleDeckDisplayUpdate} defaultView="list" />
+          <DeckDisplayControl onClick={handleDeckDisplayUpdate} defaultView="list" />
         </section>
 
         <section className="actions">

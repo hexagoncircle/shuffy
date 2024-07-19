@@ -14,7 +14,7 @@ interface ModalProps {
 
 export default function Modal({ open, actions, title, variant, children, onClose }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
-  const formRef = useClickAway<HTMLFormElement>(() => onClose());
+  // const formRef = useClickAway<HTMLFormElement>(() => onClose());
 
   useEffect(() => {
     if (open) {
@@ -33,7 +33,7 @@ export default function Modal({ open, actions, title, variant, children, onClose
       data-variant={variant}
       onClose={() => onClose()}
     >
-      <form ref={formRef} method="dialog">
+      <form method="dialog">
         <header className="modal-header">
           {title && <h2 className="modal-title">{title}</h2>}
           <button className="modal-close icon-button" onClick={() => onClose()}>

@@ -1,6 +1,7 @@
 .modal {
   --gutter: var(--space-xl);
   inset-block-start: auto;
+  margin: auto;
   padding: 0;
   inline-size: 100%;
   max-inline-size: 100%;
@@ -36,7 +37,10 @@ html:has(.modal[open]) {
   align-items: center;
   justify-content: space-between;
   padding-inline: var(--gutter);
-  margin-block-end: calc(var(--gutter) * -0.5);
+}
+
+:where(.modal:not([data-variant="drawer"])) .modal-header {
+  margin-block-end: calc(var(--gutter) * -1);
 }
 
 .modal-content {
@@ -72,7 +76,7 @@ html:has(.modal[open]) {
   inset-inline-start: auto;
   border-radius: 0;
   inline-size: min(38rem, 100%);
-  background-color: var(--light-gray);
+  background-color: var(--subtle-gray);
 }
 
 @media (min-width: 35rem) {

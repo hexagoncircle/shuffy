@@ -1,0 +1,12 @@
+.shuffle-wrapper {
+  --max: 50rem;
+  place-items: center;
+  aspect-ratio: 253 / 180;
+}
+
+.shuffle-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: transparent;
+}

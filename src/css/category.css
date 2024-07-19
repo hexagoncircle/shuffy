@@ -13,6 +13,18 @@
   }
 }
 
+.is-dragging .category > * {
+  pointer-events: none;
+}
+
+.category.is-drag-item {
+  opacity: 0.5;
+}
+
+.category.is-drag-target {
+  box-shadow: var(--focus-shadow);
+}
+
 .category-content {
   --icon-size: 1.25em;
   display: grid;
@@ -45,7 +57,12 @@
 }
 
 .grip-icon {
+  cursor: grab;
   color: var(--dark-gray);
+
+  &:active {
+    cursor: grabbing;
+  }
 }
 
 .dot {

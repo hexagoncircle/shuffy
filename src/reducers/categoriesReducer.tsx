@@ -15,7 +15,12 @@ type DeletedAction = {
   id: string;
 };
 
-type Actions = CreatedAction | UpdatedAction | DeletedAction;
+type ReorderAction = {
+  type: "CATEGORIES_REORDER";
+  data: CategoryDataProps[];
+};
+
+type Actions = CreatedAction | UpdatedAction | DeletedAction | ReorderAction;
 
 export default function categoriesReducer(categories: CategoryDataProps[], action: Actions) {
   switch (action.type) {
@@ -39,6 +44,11 @@ export default function categoriesReducer(categories: CategoryDataProps[], actio
       console.log("CATEGORY_DELETED", categories.find(({ id }) => action.id === id));
 
       return categories.filter((category) => category.id !== action.id);
+    }
+    case "CATEGORIES_REORDER": {
+      console.log("CATEGORIES_REORDER", action.data);
+
+      return categories = [...action.data];
     }
   }
 }

@@ -1,10 +1,14 @@
-import { CSSProperties, FormEvent, KeyboardEvent, forwardRef, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, DragEvent, FormEvent, KeyboardEvent, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import slugify from "slugify";
 import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
 import ColorPicker from "./ColorPicker";
 import GripIcon from "@assets/grip.svg?react";
 import "@css/category.css";
 import clsx from "clsx";
+import { CardsContext } from "./CardsContext";
+import { ConfirmModalContext } from "./ConfirmModalContext";
+
+export type CategoryDragEvent = DragEvent<Element>;
 
 export interface CategoryProps {
   category: CategoryDataProps;
@@ -12,16 +16,39 @@ export interface CategoryProps {
   onIsEditing(): void;
   onComplete(): void;
   onDelete(): void;
+  draggable: boolean;
+  onDragStart(e: CategoryDragEvent): void;
+  onDragEnter(e: CategoryDragEvent): void;
+  onDragOver(e: CategoryDragEvent): void;
+  onDragEnd(e: CategoryDragEvent): void;
+  onDragLeave(e: CategoryDragEvent): void;
+  onDrop(e: CategoryDragEvent): void;
 }
 
-const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditing, onIsEditing, onComplete, onDelete }, ref) => {
+const Category = forwardRef<HTMLLIElement, CategoryProps>(({
+  category,
+  isEditing,
+  onIsEditing,
+  onComplete,
+  onDelete,
+  draggable,
+  onDragEnd,
+  onDragEnter,
+  onDragLeave,
+  onDragOver,
+  onDragStart,
+  onDrop,
+}, ref) => {
   const { categories, updateCategory, deleteCategory } = useContext(CategoriesContext);
+  const { cards } = useContext(CardsContext);
+  const { setModalContext } = useContext(ConfirmModalContext);
   const { id, label, theme } = category;
   const [colorValue, setColorValue] = useState(theme);
   const [inputValue, setInputValue] = useState(label);
   const inputRef = useRef<HTMLInputElement>(null);
   const slugifiedValue = slugify(inputValue, { lower: true });
   const isDuplicate = categories.find(c => c.id !== id && c.value === slugifiedValue);
+  const categoryCards = cards.filter(card => card.category === id);
 
   const handleCancel = () => {
     setColorValue(theme);
@@ -71,6 +98,24 @@ const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditin
     onDelete();
   }
 
+  const handleDeleteClick = () => {
+    if (categoryCards.length) {
+      setModalContext({
+        isOpen: true,
+        title: "Heads up!",
+        message: `${categoryCards.length} of your cards are categorized under <strong>${label}</strong>. They’ll be uncategorized for now, but you can always set a new category.`,
+        actionConfirmText: "Got it, delete this category",
+        actionCancelText: "Cancel",
+        onConfirm: () => {
+          handleDelete()
+        }
+      })
+      return;
+    }
+
+    handleDelete();
+  }
+
   useEffect(() => {
     if (isEditing) {
       inputRef.current?.focus();
@@ -78,14 +123,21 @@ const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditin
   }, [isEditing]);
 
   return (
-    <div
+    <li
       ref={ref}
       className="category box"
       style={{ "--theme": colorValue } as CSSProperties}
       onKeyDown={handleEscapeCancel}
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+      onDragEnd={onDragEnd}
     >
       <section className="category-content">
-        <GripIcon className="grip icon" aria-hidden="true" />
+        <GripIcon className="grip-icon icon" aria-hidden="true" />
         {!isEditing ? (
           <button
             type="button"
@@ -114,17 +166,20 @@ const Category = forwardRef<HTMLDivElement, CategoryProps>(({ category, isEditin
         )}
         <div className="dot"></div>
       </section>
-      {isEditing ? (
-        <section className="category-editor">
-          <ColorPicker onChange={(color) => setColorValue(color)} defaultColor={theme} />
-          <footer className="category-editor-actions cluster">
-            <button type="button" className="danger small" onClick={handleDelete}>Delete</button>
-            <button type="button" className="cancel-button text small" onClick={handleCancel}>Cancel</button>
-            <button type="button" className="primary small" onClick={handleSave} disabled={!inputValue}>Save changes</button>
-          </footer>
-        </section>
-      ) : null}
-    </div>
+
+      {
+        isEditing ? (
+          <section className="category-editor">
+            <ColorPicker onChange={(color) => setColorValue(color)} defaultColor={theme} />
+            <footer className="category-editor-actions cluster">
+              <button type="button" className="danger small" onClick={handleDeleteClick}>Delete</button>
+              <button type="button" className="cancel-button text small" onClick={handleCancel}>Cancel</button>
+              <button type="button" className="primary small" onClick={handleSave} disabled={!inputValue}>Save changes</button>
+            </footer>
+          </section>
+        ) : null
+      }
+    </li >
   )
 })
 
