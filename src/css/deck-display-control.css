@@ -18,6 +18,14 @@
 
 .deck-display-control button:focus-visible {
   z-index: 1;
+
+  &:first-of-type {
+    border-radius: var(--inner-radius) 0 0 var(--inner-radius);
+  }
+
+  &:last-of-type {
+    border-radius: 0 var(--inner-radius) var(--inner-radius) 0;
+  }
 }
 
 .deck-display-control button[aria-pressed="true"] {

@@ -164,8 +164,9 @@ body {
 
 /* --- Focus styles --- */
 :is(
-    button:focus-visible,
     input:focus-visible,
+    button:focus-visible,
+    .button:focus-visible,
     .switch:has(:focus-visible),
     .select:has(:focus-visible),
     .custom-color-select:has(:focus-visible)
