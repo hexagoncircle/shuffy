@@ -1,11 +1,18 @@
 .intro {
-  width: 100%;
-  max-inline-size: 90vmin;
+  --max-inline-size: 80vmin;
+  display: grid;
+  gap: clamp(var(--space-m), 4vmin, var(--space-xl));
+  inline-size: 100%;
+  max-block-size: 100%;
   text-align: center;
+  padding: var(--space-l);
 }
 
 .scene {
   place-items: end center;
+  inline-size: 100%;
+  max-inline-size: var(--max-inline-size);
+  margin-inline: auto;
 }
 
 .cards {
@@ -45,6 +52,14 @@
 }
 
 .tagline {
-  font-size: clamp(0.8rem, 0.6rem + 2vmin, 1.5rem);
+  font-size: clamp(0.8rem, 0.35rem + 2vmin, 1.5rem);
   text-wrap: pretty;
+  text-transform: lowercase;
+}
+
+.form {
+  --max: 20rem;
+  display: grid;
+  gap: var(--space-m);
+  inline-size: 100%;
 }

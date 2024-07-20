@@ -1,39 +1,49 @@
-import styles from "@css/IntroScreen.module.css";
+import { SyntheticEvent, useCallback, useEffect, useRef } from "react";
 import clsx from "clsx";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef } from "react";
+import { moveEyes } from "@js/moveEyes";
+import ShuffyCard from "./ShuffyCard";
 import Logo from "@assets/logo.svg?react";
-import Card from "@assets/card.svg?react";
-
-type CardDOMElement = HTMLElement & SVGGraphicsElement;
+import styles from "@css/IntroScreen.module.css";
 
 gsap.registerPlugin(useGSAP);
 
 export default function IntroScreen() {
-  const ref = useRef(null);
+  const introRef = useRef(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
+  const handleEyesFocus = useCallback((e: SyntheticEvent | FocusEvent) => {
+    const target = e.target as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    const x = (rect.left + rect.right) / 2;
+    const y = (rect.top + rect.bottom) / 2;
+
+    moveEyes(svgRef.current, { x, y });
+  }, [])
 
   useGSAP(() => {
-    const svg: CardDOMElement = document.getElementById("ShuffyCard") as CardDOMElement;
-    const eyes = svg?.querySelectorAll("[data-animate=eye]");
     const duration = 0.5;
     const ease = "expo.out";
     const elasticEase = "elastic.out(0.15,0.12)";
     const sidePull = 12;
     const sideRotation = 11;
+    const formHeight = gsap.getProperty("[data-animate=form]", "height");
     let isIntroComplete = false;
     let isFollowCursorActive = false;
 
     // Set up timelines
-    const tlIntro = gsap.timeline({
-      onComplete: () => {
-        isIntroComplete = true;
-      }
-    });
-    const tlBlinking = gsap.timeline({ repeat: -1, repeatDelay: 6 })
+    const tlIntro = gsap.timeline();
+    const tlBlinking = gsap.timeline({ repeat: -1, repeatDelay: 5 })
 
     // Appearing animation
     tlIntro
+      .set("[data-animate=form]", {
+        height: 0
+      })
+      .set("[data-animate=form-item]", {
+        opacity: 0
+      })
       .set("[data-animate=scene]", {
         transformOrigin: "bottom center",
         yPercent: -30
@@ -56,14 +66,14 @@ export default function IntroScreen() {
       })
       .set("[data-animate=tagline]", {
         opacity: 0,
-        scale: 0.95
+        y: 8
       })
       .set("[data-animate=eye-blink]", {
         opacity: 0
       })
       .to("[data-animate=scene]", {
         scale: 1,
-        yPercent: -10,
+        yPercent: 0,
         duration,
         delay: 0.5,
         ease
@@ -161,12 +171,31 @@ export default function IntroScreen() {
         duration: duration * 2.5,
         ease,
       }, "<+=10%")
+      .to(introRef.current, {
+        yPercent: -4,
+        duration,
+        ease: "power4.out"
+      }, "<+=20%")
+      .to("[data-animate=form]", {
+        height: formHeight,
+        duration,
+        ease: "power4.out",
+        onComplete: () => {
+          isIntroComplete = true;
+        }
+      }, "<")
       .to("[data-animate=tagline]", {
         opacity: 1,
-        scale: 1,
-        duration,
+        y: 0,
+        duration: duration / 2,
         ease,
-      }, "<+=70%")
+      }, "<+=50%")
+      .to("[data-animate=form-item]", {
+        opacity: 1,
+        duration,
+        ease: "power4.out",
+        stagger: 0.03
+      }, "<+=25%")
 
     // Blinking animation
     tlBlinking.set("[data-animate=eye-blink]", {
@@ -179,83 +208,65 @@ export default function IntroScreen() {
     }).set("[data-animate=eye-blink]", {
       opacity: 0,
       delay: 0.15
-    }).paused(true);
+    })
 
-    function movePupils(e: PointerEvent) {
-      eyes?.forEach((eye) => {
-        const eyeball = eye.querySelector("[data-animate=eyeball]");
-        const pupil = eye.querySelector("[data-animate=pupil]");
-
-        if (!eyeball || !pupil) return;
-
-        const pCenter = {
-          x: parseFloat(eyeball.getAttribute("cx") || "0"),
-          y: parseFloat(eyeball.getAttribute("cy") || "0")
-        };
-        const rEyeball = parseFloat(eyeball.getAttribute("r") || "0");
-        const rPupil = parseFloat(pupil.getAttribute("r") || "0");
-
-        // Translate pointer coordinates to SVG units
-        let pPointer = new DOMPoint(e.clientX, e.clientY);
-        pPointer = pPointer.matrixTransform(svg.getScreenCTM()?.inverse());
-
-        // Calculate angle and distance between pointer and eyeball center
-        const angle = Math.atan2(pPointer.y - pCenter.y, pPointer.x - pCenter.x);
-        const distance = Math.hypot(pPointer.x - pCenter.x, pPointer.y - pCenter.y);
-
-        // Allow pupil movement within eyeball boundaries
-        const offset = Math.min(distance / rEyeball, 1);
-        const radius = (rEyeball - rPupil) * offset;
-
-        // Calculate new pupil position
-        const pMovePupil = {
-          x: pCenter.x + Math.cos(angle) * radius,
-          y: pCenter.y + Math.sin(angle) * radius
-        };
-
-        // Update pupil position
-        pupil.setAttribute("cx", pMovePupil.x.toString());
-        pupil.setAttribute("cy", pMovePupil.y.toString());
-      });
+    const handleFollowCursor = (e: PointerEvent) => {
+      if (!isFollowCursorActive) return;
+      moveEyes(svgRef.current, { x: e.clientX, y: e.clientY })
     }
 
-    function handleFirstBlink() {
+    const handleFirstBlink = () => {
       if (!isIntroComplete) return;
       tlBlinking.restart();
       document.removeEventListener("pointermove", handleFirstBlink);
     }
 
-    function handleFollowCursor(e: PointerEvent) {
-      if (!isFollowCursorActive) return;
-      movePupils(e);
-    }
-
-    function handlePointerEnter() {
-      if (!isFollowCursorActive) return;
-      tlBlinking.restart();
-    }
-
-    document.addEventListener("pointermove", handleFirstBlink);
     document.addEventListener("pointermove", handleFollowCursor);
-    document.addEventListener("pointerenter", handlePointerEnter);
+    document.addEventListener("pointermove", handleFirstBlink);
 
     return () => {
       document.removeEventListener("pointermove", handleFollowCursor);
-      document.removeEventListener("pointerenter", handlePointerEnter);
     }
-  }, { scope: ref })
+  }, { scope: introRef })
+
+  useEffect(() => {
+    document.addEventListener('focusin', handleEyesFocus, true);
+
+    return () => {
+      document.removeEventListener('focusin', handleEyesFocus);
+    }
+  }, [handleEyesFocus])
 
   return (
-    <article ref={ref} className={styles.intro}>
+    <article ref={introRef} className={styles.intro}>
       <figure className={clsx(styles.scene, "stack")} data-animate="scene">
         <div className={clsx(styles.cards, "stack")} data-animate="cards">
           <img className={styles.left} data-animate="side" src="card-alt.svg" alt="" width="103" height="150" />
           <img className={styles.right} data-animate="side" src="card-alt.svg" alt="" width="103" height="150" />
-          <Card className={styles.main} data-animate="main" />
+          <ShuffyCard ref={svgRef} className={styles.main} data-animate="main" />
         </div>
         <Logo className={styles.logo} data-animate="logo" />
       </figure>
-      <p className={clsx(styles.tagline, "font-display")} data-animate="tagline">a choice of chance for shruggie moods</p>
+
+      <p className={clsx(styles.tagline, "font-display")} data-animate="tagline">
+        A choice of chance for shruggie moods
+      </p>
+
+      <form
+        className={clsx(styles.form, "center")}
+        data-animate="form"
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <label className="visually-hidden">Name your deck to get started</label>
+        <input
+          className="text-center"
+          type="text"
+          placeholder="Enter a name for your deck"
+          data-animate="form-item"
+          onChange={handleEyesFocus}
+        />
+        <button className="action raised" type="button" data-animate="form-item">Get started</button>
+      </form>
     </article>
   )
 }
