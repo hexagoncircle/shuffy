@@ -161,24 +161,24 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
               onChange={handleInputChange}
               onKeyDown={handleInputKeydown}
             />
-            <div className="category-hint hint" hidden={!isDuplicate}>This category already exists</div>
+            <div className="category-hint hint" hidden={!isDuplicate}>
+              This category already exists
+            </div>
           </>
         )}
         <div className="dot"></div>
       </section>
 
-      {
-        isEditing ? (
-          <section className="category-editor">
-            <ColorPicker onChange={(color) => setColorValue(color)} defaultColor={theme} />
-            <footer className="category-editor-actions cluster">
-              <button type="button" className="danger small" onClick={handleDeleteClick}>Delete</button>
-              <button type="button" className="cancel-button text small" onClick={handleCancel}>Cancel</button>
-              <button type="button" className="primary small" onClick={handleSave} disabled={!inputValue}>Save changes</button>
-            </footer>
-          </section>
-        ) : null
-      }
+      {isEditing && (
+        <section className="category-editor">
+          <ColorPicker onChange={(color) => setColorValue(color)} defaultColor={theme} />
+          <footer className="category-editor-actions cluster">
+            <button type="button" className="danger small" onClick={handleDeleteClick}>Delete</button>
+            <button type="button" className="cancel-button text small" onClick={handleCancel}>Cancel</button>
+            <button type="button" className="primary small" onClick={handleSave} disabled={!inputValue}>Save changes</button>
+          </footer>
+        </section>
+      )}
     </li >
   )
 })

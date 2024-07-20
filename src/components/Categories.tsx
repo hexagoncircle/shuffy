@@ -10,6 +10,7 @@ export default function Categories() {
   const { categories, reorderCategories } = useContext(CategoriesContext);
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
   const [editingCategoryIndex, setEditingCategoryIndex] = useState(-1);
+  const isEditing = editingCategoryIndex !== -1;
   const hasCategories = categories.length > 0;
 
   const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
@@ -72,7 +73,7 @@ export default function Categories() {
   }
 
   const handleClose = (e: KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Escape") {
+    if (isEditing && e.key === "Escape") {
       e.preventDefault();
       setEditingCategoryIndex(-1);
     }
@@ -95,12 +96,12 @@ export default function Categories() {
      * Restore focus to the category label when no longer editing
      * If category was deleted, focus "Add category" button instead
      */
-    if (editingCategoryIndex === -1) {
+    if (!isEditing) {
       const btn = activeElementRef.current?.querySelector("button");
 
       btn ? btn.focus() : addCategoryButtonRef.current?.focus();
     }
-  }, [editingCategoryIndex]);
+  }, [isEditing]);
 
   return (
     <>
@@ -116,7 +117,7 @@ export default function Categories() {
                 onIsEditing={() => handleEdit(index)}
                 onComplete={() => setEditingCategoryIndex(-1)}
                 onDelete={handleDelete}
-                draggable={editingCategoryIndex === -1}
+                draggable={!isEditing}
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragEnter={(e) => handleDragEnter(e, index)}
                 onDragLeave={(e) => handleDragLeave(e)}
