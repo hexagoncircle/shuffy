@@ -1,8 +1,9 @@
 .deck-display-control {
-  --inner-radius: calc(var(--radius-s) - var(--border-2-width));
+  --radius: var(--radius-s);
+  --inner-radius: calc(var(--radius) - var(--border-2-width));
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
-  border-radius: var(--radius-s);
+  border-radius: var(--radius);
   border: var(--border-2);
   background-color: var(--white);
 }
