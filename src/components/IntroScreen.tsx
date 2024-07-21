@@ -29,12 +29,15 @@ export default function IntroScreen() {
     const sidePull = 12;
     const sideRotation = 11;
     const formHeight = gsap.getProperty("[data-animate=form]", "height");
-    let isIntroComplete = false;
     let isFollowCursorActive = false;
 
     // Set up timelines
     const tlIntro = gsap.timeline();
-    const tlBlinking = gsap.timeline({ repeat: -1, repeatDelay: 5 })
+    const tlBlinking = gsap.timeline({
+      paused: true,
+      repeat: -1,
+      repeatDelay: 5
+    })
 
     // Appearing animation
     tlIntro
@@ -181,7 +184,8 @@ export default function IntroScreen() {
         duration,
         ease: "power4.out",
         onComplete: () => {
-          isIntroComplete = true;
+          // Enable eye tracking
+          isFollowCursorActive = true;
         }
       }, "<")
       .to("[data-animate=tagline]", {
@@ -200,11 +204,6 @@ export default function IntroScreen() {
     // Blinking animation
     tlBlinking.set("[data-animate=eye-blink]", {
       opacity: 1,
-      onComplete: () => {
-        // After intro finishes, allow eyeballs to follow pointer
-        if (!isIntroComplete || isFollowCursorActive) return;
-        isFollowCursorActive = true;
-      }
     }).set("[data-animate=eye-blink]", {
       opacity: 0,
       delay: 0.15
@@ -216,13 +215,13 @@ export default function IntroScreen() {
     }
 
     const handleFirstBlink = () => {
-      if (!isIntroComplete) return;
-      tlBlinking.restart();
+      if (!isFollowCursorActive) return;
+      tlBlinking.play();
       document.removeEventListener("pointermove", handleFirstBlink);
     }
 
-    document.addEventListener("pointermove", handleFollowCursor);
     document.addEventListener("pointermove", handleFirstBlink);
+    document.addEventListener("pointermove", handleFollowCursor);
 
     return () => {
       document.removeEventListener("pointermove", handleFollowCursor);
