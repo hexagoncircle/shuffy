@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CardDataProps, CardsContext } from "@components/CardsContext";
 import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
 import CardsGroup from "@components/CardsGroup";
 
 interface CardsListProps {
-  onCardClick(id: string): void;
+  onCardClick(id: string, index: number): void;
 }
 
 /**
@@ -52,7 +52,7 @@ export default function CardsList({ onCardClick }: CardsListProps) {
 
   return (
     <ul className="chips center flow flow-xl" role="list">
-      {Object.keys(groupedCards).map(category => (
+      {Object.keys(groupedCards).map((category) => (
         <CardsGroup
           key={category}
           category={category}

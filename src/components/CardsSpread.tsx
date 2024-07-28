@@ -2,23 +2,29 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { CardsContext } from "@components/CardsContext";
 import Card from "@components/Card";
 import Switch from "./Switch";
+import useRovingTabIndex from "@hooks/useRovingTabIndex";
+import useIsMounted from "@hooks/useIsMounted";
 
 interface CardsSpreadProps {
+  focusIndex?: number;
   scrollPosition: number;
-  onClick(scrollPosition: number): void;
+  onClick(scrollPos: number, index: number): void;
 }
 
-export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProps) {
+export default function CardsSpread({ focusIndex, scrollPosition, onClick }: CardsSpreadProps) {
   const { cards, updateCard, setEditCardId } = useContext(CardsContext);
-  const cardsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const isMounted = useIsMounted();
+  const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const cardsScrollRef = useRef<HTMLElement>(null);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [activeCardIndex, setActiveCardIndex] = useState(focusIndex || 0);
+  const cardsParentRef = useRef<HTMLUListElement>(null);
+  const handleRovingIndex = useRovingTabIndex(cardsParentRef, activeCardIndex);
 
-  const handleClick = (id: string) => {
+  const handleClick = (id: string, index: number) => {
     if (!cardsScrollRef.current) return;
 
     setEditCardId(id);
-    onClick(cardsScrollRef.current.scrollLeft);
+    onClick(cardsScrollRef.current.scrollLeft, index);
   }
 
   const handleActiveChange = () => {
@@ -29,6 +35,15 @@ export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProp
       isActive: !card.isActive
     });
   }
+
+  useEffect(() => {
+    // if (!isMounted) return;
+
+    if (!focusIndex || !cardsScrollRef.current) return;
+
+    cardsRef?.current[focusIndex]?.focus();
+    cardsScrollRef.current.scrollLeft = scrollPosition;
+  }, [focusIndex, isMounted, scrollPosition])
 
   useEffect(() => {
     if (!cardsScrollRef.current) return;
@@ -45,7 +60,7 @@ export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProp
       // Set position to end for new card
       scrollContainer.scrollLeft = scrollContainer.scrollWidth;
     } else {
-      // Set position to edited card
+      // Set position to last edited card
       scrollContainer.scrollLeft = scrollPosition;
     }
 
@@ -72,14 +87,14 @@ export default function CardsSpread({ onClick, scrollPosition }: CardsSpreadProp
   return (
     <>
       <section ref={cardsScrollRef} className="cards-wrapper scroll-x">
-        <ul className="cards" role="list">
+        <ul ref={cardsParentRef} className="cards" role="list" onKeyDown={handleRovingIndex}>
           {cards.map((card, index) => (
             <li key={card.id}>
               <Card
                 card={card}
                 ref={el => (cardsRef.current[index] = el)}
                 selected={index === activeCardIndex}
-                onClick={() => handleClick(card.id)}
+                onClick={() => handleClick(card.id, index)}
               />
             </li>
           ))}

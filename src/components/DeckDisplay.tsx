@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CardsContext } from "@components/CardsContext";
 import DeckDisplayControl, { DeckDisplayControlView } from "@components/DeckDisplayControl";
@@ -15,32 +15,35 @@ export default function DeckDisplay() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [view, setView] = useState(searchParams.get('view') as DeckDisplayControlView || "stack");
   const [isManaging, setIsManaging] = useState(false);
+  const [activeCardIndex, setActiveCardIndex] = useState<number>();
+  const addCardRef = useRef<HTMLButtonElement | null>(null);
   const card = getItemById(cards, editCardId);
   const isEmptyDeck = cards.length === 0;
 
-  const handleStackCardClick = (cardScrollPosition: number) => {
+  const handleStackCardClick = (cardScrollPosition: number, index: number) => {
+    setActiveCardIndex(index);
+    setScrollPosition(cardScrollPosition);
     setIsManaging(true);
-    setScrollPosition(cardScrollPosition)
   }
 
-  const handleListCardClick = (id: string) => {
+  const handleListCardClick = (id: string, index: number) => {
+    setEditCardId(id);
+    setActiveCardIndex(index);
     setIsManaging(true);
-    setEditCardId(id)
   }
 
   const handleEditComplete = () => {
-    setEditCardId("");
     setIsManaging(false);
   }
 
   const handleAddComplete = () => {
-    setScrollPosition(-1)
     setIsManaging(false);
+    setScrollPosition(-1);
   }
 
   const handleViewChange = (view: DeckDisplayControlView) => {
     setView(view);
-    setSearchParams({ view })
+    setSearchParams({ view });
   }
 
   if (isManaging) {
@@ -63,18 +66,21 @@ export default function DeckDisplay() {
     <>
       <section className="deck-controls cluster center">
         <DeckDisplayControl defaultView={view} onClick={handleViewChange} />
-        <button className="primary small" onClick={() => setIsManaging(true)}>
+        <button ref={addCardRef} className="primary small" onClick={() => setIsManaging(true)}>
           <PlusIcon /> Add a card
         </button>
       </section>
 
       {view === "stack" ? (
         <CardsSpread
+          focusIndex={activeCardIndex}
           scrollPosition={scrollPosition}
           onClick={handleStackCardClick}
         />
       ) : (
-        <CardsList onCardClick={handleListCardClick} />
+        <CardsList
+          onCardClick={handleListCardClick}
+        />
       )}
     </>
   );

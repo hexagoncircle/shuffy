@@ -5,22 +5,17 @@ import CardChip from '@components/CardChip';
 
 interface CardsGroupProps {
   category: string;
-  cards: CardDataProps[]
-  onCardClick(id: string): void;
+  cards: CardDataProps[];
+  onCardClick(id: string, index: number): void;
 }
 
 export default function CardsGroup({ category, cards, onCardClick }: CardsGroupProps) {
   const id = useId();
   const { updateCard } = useContext(CardsContext);
   const parentRef = useRef<HTMLInputElement>(null);
+  const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const allChecked = cards.every(card => card.isActive);
   const someChecked = cards.some(card => card.isActive);
-
-  useEffect(() => {
-    if (parentRef.current) {
-      parentRef.current.indeterminate = someChecked && !allChecked;
-    }
-  }, [cards, allChecked, someChecked]);
 
   const handleGroupChange = (e: ChangeEvent<HTMLInputElement>) => {
     cards.forEach(card => {
@@ -42,6 +37,12 @@ export default function CardsGroup({ category, cards, onCardClick }: CardsGroupP
     });
   };
 
+  useEffect(() => {
+    if (parentRef.current) {
+      parentRef.current.indeterminate = someChecked && !allChecked;
+    }
+  }, [cards, allChecked, someChecked]);
+
   return (
     <ul className="flow" role="list">
       <li className="flow flow-m">
@@ -57,12 +58,14 @@ export default function CardsGroup({ category, cards, onCardClick }: CardsGroupP
         </div>
 
         <ul className="flow flow-s" role="list">
-          {cards.map(({ label, isActive, id }) => (
+          {cards.map(({ label, isActive, id }, index) => (
             <li key={id}>
               <CardChip
+                ref={el => (cardsRef.current[index] = el)}
+                id={id}
                 label={label}
                 isActive={isActive}
-                onClick={() => onCardClick(id)}
+                onClick={() => onCardClick(id, index)}
                 onActiveChange={() => handleCardChange(id)}
               />
             </li>

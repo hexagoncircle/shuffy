@@ -1,4 +1,4 @@
-import { CSSProperties, useContext, useState } from "react";
+import { CSSProperties, useContext, useRef, useState } from "react";
 import { getRandomValue } from "@js/utils";
 import { CardsContext } from "@components/CardsContext";
 import { Link } from "react-router-dom";
@@ -7,6 +7,7 @@ import "@css/shuffle.css";
 import Card from "@components/Card";
 
 export default function Shuffle() {
+  const videoRef = useRef(null);
   const { repeatCard } = useContext(SettingsContext);
   const { cards } = useContext(CardsContext);
   const activeCards = cards.filter(card => card.isActive);
@@ -19,13 +20,24 @@ export default function Shuffle() {
     if (!repeatCard && card === selectedCard) {
       getCard();
     } else {
-      setIsReady(false);
       setCard(selectedCard);
     }
   }
 
+  const handleReshuffle = () => {
+    if (!isReady) {
+      console.log("wait!");
+      return;
+    }
+
+    // videoRef.current.currentTime = 0;
+    // videoRef.current.play();
+    setIsReady(false);
+    getCard();
+  }
+
   return (
-    <div className="flow" style={{ padding: "var(--space-2xl)" }}>
+    <div className="shuffle-display flow" style={{ padding: "var(--space-2xl)" }}>
       <div className="shuffle-wrapper flow stack center">
         {isReady ? (
           <Card card={card} className="is-flipping" />
@@ -41,9 +53,20 @@ export default function Shuffle() {
             <source src="shuffle.webm" type="video/webm" />
           </video>
         )}
+        {/* <video ref={videoRef} className="shuffle-video"
+          width={1518}
+          height={1080}
+          muted
+          autoPlay
+          playsInline
+          onEnded={() => setIsReady(true)}
+        >
+          <source src="shuffle.webm" type="video/webm" />
+        </video>
+        {isReady && <Card card={card} className="is-flipping" />} */}
       </div>
       <div className="cluster center" style={{ "--align": "center", "--justify": "center" } as CSSProperties}>
-        <button className="primary reset-button" onClick={isReady ? getCard : () => { console.log("wait!") }}>
+        <button className="primary reset-button" onClick={handleReshuffle}>
           Shuffy it again
         </button>
         <Link to='/deck'>Back to deck</Link>

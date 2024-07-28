@@ -17,13 +17,14 @@ export interface CardProps {
 
 const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected, className, onClick }, ref) => {
   const { categories } = useContext(CategoriesContext);
-  const { label, category, isActive } = card;
+  const { id, label, category, isActive } = card;
   const categoryObj = categories.find(c => c.id === category);
   const categoryLabel = categoryObj?.label;
   const theme = categoryObj?.theme;
 
   return (
     <article
+      id={id}
       className={clsx("card stack", !isActive && "inactive", flipped && "flipped", className)}
       style={{ "--theme": theme } as CSSProperties}
     >

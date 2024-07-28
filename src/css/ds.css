@@ -77,6 +77,12 @@
   --card-aspect-ratio: 154 / 202;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   scrollbar-gutter: stable both-edges;
   font-family: var(--font-body);

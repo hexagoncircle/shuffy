@@ -45,7 +45,7 @@ export default function CardCreator({ onComplete }: CardCreatorProps) {
 
   const handleCreateCard = () => {
     createCard({
-      id: uuid(),
+      id: `card-${uuid()}`,
       isActive: true,
       label: nameValue,
       category: selectedCategory
