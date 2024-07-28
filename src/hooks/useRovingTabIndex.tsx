@@ -30,7 +30,8 @@ export default function useRovingTabIndex(parentRef: RefObject<Element>, selecte
 
     selected.scrollIntoView({
       block: 'nearest',
-      inline: 'center'
+      inline: 'center',
+      behavior: 'instant'
     });
 
     selected.focus();

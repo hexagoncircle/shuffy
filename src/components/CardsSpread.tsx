@@ -3,7 +3,6 @@ import { CardsContext } from "@components/CardsContext";
 import Card from "@components/Card";
 import Switch from "./Switch";
 import useRovingTabIndex from "@hooks/useRovingTabIndex";
-import useIsMounted from "@hooks/useIsMounted";
 
 interface CardsSpreadProps {
   focusIndex?: number;
@@ -13,7 +12,6 @@ interface CardsSpreadProps {
 
 export default function CardsSpread({ focusIndex, scrollPosition, onClick }: CardsSpreadProps) {
   const { cards, updateCard, setEditCardId } = useContext(CardsContext);
-  const isMounted = useIsMounted();
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const cardsScrollRef = useRef<HTMLElement>(null);
   const [activeCardIndex, setActiveCardIndex] = useState(focusIndex || 0);
@@ -37,15 +35,6 @@ export default function CardsSpread({ focusIndex, scrollPosition, onClick }: Car
   }
 
   useEffect(() => {
-    // if (!isMounted) return;
-
-    if (!focusIndex || !cardsScrollRef.current) return;
-
-    cardsRef?.current[focusIndex]?.focus();
-    cardsScrollRef.current.scrollLeft = scrollPosition;
-  }, [focusIndex, isMounted, scrollPosition])
-
-  useEffect(() => {
     if (!cardsScrollRef.current) return;
 
     const scrollContainer = cardsScrollRef.current;
@@ -60,8 +49,13 @@ export default function CardsSpread({ focusIndex, scrollPosition, onClick }: Car
       // Set position to end for new card
       scrollContainer.scrollLeft = scrollContainer.scrollWidth;
     } else {
-      // Set position to last edited card
+      // Set position to selected card
       scrollContainer.scrollLeft = scrollPosition;
+    }
+
+    if (focusIndex !== undefined) {
+      // Refocus selected card
+      cards[focusIndex]?.focus({ preventScroll: true });
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -82,7 +76,7 @@ export default function CardsSpread({ focusIndex, scrollPosition, onClick }: Car
         card && observer.unobserve(card);
       });
     };
-  }, [scrollPosition]);
+  }, [focusIndex, scrollPosition]);
 
   return (
     <>
