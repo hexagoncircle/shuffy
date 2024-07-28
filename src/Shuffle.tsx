@@ -46,11 +46,12 @@ export default function Shuffle() {
           <video className="shuffle-video"
             width={1518}
             height={1080}
-            muted
             autoPlay
+            muted
             playsInline
             onEnded={() => setIsReady(true)}
           >
+            <source src="shuffle.mov" type="video/mp4"></source>
             <source src="shuffle.webm" type="video/webm" />
           </video>
         )}
