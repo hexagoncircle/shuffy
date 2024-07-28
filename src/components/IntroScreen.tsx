@@ -1,4 +1,4 @@
-import { SyntheticEvent, useCallback, useContext, useEffect, useRef } from "react";
+import { FormEvent, SyntheticEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -7,13 +7,16 @@ import ShuffyCard from "./ShuffyCard";
 import Logo from "@assets/logo.svg?react";
 import styles from "@css/IntroScreen.module.css";
 import { SettingsContext } from "./SettingsContext";
+import { Link, useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(useGSAP);
 
 export default function IntroScreen() {
-  const { setDeckName } = useContext(SettingsContext);
+  const { deckName, setDeckName } = useContext(SettingsContext);
+  const [inputValue, setInputValue] = useState("");
   const introRef = useRef(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const navigate = useNavigate();
 
   const handleEyesFocus = useCallback((e: SyntheticEvent | FocusEvent) => {
     const target = e.target as HTMLElement;
@@ -25,8 +28,14 @@ export default function IntroScreen() {
   }, [])
 
   const handleDeckNameChange = (e: SyntheticEvent<HTMLInputElement>) => {
-    handleEyesFocus(e)
-    setDeckName(e.currentTarget.value);
+    handleEyesFocus(e);
+    setInputValue(e.currentTarget.value);
+  }
+
+  const handleDeckNameSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setDeckName(inputValue)
+    navigate("/deck");
   }
 
   useGSAP(() => {
@@ -259,21 +268,32 @@ export default function IntroScreen() {
         A choice of chance for shruggie moods
       </p>
 
-      <form
-        className={clsx(styles.form, "center")}
-        data-animate="form"
-        onSubmit={(e) => e.preventDefault()}
-      >
-        <label className="visually-hidden">Name your deck to get started</label>
-        <input
-          className="text-center"
-          type="text"
-          placeholder="Enter a name for your deck"
-          data-animate="form-item"
-          onChange={handleDeckNameChange}
-        />
-        <button className="action raised" type="button" data-animate="form-item">Get started</button>
-      </form>
+      <div className={clsx(styles.wrapper, "center")} data-animate="form">
+        {!deckName ? (
+          <form
+            id="deck-name-form"
+            onSubmit={handleDeckNameSubmit}
+            className={styles.form}
+          >
+            <label htmlFor="deck-name" className="visually-hidden">Name your deck to get started</label>
+            <input
+              id="deck-name"
+              className="text-center"
+              type="text"
+              placeholder="Enter a name for your deck"
+              data-animate="form-item"
+              onChange={handleDeckNameChange}
+            />
+            <button className="action raised" type="submit" data-animate="form-item">
+              Get started
+            </button>
+          </form>
+        ) : (
+          <Link className="button action raised" to="/deck" data-animate="form-item">
+            Open deck
+          </Link>
+        )}
+      </div>
     </article>
   )
 }

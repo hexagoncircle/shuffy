@@ -57,9 +57,12 @@
   text-transform: lowercase;
 }
 
-.form {
+.wrapper {
   --max: 20rem;
+  inline-size: 100%;
+}
+
+.form {
   display: grid;
   gap: var(--space-m);
-  inline-size: 100%;
 }
