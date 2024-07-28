@@ -1,4 +1,4 @@
-import { SyntheticEvent, useContext, useState } from "react";
+import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import { pluralize } from "@js/utils";
 import { SettingsContext } from "@components/SettingsContext";
 import { CardsContext } from "./CardsContext";
@@ -10,21 +10,15 @@ import "@css/app-header.css";
 import { Link } from "react-router-dom";
 import Switch from "./Switch";
 
-interface AppHeaderProps {
-  deckName: string;
-  onNameUpdate(value: string): void;
-}
-
-export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
-  const { isSettingsActive, repeatCard, setIsSettingsActive, setRepeatCard } = useContext(SettingsContext);
+export default function AppHeader() {
+  const { deckName, isSettingsActive, repeatCard, setDeckName, setIsSettingsActive, setRepeatCard } = useContext(SettingsContext);
   const { cards } = useContext(CardsContext);
   const [hasNotification, setHasNotification] = useState(true);
   const cardCount = cards.length;
+  const deckNameDisplayText = deckName || "¯\\_(ツ)_/¯";
 
-  const handleDeckNameChange = (e: SyntheticEvent) => {
-    const target = e.target as HTMLInputElement;
-
-    onNameUpdate(target.value);
+  const handleDeckNameChange = (e: SyntheticEvent<HTMLInputElement>) => {
+    setDeckName(e.currentTarget.value);
   }
 
   const handleSettingsToggleClick = () => {
@@ -35,7 +29,7 @@ export default function AppHeader({ deckName, onNameUpdate }: AppHeaderProps) {
   return (
     <header className="app-header">
       <section className="app-header-info">
-        <h1 className="text-2xl font-semibold">{deckName}</h1>
+        <h1 className="text-2xl font-semibold">{deckNameDisplayText}</h1>
         <p className="app-header-card-count">{cardCount} {pluralize("card", "cards", cardCount)}</p>
       </section>
 

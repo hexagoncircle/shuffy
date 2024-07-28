@@ -1,4 +1,4 @@
-import { SyntheticEvent, useCallback, useEffect, useRef } from "react";
+import { SyntheticEvent, useCallback, useContext, useEffect, useRef } from "react";
 import clsx from "clsx";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -6,10 +6,12 @@ import { moveEyes } from "@js/moveEyes";
 import ShuffyCard from "./ShuffyCard";
 import Logo from "@assets/logo.svg?react";
 import styles from "@css/IntroScreen.module.css";
+import { SettingsContext } from "./SettingsContext";
 
 gsap.registerPlugin(useGSAP);
 
 export default function IntroScreen() {
+  const { setDeckName } = useContext(SettingsContext);
   const introRef = useRef(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
 
@@ -21,6 +23,11 @@ export default function IntroScreen() {
 
     moveEyes(svgRef.current, { x, y });
   }, [])
+
+  const handleDeckNameChange = (e: SyntheticEvent<HTMLInputElement>) => {
+    handleEyesFocus(e)
+    setDeckName(e.currentTarget.value);
+  }
 
   useGSAP(() => {
     const duration = 0.5;
@@ -229,6 +236,7 @@ export default function IntroScreen() {
   }, { scope: introRef })
 
   useEffect(() => {
+    // Set Shuffy's gaze to the active focused element
     document.addEventListener('focusin', handleEyesFocus, true);
 
     return () => {
@@ -262,7 +270,7 @@ export default function IntroScreen() {
           type="text"
           placeholder="Enter a name for your deck"
           data-animate="form-item"
-          onChange={handleEyesFocus}
+          onChange={handleDeckNameChange}
         />
         <button className="action raised" type="button" data-animate="form-item">Get started</button>
       </form>
