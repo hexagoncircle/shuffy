@@ -1,4 +1,4 @@
-import { CSSProperties, useContext, useRef, useState } from "react";
+import { CSSProperties, useContext, useEffect, useRef, useState } from "react";
 import { getRandomValue } from "@js/utils";
 import { CardsContext } from "@components/CardsContext";
 import { Link } from "react-router-dom";
@@ -7,8 +7,7 @@ import "@css/shuffle.css";
 import Card from "@components/Card";
 
 export default function Shuffle() {
-  const videoRef = useRef(null);
-  const { repeatCard } = useContext(SettingsContext);
+  const { shuffleAnimation, repeatCard } = useContext(SettingsContext);
   const { cards } = useContext(CardsContext);
   const activeCards = cards.filter(card => card.isActive);
   const [card, setCard] = useState(getRandomValue(activeCards));
@@ -30,11 +29,13 @@ export default function Shuffle() {
       return;
     }
 
-    // videoRef.current.currentTime = 0;
-    // videoRef.current.play();
-    setIsReady(false);
+    shuffleAnimation && setIsReady(false);
     getCard();
   }
+
+  useEffect(() => {
+    !shuffleAnimation && setIsReady(true);
+  }, [shuffleAnimation])
 
   return (
     <div className="shuffle-display flow" style={{ padding: "var(--space-2xl)" }}>
@@ -53,17 +54,6 @@ export default function Shuffle() {
             <source src="shuffle.webm" type="video/webm" />
           </video>
         )}
-        {/* <video ref={videoRef} className="shuffle-video"
-          width={1518}
-          height={1080}
-          muted
-          autoPlay
-          playsInline
-          onEnded={() => setIsReady(true)}
-        >
-          <source src="shuffle.webm" type="video/webm" />
-        </video>
-        {isReady && <Card card={card} className="is-flipping" />} */}
       </div>
       <div className="cluster center" style={{ "--align": "center", "--justify": "center" } as CSSProperties}>
         <button className="primary reset-button" onClick={handleReshuffle}>

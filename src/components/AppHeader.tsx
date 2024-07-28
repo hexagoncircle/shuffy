@@ -11,7 +11,16 @@ import { Link } from "react-router-dom";
 import Switch from "./Switch";
 
 export default function AppHeader() {
-  const { deckName, isSettingsActive, repeatCard, setDeckName, setIsSettingsActive, setRepeatCard } = useContext(SettingsContext);
+  const {
+    deckName,
+    isSettingsActive,
+    repeatCard,
+    shuffleAnimation,
+    setDeckName,
+    setIsSettingsActive,
+    setRepeatCard,
+    setShuffleAnimation
+  } = useContext(SettingsContext);
   const { cards } = useContext(CardsContext);
   const [hasNotification, setHasNotification] = useState(true);
   const cardCount = cards.length;
@@ -62,12 +71,22 @@ export default function AppHeader() {
           </div>
           <div className="checkbox-wrapper">
             <Switch id="card-active-toggle" variant="compact" checked={repeatCard} onChange={() => setRepeatCard(!repeatCard)} />
-            <label htmlFor="card-active-toggle">Allow same card in back-to-back shuffies</label>
+            <label htmlFor="card-active-toggle">
+              Allow same card in back-to-back shuffies
+            </label>
+          </div>
+          <div className="checkbox-wrapper">
+            <Switch id="shuffle-animation" variant="compact" checked={shuffleAnimation} onChange={() => setShuffleAnimation(!shuffleAnimation)} />
+            <label htmlFor="shuffle-animation">
+              Play animation when shuffy-ing
+            </label>
           </div>
         </section>
 
         <section className="app-header-modal-section cluster">
-          <button id="delete-deck" className="danger" type="button">Delete deck</button>
+          <button id="delete-deck" className="danger" type="button">
+            Delete deck
+          </button>
         </section>
       </Modal>
     </header>
