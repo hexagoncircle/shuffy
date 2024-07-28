@@ -7,10 +7,10 @@ import useRovingTabIndex from "@hooks/useRovingTabIndex";
 interface CardsSpreadProps {
   focusIndex?: number;
   scrollPosition: number;
-  onClick(scrollPos: number, index: number): void;
+  onCardClick(scrollPos: number, index: number): void;
 }
 
-export default function CardsSpread({ focusIndex, scrollPosition, onClick }: CardsSpreadProps) {
+export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }: CardsSpreadProps) {
   const { cards, updateCard, setEditCardId } = useContext(CardsContext);
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const cardsScrollRef = useRef<HTMLElement>(null);
@@ -22,7 +22,7 @@ export default function CardsSpread({ focusIndex, scrollPosition, onClick }: Car
     if (!cardsScrollRef.current) return;
 
     setEditCardId(id);
-    onClick(cardsScrollRef.current.scrollLeft, index);
+    onCardClick(cardsScrollRef.current.scrollLeft, index);
   }
 
   const handleActiveChange = () => {
@@ -96,7 +96,11 @@ export default function CardsSpread({ focusIndex, scrollPosition, onClick }: Car
       </section>
       <section className="card-active-control cluster center">
         <label htmlFor="card-active-toggle">Card is shuffy-able</label>
-        <Switch id="card-active-toggle" checked={cards[activeCardIndex].isActive} onChange={handleActiveChange} />
+        <Switch
+          id="card-active-toggle"
+          checked={cards[activeCardIndex].isActive}
+          onChange={handleActiveChange}
+        />
       </section>
     </>
   )

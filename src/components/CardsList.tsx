@@ -1,10 +1,13 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { CardDataProps, CardsContext } from "@components/CardsContext";
 import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
 import CardsGroup from "@components/CardsGroup";
 
 interface CardsListProps {
-  onCardClick(id: string, index: number): void;
+  focusGroupIndex?: number;
+  focusCardIndex?: number;
+  scrollPosition?: number;
+  onCardClick(scrollPos: number, cardIndex: number, groupIndex: number): void;
 }
 
 /**
@@ -45,19 +48,35 @@ const groupByCategory = (cards: CardDataProps[], categories: CategoryDataProps[]
   return groups;
 };
 
-export default function CardsList({ onCardClick }: CardsListProps) {
-  const { cards } = useContext(CardsContext);
+export default function CardsList({ focusGroupIndex, focusCardIndex, scrollPosition, onCardClick }: CardsListProps) {
+  const { cards, setEditCardId } = useContext(CardsContext);
   const { categories } = useContext(CategoriesContext);
   const groupedCards = groupByCategory(cards, categories);
 
+  const handleCardClick = (id: string, cardIndex: number, groupIndex: number) => {
+    setEditCardId(id);
+    onCardClick(window.scrollY, cardIndex, groupIndex);
+  }
+
+  useEffect(() => {
+    if (scrollPosition === -1) {
+      // Set position to end for new card
+      window.scrollTo({ top: document.body.scrollHeight });
+    } else {
+      // Set to previous scroll position
+      window.scrollTo({ top: scrollPosition });
+    }
+  }, [scrollPosition])
+
   return (
     <ul className="chips center flow flow-xl" role="list">
-      {Object.keys(groupedCards).map((category) => (
+      {Object.keys(groupedCards).map((category, index) => (
         <CardsGroup
           key={category}
           category={category}
           cards={groupedCards[category]}
-          onCardClick={onCardClick}
+          focusIndex={focusGroupIndex === index ? focusCardIndex : undefined}
+          onCardClick={(id, cardIndex) => handleCardClick(id, cardIndex, index)}
         />
       ))}
     </ul>

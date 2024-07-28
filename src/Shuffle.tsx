@@ -38,7 +38,7 @@ export default function Shuffle() {
   }, [shuffleAnimation])
 
   return (
-    <div className="shuffle-display flow" style={{ padding: "var(--space-2xl)" }}>
+    <div className="shuffle-display flow">
       <div className="shuffle-wrapper flow stack center">
         {isReady ? (
           <Card card={card} className="is-flipping" />

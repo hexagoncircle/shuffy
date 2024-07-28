@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StackIcon from "@assets/cards-stack.svg?react"
 import ListIcon from "@assets/list-dashes.svg?react"
 import "@css/deck-display-control.css";
 
-export type DeckDisplayControlView = "stack" | "list"
+export type DeckDisplayControlView = "spread" | "list"
 
 interface DeckDisplayControlProps {
   defaultView?: DeckDisplayControlView;
@@ -12,7 +12,7 @@ interface DeckDisplayControlProps {
 
 
 export default function DeckDisplayControl({ defaultView, onClick }: DeckDisplayControlProps) {
-  const [selected, setSelected] = useState<DeckDisplayControlView>(defaultView || "stack");
+  const [selected, setSelected] = useState<DeckDisplayControlView>(defaultView || "spread");
 
   const handleClick = (view: DeckDisplayControlView) => {
     setSelected(view);
@@ -22,7 +22,7 @@ export default function DeckDisplayControl({ defaultView, onClick }: DeckDisplay
   return (
     <div className="deck-display-control">
       <h3 className="visually-hidden">Deck presentation</h3>
-      <button className="small" aria-pressed={selected === "stack"} onClick={() => handleClick('stack')}>
+      <button className="small" aria-pressed={selected === "spread"} onClick={() => handleClick('spread')}>
         <span className="visually-hidden">Stack view</span>
         <StackIcon aria-hidden="true" />
       </button>

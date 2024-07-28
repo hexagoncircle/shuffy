@@ -6,10 +6,11 @@ import CardChip from '@components/CardChip';
 interface CardsGroupProps {
   category: string;
   cards: CardDataProps[];
+  focusIndex?: number;
   onCardClick(id: string, index: number): void;
 }
 
-export default function CardsGroup({ category, cards, onCardClick }: CardsGroupProps) {
+export default function CardsGroup({ focusIndex, category, cards, onCardClick }: CardsGroupProps) {
   const id = useId();
   const { updateCard } = useContext(CardsContext);
   const parentRef = useRef<HTMLInputElement>(null);
@@ -37,11 +38,22 @@ export default function CardsGroup({ category, cards, onCardClick }: CardsGroupP
     });
   };
 
+  const handleCardClick = (id: string, index: number) => {
+    onCardClick(id, index);
+  }
+
   useEffect(() => {
     if (parentRef.current) {
       parentRef.current.indeterminate = someChecked && !allChecked;
     }
   }, [cards, allChecked, someChecked]);
+
+  useEffect(() => {
+    if (focusIndex !== undefined) {
+      // Refocus selected card
+      cardsRef.current[focusIndex]?.focus();
+    }
+  }, [focusIndex])
 
   return (
     <ul className="flow" role="list">
@@ -65,7 +77,7 @@ export default function CardsGroup({ category, cards, onCardClick }: CardsGroupP
                 id={id}
                 label={label}
                 isActive={isActive}
-                onClick={() => onCardClick(id, index)}
+                onClick={() => handleCardClick(id, index)}
                 onActiveChange={() => handleCardChange(id)}
               />
             </li>

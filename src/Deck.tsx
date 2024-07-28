@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
 import AppHeader from "./components/AppHeader";
 import DeckDisplay from "@components/DeckDisplay";
-import "@css/deck.css"
 import ConfirmModal from "@components/ConfirmModal";
 import ConfirmModalProvider from "@components/ConfirmModalContext";
+import "@css/deck.css"
 
 export default function Deck() {
   return (

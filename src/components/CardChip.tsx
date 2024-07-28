@@ -1,4 +1,4 @@
-import { forwardRef, useId } from "react";
+import { forwardRef } from "react";
 import Switch from "./Switch";
 import "@css/chip.css";
 import clsx from "clsx";
@@ -17,7 +17,9 @@ const CardChip = forwardRef<HTMLButtonElement, CardChipProps>(({ id, label, isAc
       <button className="chip-label break-words" ref={ref} onClick={onClick}>
         {label}
       </button>
-      <label className="visually-hidden" htmlFor={`${id}-switch`}>Card is shuffy-able</label>
+      <label className="visually-hidden" htmlFor={`${id}-switch`}>
+        Card is shuffy-able
+      </label>
       <Switch
         id={`${id}-switch`}
         variant="compact"

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CardsContext } from "@components/CardsContext";
 import DeckDisplayControl, { DeckDisplayControlView } from "@components/DeckDisplayControl";
@@ -13,35 +13,38 @@ export default function DeckDisplay() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { cards, editCardId, setEditCardId } = useContext(CardsContext);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [view, setView] = useState(searchParams.get('view') as DeckDisplayControlView || "stack");
+  const [view, setView] = useState(searchParams.get('view') as DeckDisplayControlView);
   const [isManaging, setIsManaging] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState<number>();
+  const [activeGroupIndex, setActiveGroupIndex] = useState<number>();
   const addCardRef = useRef<HTMLButtonElement | null>(null);
   const card = getItemById(cards, editCardId);
   const isEmptyDeck = cards.length === 0;
 
-  const handleStackCardClick = (cardScrollPosition: number, index: number) => {
-    setActiveCardIndex(index);
-    setScrollPosition(cardScrollPosition);
-    setIsManaging(true);
-  }
-
-  const handleListCardClick = (id: string, index: number) => {
-    setEditCardId(id);
-    setActiveCardIndex(index);
+  const handleCardClick = (scrollPosition: number, cardIndex: number, groupIndex?: number) => {
+    groupIndex && setActiveGroupIndex(groupIndex);
+    setActiveCardIndex(cardIndex);
+    setScrollPosition(scrollPosition);
     setIsManaging(true);
   }
 
   const handleEditComplete = () => {
+    setEditCardId("");
     setIsManaging(false);
   }
 
-  const handleAddComplete = () => {
+  const handleAddComplete = (value?: string) => {
     setIsManaging(false);
-    setScrollPosition(-1);
+
+    if (value !== "cancel") {
+      setScrollPosition(-1);
+    }
   }
 
   const handleViewChange = (view: DeckDisplayControlView) => {
+    // Reset before switching view
+    setActiveCardIndex(undefined);
+    setScrollPosition(0);
     setView(view);
     setSearchParams({ view });
   }
@@ -51,7 +54,7 @@ export default function DeckDisplay() {
       <CardManager
         card={card}
         onEditComplete={handleEditComplete}
-        onAddComplete={handleAddComplete}
+        onAddComplete={(value) => handleAddComplete(value)}
       />
     );
   }
@@ -71,15 +74,18 @@ export default function DeckDisplay() {
         </button>
       </section>
 
-      {view === "stack" ? (
+      {!view || view === "spread" ? (
         <CardsSpread
           focusIndex={activeCardIndex}
           scrollPosition={scrollPosition}
-          onClick={handleStackCardClick}
+          onCardClick={handleCardClick}
         />
       ) : (
         <CardsList
-          onCardClick={handleListCardClick}
+          focusCardIndex={activeCardIndex}
+          focusGroupIndex={activeGroupIndex}
+          scrollPosition={scrollPosition}
+          onCardClick={handleCardClick}
         />
       )}
     </>

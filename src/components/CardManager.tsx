@@ -6,7 +6,7 @@ import { getItemById } from "@js/utils";
 interface CardManagerProps {
   card?: CardDataProps;
   onEditComplete(): void;
-  onAddComplete(): void;
+  onAddComplete(value?: string): void;
 }
 
 export default function CardManager({ card, onEditComplete, onAddComplete }: CardManagerProps) {

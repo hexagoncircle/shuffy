@@ -8,7 +8,7 @@ import CategorySelectIcon from "@assets/category-select.svg?react";
 import clsx from "clsx";
 
 interface CardCreatorProps {
-  onComplete(): void;
+  onComplete(value?: "add" | "cancel"): void;
 }
 
 export default function CardCreator({ onComplete }: CardCreatorProps) {
@@ -39,7 +39,7 @@ export default function CardCreator({ onComplete }: CardCreatorProps) {
   const handleKeyboardCancel = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Escape") {
       e.preventDefault();
-      onComplete();
+      onComplete("cancel");
     }
   }
 
@@ -101,7 +101,7 @@ export default function CardCreator({ onComplete }: CardCreatorProps) {
       </section>
       <footer className="actions">
         <button className="raised action" disabled={!nameValue} onClick={handleCreateCard}>Add card to deck</button>
-        <button onClick={onComplete}>Cancel</button>
+        <button onClick={() => onComplete("cancel")}>Cancel</button>
       </footer>
     </article>
   );
