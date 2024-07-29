@@ -22,7 +22,7 @@ export default function DeckDisplay() {
   const isEmptyDeck = cards.length === 0;
 
   const handleCardClick = (scrollPosition: number, cardIndex: number, groupIndex?: number) => {
-    groupIndex && setActiveGroupIndex(groupIndex);
+    groupIndex !== undefined && setActiveGroupIndex(groupIndex);
     setActiveCardIndex(cardIndex);
     setScrollPosition(scrollPosition);
     setIsManaging(true);
