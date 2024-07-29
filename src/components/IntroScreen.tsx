@@ -282,6 +282,7 @@ export default function IntroScreen() {
               type="text"
               placeholder="Enter a name for your deck"
               data-animate="form-item"
+              autoComplete="off"
               onChange={handleDeckNameChange}
             />
             <button className="action raised" type="submit" data-animate="form-item">
