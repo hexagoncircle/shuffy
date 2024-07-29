@@ -51,7 +51,7 @@ export default function Shuffle() {
             playsInline
             onEnded={() => setIsReady(true)}
           >
-            <source src="shuffle.mov" type="video/mp4"></source>
+            <source src="shuffle.mov" type='video/mp4; codecs="hvc1"' />
             <source src="shuffle.webm" type="video/webm" />
           </video>
         )}
