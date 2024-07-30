@@ -98,7 +98,7 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
         <label htmlFor="card-active-toggle">Card is shuffy-able</label>
         <Switch
           id="card-active-toggle"
-          checked={cards[activeCardIndex].isActive}
+          checked={cards[activeCardIndex]?.isActive}
           onChange={handleActiveChange}
         />
       </section>

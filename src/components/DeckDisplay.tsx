@@ -33,11 +33,6 @@ export default function DeckDisplay() {
     setIsManaging(true);
   }
 
-  const handleAddCardClick = () => {
-    resetActiveIndex();
-    setIsManaging(true);
-  }
-
   const handleEditComplete = () => {
     setEditCardId("");
     setIsManaging(false);
@@ -45,6 +40,7 @@ export default function DeckDisplay() {
 
   const handleAddComplete = (value?: string) => {
     setIsManaging(false);
+    setActiveCardIndex(cards.length);
     setTimeout(() => addCardRef.current?.focus());
 
     if (value !== "cancel") {
@@ -83,7 +79,7 @@ export default function DeckDisplay() {
           ref={addCardRef}
           id="add-new-card"
           className="primary small"
-          onClick={handleAddCardClick}
+          onClick={() => setIsManaging(true)}
         >
           <PlusIcon /> Add a card
         </button>
