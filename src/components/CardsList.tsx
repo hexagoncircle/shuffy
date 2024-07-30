@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect } from "react";
 import { CardDataProps, CardsContext } from "@components/CardsContext";
 import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
 import CardsGroup from "@components/CardsGroup";

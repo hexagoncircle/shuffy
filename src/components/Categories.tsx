@@ -19,6 +19,7 @@ export default function Categories() {
   const categoriesRef = useRef<(HTMLLIElement | null)[]>([]);
   const dragRef = useRef<number>(0);
   const dragTargetRef = useRef<number>(0);
+  const [dragIndex, setDragIndex] = useState(0);
   const clickAwayRef = useClickAway<HTMLUListElement>(() => setEditingCategoryIndex(-1));
 
   const handleSort = (e: CategoryDragEvent) => {
@@ -39,6 +40,7 @@ export default function Categories() {
     const target = e.target as HTMLElement;
 
     dragRef.current = index
+    setDragIndex(index);
     containerRef.current?.classList.add("is-dragging");
     target.classList.add("is-drag-item");
   }
@@ -52,8 +54,8 @@ export default function Categories() {
 
   const handleDragLeave = (e: CategoryDragEvent) => {
     const target = e.target as HTMLElement;
-
     target.classList.remove('is-drag-target');
+    dragTargetRef.current = dragIndex;
   }
 
   const handleDragOver = (e: CategoryDragEvent) => {
