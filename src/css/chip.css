@@ -1,5 +1,7 @@
 .chips {
   --max: min(35rem, 100% - var(--space-l));
+
+  margin-block-end: var(--space-3xl);
 }
 
 .chip {
