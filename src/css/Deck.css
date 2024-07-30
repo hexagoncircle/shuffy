@@ -24,7 +24,7 @@
   &::after {
     content: "";
     align-self: stretch;
-    padding-inline-end: max(var(--gutter), (100vw - var(--card-size)) / 2 - var(--gutter));
+    padding-inline-end: max(var(--gutter), (100vw - var(--card-size)) / 2 + var(--gutter) * 2);
   }
 
   > * {
