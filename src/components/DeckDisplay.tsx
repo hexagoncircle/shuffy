@@ -21,10 +21,20 @@ export default function DeckDisplay() {
   const card = getItemById(cards, editCardId);
   const isEmptyDeck = cards.length === 0;
 
+  const resetActiveIndex = () => {
+    setActiveGroupIndex(undefined);
+    setActiveCardIndex(undefined);
+  }
+
   const handleCardClick = (scrollPosition: number, cardIndex: number, groupIndex?: number) => {
     groupIndex !== undefined && setActiveGroupIndex(groupIndex);
     setActiveCardIndex(cardIndex);
     setScrollPosition(scrollPosition);
+    setIsManaging(true);
+  }
+
+  const handleAddCardClick = () => {
+    resetActiveIndex();
     setIsManaging(true);
   }
 
@@ -35,6 +45,7 @@ export default function DeckDisplay() {
 
   const handleAddComplete = (value?: string) => {
     setIsManaging(false);
+    setTimeout(() => addCardRef.current?.focus());
 
     if (value !== "cancel") {
       setScrollPosition(-1);
@@ -42,8 +53,7 @@ export default function DeckDisplay() {
   }
 
   const handleViewChange = (view: DeckDisplayControlView) => {
-    // Reset before switching view
-    setActiveCardIndex(undefined);
+    resetActiveIndex();
     setScrollPosition(0);
     setView(view);
     setSearchParams({ view });
@@ -69,7 +79,12 @@ export default function DeckDisplay() {
     <>
       <section className="deck-controls cluster center">
         <DeckDisplayControl defaultView={view} onClick={handleViewChange} />
-        <button ref={addCardRef} className="primary small" onClick={() => setIsManaging(true)}>
+        <button
+          ref={addCardRef}
+          id="add-new-card"
+          className="primary small"
+          onClick={handleAddCardClick}
+        >
           <PlusIcon /> Add a card
         </button>
       </section>
