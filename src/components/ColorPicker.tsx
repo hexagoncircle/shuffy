@@ -2,6 +2,7 @@ import "@css/color-picker.css";
 import { CSSProperties, SyntheticEvent, useEffect, useRef, useState } from "react";
 import ShuffyFace from "@assets/color-picker-face.svg?react";
 import COLORS from "@data/colors.theme.json";
+import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
 
 interface ColorDataProps {
   label: string;
@@ -51,10 +52,14 @@ const setupSwatch = (value: string) => {
 
 
 export default function ColorPicker({ id, defaultColor, onChange }: ColorPickerProps) {
+  const swatchRef = useRef(null);
+  const colorsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const colorPickerRef = useRef<HTMLInputElement>(null);
   const colorPickerLabelRef = useRef<HTMLLabelElement>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState(defaultColor);
   const [swatch, setSwatch] = useState(setupSwatch(defaultColor));
+  const handleRovingIndex = useRovingTabIndex(swatchRef, selectedIndex);
 
   const updateSwatch = (value: string) => {
     const updatedColors = swatch.map((color) => {
@@ -79,10 +84,12 @@ export default function ColorPicker({ id, defaultColor, onChange }: ColorPickerP
     setSelectedColor(colorPickerRef.current.value);
   }
 
-  const handleOptionClick = (e: SyntheticEvent<HTMLButtonElement>) => {
+  const handleOptionClick = (e: SyntheticEvent<HTMLButtonElement>, index: number) => {
     const color = e.currentTarget.dataset.color;
 
     if (!color) return;
+
+    setSelectedIndex(index);
 
     if (color === "custom") {
       openColorPicker();
@@ -97,22 +104,36 @@ export default function ColorPicker({ id, defaultColor, onChange }: ColorPickerP
     onChange(selectedColor);
   }, [selectedColor, onChange])
 
+  useEffect(() => {
+    if (!colorsRef.current) return;
+
+    /**
+     * On mount, set the default color element to handle roving focus.
+     * If no color matches, focus the custom color element.
+     */
+    const index =
+      colorsRef.current.findIndex(item => item?.getAttribute('data-color') === defaultColor);
+
+    setSelectedIndex(index !== -1 ? index : colorsRef.current.length - 1)
+  }, [defaultColor])
+
   return (
     <div id={id} className="color-picker">
       <figure className="color-picker-face" style={{ "--theme": selectedColor } as CSSProperties}>
         <ShuffyFace />
       </figure>
 
-      <div className="color-picker-swatch">
-        {swatch.map(({ value, label, selected }) => (
+      <div ref={swatchRef} className="color-picker-swatch" onKeyDown={handleRovingIndex}>
+        {swatch.map(({ value, label, selected }, index) => (
           <button
             key={value}
+            ref={el => (colorsRef.current[index] = el)}
             data-color={value}
             className="color-picker-option"
             style={{ "--color": value } as CSSProperties}
             type="button"
             aria-pressed={selected}
-            onClick={handleOptionClick}
+            onClick={(e) => handleOptionClick(e, index)}
           >
             <span className="visually-hidden">{label}</span>
           </button>
@@ -126,6 +147,7 @@ export default function ColorPicker({ id, defaultColor, onChange }: ColorPickerP
             id="select-custom-color"
             type="color"
             defaultValue={defaultColor}
+            data-no-roving
             tabIndex={-1}
           />
         </label>

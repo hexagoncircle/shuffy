@@ -53,6 +53,10 @@
 .color-picker-option:is([aria-pressed="true"], [aria-selected="true"]) {
   outline: var(--border-2);
   background-clip: padding-box;
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .color-picker-option[data-color="custom"] {

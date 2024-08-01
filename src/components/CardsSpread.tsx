@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { CardsContext } from "@components/CardsContext";
 import Card from "@components/Card";
 import Switch from "./Switch";
-import useRovingTabIndex from "@hooks/useRovingTabIndex";
+import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
 
 interface CardsSpreadProps {
   focusIndex?: number;
