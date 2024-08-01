@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, RefObject, KeyboardEvent } from 'react';
 
-export default function useRovingTabIndex(parentRef: RefObject<Element>, selectedIndex: number) {
+export function useRovingTabIndex(parentRef: RefObject<Element>, selectedIndex: number) {
   const [currentIndex, setCurrentIndex] = useState(selectedIndex || 0);
-  const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const focusableSelectors = ':is(button, [href], input, select, textarea):not([data-no-roving])';
 
   const keys = {
     next: ["ArrowRight", "ArrowDown"],
@@ -42,10 +42,15 @@ export default function useRovingTabIndex(parentRef: RefObject<Element>, selecte
 
     if (!focusableEls) return;
 
+
     focusableEls.forEach((item, index) => {
       item.setAttribute('tabIndex', index === currentIndex ? "0" : "-1");
     });
   }, [currentIndex, parentRef]);
+
+  useEffect(() => {
+    setCurrentIndex(selectedIndex);
+  }, [selectedIndex])
 
   return handleRovingIndex;
 }
