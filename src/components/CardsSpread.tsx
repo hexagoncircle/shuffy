@@ -38,20 +38,21 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
   useEffect(() => {
     if (!cardsScrollRef.current) return;
 
-    const scrollContainer = cardsScrollRef.current;
     const cards = cardsRef.current;
+    const scrollEl = cardsScrollRef.current;
+
     const options = {
-      root: cardsScrollRef.current,
+      root: scrollEl,
       rootMargin: '0% -50%',
       threshold: 0
     };
 
     if (scrollPosition === -1) {
       // Set position to end for new card
-      scrollContainer.scrollLeft = scrollContainer.scrollWidth;
+      scrollEl.scrollLeft = scrollEl.scrollWidth;
     } else {
       // Set position to selected card
-      scrollContainer.scrollLeft = scrollPosition;
+      scrollEl.scrollLeft = scrollPosition;
     }
 
     refocusElement(cards, focusIndex);
@@ -65,14 +66,10 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
       });
     }, options);
 
-    cards.forEach((card) => {
-      card && observer.observe(card);
-    });
+    cards.forEach((card) => card && observer.observe(card));
 
     return () => {
-      cards.forEach((card) => {
-        card && observer.unobserve(card);
-      });
+      cards.forEach((card) => card && observer.unobserve(card));
     };
   }, [focusIndex, scrollPosition]);
 
