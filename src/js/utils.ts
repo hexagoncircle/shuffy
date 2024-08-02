@@ -26,3 +26,18 @@ export const getRandomValue = <T>(arr: T[]): T => {
 export const getItemById = <T extends { id: string }>(arr: T[], id: string): T | undefined => {
   return arr.find((obj) => obj.id === id);
 };
+
+/**
+ * Utility to refocus an element, like a card, after editing/deleting.
+ * If item is deleted at the last index, focus previous index.
+ * @param {HTMLElement[]} arr An array of focusable elements.
+ * @param {number} focusIndex The element that should be focused.
+ */
+export const refocusElement = (arr: (HTMLElement | null)[], focusIndex: number | undefined) => {
+  if (!arr) return;
+
+  if (focusIndex !== undefined) {
+    const index = arr[focusIndex] ? focusIndex : focusIndex - 1;
+    arr[index]?.focus({ preventScroll: true });
+  }
+};

@@ -3,6 +3,7 @@ import { CardsContext } from "@components/CardsContext";
 import Card from "@components/Card";
 import Switch from "./Switch";
 import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
+import { refocusElement } from "@js/utils";
 
 interface CardsSpreadProps {
   focusIndex?: number;
@@ -53,10 +54,7 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
       scrollContainer.scrollLeft = scrollPosition;
     }
 
-    if (focusIndex !== undefined) {
-      // Refocus selected card
-      cards[focusIndex]?.focus({ preventScroll: true });
-    }
+    refocusElement(cards, focusIndex);
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {

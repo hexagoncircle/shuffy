@@ -1,5 +1,5 @@
 import { useEffect, useRef, useId, ChangeEvent, useContext } from 'react';
-import { getItemById } from '@js/utils';
+import { getItemById, refocusElement } from '@js/utils';
 import { CardDataProps, CardsContext } from '@components/CardsContext';
 import CardChip from '@components/CardChip';
 
@@ -49,10 +49,7 @@ export default function CardsGroup({ focusIndex, category, cards, onCardClick }:
   }, [cards, allChecked, someChecked]);
 
   useEffect(() => {
-    if (focusIndex !== undefined) {
-      // Refocus selected card
-      cardsRef.current[focusIndex]?.focus();
-    }
+    refocusElement(cardsRef.current, focusIndex);
   }, [focusIndex])
 
   return (
