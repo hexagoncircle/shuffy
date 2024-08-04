@@ -9,6 +9,7 @@ import Modal from "./Modal";
 import "@css/app-header.css";
 import { Link } from "react-router-dom";
 import Switch from "./Switch";
+import { CategoriesContext } from "./CategoriesContext";
 
 export default function AppHeader() {
   const {
@@ -22,7 +23,8 @@ export default function AppHeader() {
     setShuffleAnimation
   } = useContext(SettingsContext);
   const { cards } = useContext(CardsContext);
-  const [hasNotification, setHasNotification] = useState(true);
+  const { categories } = useContext(CategoriesContext);
+  const [hasNotification, setHasNotification] = useState(!categories.length);
   const cardCount = cards.length;
   const deckNameDisplayText = deckName || "¯\\_(ツ)_/¯";
 

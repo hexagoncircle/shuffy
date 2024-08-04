@@ -1,7 +1,6 @@
 import CardCreator from "@components/CardCreator";
 import CardEditor from "@components/CardEditor";
 import { CardDataProps } from "./CardsContext";
-import { getItemById } from "@js/utils";
 
 interface CardManagerProps {
   card?: CardDataProps;

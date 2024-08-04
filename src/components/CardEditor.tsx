@@ -6,6 +6,7 @@ import Select from "./Select";
 import CategorySelectIcon from "@assets/category-select.svg?react";
 import clsx from "clsx";
 import { getItemById } from "@js/utils";
+import Card from "./Card";
 
 interface CardEditorProps {
   card: CardDataProps;
@@ -89,29 +90,35 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
         </button>
       </header>
       <section className="card" style={{ "--theme": selectedCategoryObj?.theme } as CSSProperties}>
-        {selectedCategoryObj && <div className="card-category">{selectedCategoryObj.label}</div>}
+        <div className="card-front">
+          <div className="card-display">
+            {selectedCategoryObj && <div className="card-category">{selectedCategoryObj.label}</div>}
 
-        <div className="editor-box">
-          <div className="editor-box-corner"></div>
-          <div className="editor-box-corner"></div>
-          <div className="editor-box-corner"></div>
-          <div className="editor-box-corner"></div>
-          <label htmlFor="edit-card-title" className="visually-hidden">Card label</label>
-          <div className="card-name-wrapper stack" data-value={nameValue}>
-            <textarea
-              ref={nameRef}
-              id="edit-card-title"
-              className="card-name"
-              placeholder="Enter text for this card"
-              maxLength={nameMaxLength}
-              rows={nameValue ? 1 : 2}
-              value={nameValue}
-              onChange={(e) => setNameValue(e.currentTarget.value)}
-              onKeyDown={handleNameInputKeydown}
-            />
+            <div className="editor-box">
+              <div className="editor-box-corner"></div>
+              <div className="editor-box-corner"></div>
+              <div className="editor-box-corner"></div>
+              <div className="editor-box-corner"></div>
+              <label htmlFor="edit-card-title" className="visually-hidden">Card label</label>
+              <div className="card-name-wrapper stack" data-value={nameValue}>
+                <textarea
+                  ref={nameRef}
+                  id="edit-card-title"
+                  className="card-name"
+                  placeholder="Enter text for this card"
+                  maxLength={nameMaxLength}
+                  rows={nameValue ? 1 : 2}
+                  value={nameValue}
+                  onChange={(e) => setNameValue(e.currentTarget.value)}
+                  onKeyDown={handleNameInputKeydown}
+                />
+              </div>
+            </div>
+            <p className={clsx("character-count", nameValue.length >= nameMaxLength && "limit")}>
+              {nameValue.length} / {nameMaxLength}
+            </p>
           </div>
         </div>
-        <p className={clsx("character-count", nameValue.length >= nameMaxLength && "limit")}>{nameValue.length} / {nameMaxLength}</p>
       </section>
       <footer className="actions">
         {card ? (
@@ -121,7 +128,7 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
           </>
         ) : (
           <>
-            <button className="raised action" disabled={!nameValue} onClick={handleCreate}>Add card to deck</button>
+            <button className="raised action" disabled={!nameValue}>Add card to deck</button>
             <button onClick={onComplete}>Cancel</button>
           </>
         )}

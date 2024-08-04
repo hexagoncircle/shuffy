@@ -84,14 +84,17 @@
   padding: calc(var(--gutter) * 2);
   font-size: var(--card-name-fontSize);
   font-weight: var(--card-name-fontWeight);
+  text-wrap: revert;
 }
 
 :is(.card-front, .card-back) {
+  --button-push: 0;
   display: grid;
-  background-color: var(--bg);
-  backface-visibility: hidden;
   padding: var(--gutter);
+  background-color: var(--bg);
+  border: var(--border);
   border-radius: inherit;
+  backface-visibility: hidden;
 }
 
 .card.inactive :is(.card-front, .card-back) {
@@ -100,7 +103,6 @@
 }
 
 .card-front {
-  border: var(--border);
   border-radius: var(--radius);
 }
 
@@ -146,34 +148,21 @@
   }
 }
 
+/** Card editor **/
 .card-editor {
-  --max: 22rem;
+  --max: var(--card-size);
 }
 
-.card-editor .card {
+.card-editor .card-display {
   display: grid;
+  grid-template-columns: 1fr;
   grid-template-rows: 1fr auto;
-  gap: var(--space-2xs);
-  background-color: var(--bg);
-  padding: var(--space-l);
-}
-
-.character-count {
-  margin-inline-end: var(--space-s);
-  justify-self: end;
-  color: var(--color-text-subtle);
-  font-size: var(--text-xs);
-  font-weight: var(--font-medium);
-  font-feature-settings: "tnum";
-  letter-spacing: -0.03em;
-}
-
-.character-count.limit {
-  color: var(--color-danger);
+  border-color: transparent;
 }
 
 .card-editor .editor-box {
-  margin-block-start: auto;
+  grid-row: 2;
+  margin: calc(var(--gutter) - var(--border-width));
 }
 
 .card-editor-category-select {
@@ -186,10 +175,6 @@
   --button-bg: transparent;
   --button-border-width: 0;
   --button-padding: var(--space-xs);
-}
-
-.card-name-wrapper {
-  grid-template-columns: minmax(0, 1fr);
 }
 
 .card-name-wrapper::after {
@@ -216,4 +201,19 @@
   hyphens: auto;
   border: 0;
   background-color: transparent;
+}
+
+.character-count {
+  grid-row: 3;
+  margin-inline-end: var(--space-s);
+  justify-self: end;
+  color: var(--color-text-subtle);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  font-feature-settings: "tnum";
+  letter-spacing: -0.03em;
+}
+
+.character-count.limit {
+  color: var(--color-danger);
 }
