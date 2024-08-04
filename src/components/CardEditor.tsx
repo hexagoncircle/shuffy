@@ -113,10 +113,10 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
                   onKeyDown={handleNameInputKeydown}
                 />
               </div>
+              <p className={clsx("character-count", nameValue.length >= nameMaxLength && "limit")}>
+                {nameValue.length} / {nameMaxLength}
+              </p>
             </div>
-            <p className={clsx("character-count", nameValue.length >= nameMaxLength && "limit")}>
-              {nameValue.length} / {nameMaxLength}
-            </p>
           </div>
         </div>
       </section>
