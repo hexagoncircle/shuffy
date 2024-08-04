@@ -8,6 +8,7 @@ import CardsList from "@components/CardsList";
 import PlusIcon from "@assets/plus.svg?react";
 import CardManager from "@components/CardManager";
 import { getItemById } from "@js/utils";
+import CardEditor, { CardOnCompleteAction } from "./CardEditor";
 
 export default function DeckDisplay() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,17 +34,13 @@ export default function DeckDisplay() {
     setIsManaging(true);
   }
 
-  const handleEditComplete = () => {
+  const handleEditComplete = (action: CardOnCompleteAction) => {
+    setIsManaging(false);
     setEditCardId("");
-    setIsManaging(false);
-  }
 
-  const handleAddComplete = (value?: string) => {
-    setIsManaging(false);
-    setActiveCardIndex(cards.length);
-    setTimeout(() => addCardRef.current?.focus());
-
-    if (value !== "cancel") {
+    if (action === "create") {
+      setActiveCardIndex(cards.length);
+      setTimeout(() => addCardRef.current?.focus());
       setScrollPosition(-1);
     }
   }
@@ -57,12 +54,12 @@ export default function DeckDisplay() {
 
   if (isManaging) {
     return (
-      <CardManager
+      <CardEditor
         card={card}
-        onEditComplete={handleEditComplete}
-        onAddComplete={(value) => handleAddComplete(value)}
-      />
-    );
+        onComplete={handleEditComplete}
+      >
+      </CardEditor>
+    )
   }
 
   if (isEmptyDeck) {

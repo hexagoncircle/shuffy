@@ -55,16 +55,18 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
       scrollEl.scrollLeft = scrollPosition;
     }
 
-    refocusElement(cards, focusIndex);
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const index = cards.indexOf(entry.target as HTMLButtonElement);
+          const target = entry.target as HTMLButtonElement;
+          const index = cards.indexOf(target);
+
           setActiveCardIndex(index);
         }
       });
     }, options);
+
+    refocusElement(cards, focusIndex);
 
     cards.forEach((card) => card && observer.observe(card));
 
