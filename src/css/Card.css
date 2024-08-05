@@ -208,7 +208,7 @@
   right: var(--space-s);
   translate: 0 -50%;
   margin-inline-end: var(--space-s);
-  padding-inline: var(--space-2xs);
+  padding: var(--space-2xs) var(--space-xs);
   justify-self: end;
   color: var(--color-text-subtle);
   font-size: var(--text-xs);
@@ -216,9 +216,11 @@
   font-feature-settings: "tnum";
   letter-spacing: -0.02em;
   background-color: var(--white);
+  border-radius: var(--radius-xs);
   user-select: none;
 }
 
 .character-count.limit {
-  color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--white);
 }

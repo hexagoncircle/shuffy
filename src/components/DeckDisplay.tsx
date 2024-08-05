@@ -39,9 +39,9 @@ export default function DeckDisplay() {
     setEditCardId("");
 
     if (action === "create") {
+      setScrollPosition(-1);
       setActiveCardIndex(cards.length);
       setTimeout(() => addCardRef.current?.focus());
-      setScrollPosition(-1);
     }
   }
 
@@ -53,19 +53,11 @@ export default function DeckDisplay() {
   }
 
   if (isManaging) {
-    return (
-      <CardEditor
-        card={card}
-        onComplete={handleEditComplete}
-      >
-      </CardEditor>
-    )
+    return <CardEditor card={card} onComplete={handleEditComplete}></CardEditor>
   }
 
   if (isEmptyDeck) {
-    return (
-      <CardStarter className="center" onClick={() => setIsManaging(true)} />
-    )
+    return <CardStarter className="center" onClick={() => setIsManaging(true)} />
   }
 
   return (

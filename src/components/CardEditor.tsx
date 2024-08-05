@@ -23,6 +23,7 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
   const [nameValue, setNameValue] = useState(card?.label || "");
   const nameRef = useRef<HTMLTextAreaElement>(null);
   const nameMaxLength = 80;
+  const isNameCharacterLimit = nameValue.length >= nameMaxLength;
 
   const [selectedCategory, setSelectedCategory] = useState(card?.category || lastSelectedCategory);
   const selectedCategoryObj = selectedCategory ? getItemById(categories, selectedCategory) : null;
@@ -31,25 +32,20 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
     ...categories.map(({ label, id }) => ({ label, value: id }))
   ];
 
+  const handleEscapeCancel = (e: KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      onComplete("cancel");
+    }
+  }
+
   const handleNameInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
 
-      if (e.currentTarget.value && e.currentTarget.value !== card?.label) {
+      if (e.currentTarget.value) {
         card ? handleUpdate() : handleCreate();
-        handleComplete();
       }
-    }
-  }
-
-  const handleComplete = () => {
-    onComplete(card ? "update" : "create");
-  }
-
-  const handleKeyboardCancel = (e: KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Escape") {
-      e.preventDefault();
-      onComplete("cancel");
     }
   }
 
@@ -85,16 +81,18 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
   useEffect(() => {
     const ref = nameRef.current;
 
+    // Focus name input and set cursor at the end of the value.
     if (ref) {
       const length = ref.value.length;
 
       ref?.focus();
       ref.setSelectionRange(length, length);
     }
+
   }, []);
 
   return (
-    <article className="card-editor flow center" onKeyDown={handleKeyboardCancel}>
+    <article className="card-editor flow center" onKeyDown={handleEscapeCancel}>
       <header className="card-editor-category-select">
         <label htmlFor="select-category" className="visually-hidden">Category</label>
         <Select
@@ -134,7 +132,7 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
                   onKeyDown={handleNameInputKeydown}
                 />
               </div>
-              <p className={clsx("character-count", nameValue.length >= nameMaxLength && "limit")}>
+              <p className={clsx("character-count", isNameCharacterLimit && "limit")}>
                 {nameValue.length} / {nameMaxLength}
               </p>
             </div>
