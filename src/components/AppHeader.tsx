@@ -1,4 +1,4 @@
-import { SyntheticEvent, useContext, useEffect, useState } from "react";
+import { CSSProperties, SyntheticEvent, useContext, useEffect, useState } from "react";
 import { pluralize } from "@js/utils";
 import { SettingsContext } from "@components/SettingsContext";
 import { CardsContext } from "./CardsContext";
@@ -10,6 +10,7 @@ import "@css/app-header.css";
 import { Link } from "react-router-dom";
 import Switch from "./Switch";
 import { CategoriesContext } from "./CategoriesContext";
+import { ConfirmModalContext } from "./ConfirmModalContext";
 
 export default function AppHeader() {
   const {
@@ -22,8 +23,9 @@ export default function AppHeader() {
     setRepeatCard,
     setShuffleAnimation
   } = useContext(SettingsContext);
-  const { cards } = useContext(CardsContext);
-  const { categories } = useContext(CategoriesContext);
+  const { cards, deleteAllCards } = useContext(CardsContext);
+  const { categories, deleteAllCategories } = useContext(CategoriesContext);
+  const { setModalContext } = useContext(ConfirmModalContext);
   const [hasNotification, setHasNotification] = useState(!categories.length);
   const cardCount = cards.length;
   const deckNameDisplayText = deckName || "¯\\_(ツ)_/¯";
@@ -35,6 +37,32 @@ export default function AppHeader() {
   const handleSettingsToggleClick = () => {
     setIsSettingsActive(true)
     if (hasNotification) setHasNotification(false);
+  }
+
+  const handleDeleteCardsClick = () => {
+    setModalContext({
+      isOpen: true,
+      title: "Are you sure?",
+      message: `This action removes all the cards from the deck. Once they are deleted, they are gone forever.`,
+      actionConfirmText: "Yes, reset the deck",
+      actionCancelText: "Cancel",
+      onConfirm: () => {
+        deleteAllCards()
+      }
+    })
+  }
+
+  const handleDeleteCategoriesClick = () => {
+    setModalContext({
+      isOpen: true,
+      title: "Are you sure?",
+      message: `This action removes all categories from the deck. Your cards are safe! However, they will no longer be assigned a category. You can still update your cards once new categories are created.`,
+      actionConfirmText: "Yes, delete all categories",
+      actionCancelText: "Cancel",
+      onConfirm: () => {
+        deleteAllCategories()
+      }
+    })
   }
 
   return (
@@ -85,10 +113,30 @@ export default function AppHeader() {
           </div>
         </section>
 
-        <section className="app-header-modal-section cluster">
-          <button id="delete-deck" className="danger" type="button">
-            Delete deck
-          </button>
+        <section
+          className="app-header-modal-section cluster"
+          style={{ "--justify": "flex-end" } as CSSProperties}
+        >
+          {categories.length ? (
+            <button
+              id="delete-categories"
+              className="danger"
+              type="button"
+              onClick={handleDeleteCategoriesClick}
+            >
+              Delete all categories
+            </button>
+          ) : null}
+          {cards.length ? (
+            <button
+              id="delete-cards"
+              className="danger"
+              type="button"
+              onClick={handleDeleteCardsClick}
+            >
+              Reset the deck
+            </button>
+          ) : null}
         </section>
       </Modal>
     </header>

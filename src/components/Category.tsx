@@ -103,7 +103,7 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
       setModalContext({
         isOpen: true,
         title: "Heads up!",
-        message: `${categoryCards.length} of your cards are categorized under <strong>${label}</strong>. They’ll be uncategorized for now, but you can always set a new category.`,
+        message: `${categoryCards.length} of your cards are categorized under <strong>${label}</strong>. They’ll be uncategorized for now but you can always set a new category.`,
         actionConfirmText: "Got it, delete this category",
         actionCancelText: "Cancel",
         onConfirm: () => {

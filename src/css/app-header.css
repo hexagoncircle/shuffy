@@ -40,10 +40,6 @@
   color: var(--color-text-subtle);
 }
 
-[id="delete-deck"] {
-  margin-inline-start: auto;
-}
-
 @media (max-width: 43rem) {
   .app-header {
     grid-template-columns: minmax(0, 1fr);

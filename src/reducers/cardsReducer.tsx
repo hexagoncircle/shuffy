@@ -15,7 +15,11 @@ type DeletedAction = {
   id: string;
 };
 
-type Actions = CreatedAction | UpdatedAction | DeletedAction;
+type AllDeletedAction = {
+  type: "CARDS_ALL_DELETED";
+};
+
+type Actions = CreatedAction | UpdatedAction | DeletedAction | AllDeletedAction;
 
 export default function cardsReducer(cards: CardDataProps[], action: Actions) {
   switch (action.type) {
@@ -33,6 +37,9 @@ export default function cardsReducer(cards: CardDataProps[], action: Actions) {
     }
     case "CARD_DELETED": {
       return cards.filter((card) => card.id !== action.id);
+    }
+    case "CARDS_ALL_DELETED": {
+      return [];
     }
   }
 }

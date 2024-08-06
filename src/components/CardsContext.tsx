@@ -21,6 +21,7 @@ interface CardsContextType {
   createCard: (card: CardDataProps) => void;
   updateCard: (card: CardDataProps) => void;
   deleteCard: (id: string) => void;
+  deleteAllCards: () => void;
   setEditCardId: (id: string) => void;
 }
 
@@ -30,6 +31,7 @@ export const CardsContext = createContext<CardsContextType>({
   createCard: () => { },
   updateCard: () => { },
   deleteCard: () => { },
+  deleteAllCards: () => { },
   setEditCardId: () => { }
 });
 
@@ -64,12 +66,19 @@ export default function CardsProvider({ children }: CardsProviderProps) {
     });
   };
 
+  const deleteAllCards = () => {
+    console.log("CARD_ALL_DELETED", cards);
+
+    dispatch({ type: "CARDS_ALL_DELETED" });
+  };
+
   const value: CardsContextType = {
     cards,
     editCardId,
     createCard,
     updateCard,
     deleteCard,
+    deleteAllCards,
     setEditCardId
   };
 
