@@ -26,11 +26,11 @@ function App() {
         </CategoriesProvider>
       </SettingsProvider>
 
-      <nav id="main-nav" className="cluster">
+      {/* <nav id="main-nav" className="cluster">
         <Link to="/">Home</Link>
         <Link to='/deck'>Deck</Link>
         <Link to="/design-review">Design Review</Link>
-      </nav>
+      </nav> */}
     </>
   )
 }

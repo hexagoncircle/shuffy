@@ -6,7 +6,7 @@ import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
 import { refocusElement } from "@js/utils";
 
 interface CardsSpreadProps {
-  focusIndex?: number;
+  focusIndex?: number | null;
   scrollPosition: number;
   onCardClick(scrollPos: number, index: number): void;
 }
@@ -66,7 +66,7 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
       });
     }, options);
 
-    refocusElement(cards, focusIndex);
+    focusIndex && refocusElement(cards, focusIndex);
 
     cards.forEach((card) => card && observer.observe(card));
 

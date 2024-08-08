@@ -6,7 +6,7 @@ import CardChip from '@components/CardChip';
 interface CardsGroupProps {
   category: string;
   cards: CardDataProps[];
-  focusIndex?: number;
+  focusIndex?: number | null;
   onCardClick(id: string, index: number): void;
 }
 

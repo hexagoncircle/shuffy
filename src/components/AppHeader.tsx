@@ -1,4 +1,4 @@
-import { CSSProperties, SyntheticEvent, useContext, useEffect, useState } from "react";
+import { CSSProperties, SyntheticEvent, useContext, useState } from "react";
 import { pluralize } from "@js/utils";
 import { SettingsContext } from "@components/SettingsContext";
 import { CardsContext } from "./CardsContext";

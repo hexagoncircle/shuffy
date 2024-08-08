@@ -6,7 +6,6 @@ import CardStarter from "@components/CardStarter";
 import CardsSpread from "@components/CardsSpread";
 import CardsList from "@components/CardsList";
 import PlusIcon from "@assets/plus.svg?react";
-import CardManager from "@components/CardManager";
 import { getItemById } from "@js/utils";
 import CardEditor, { CardOnCompleteAction } from "./CardEditor";
 
@@ -16,25 +15,25 @@ export default function DeckDisplay() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [view, setView] = useState(searchParams.get('view') as DeckDisplayControlView);
   const [isManaging, setIsManaging] = useState(false);
-  const [activeCardIndex, setActiveCardIndex] = useState<number>();
-  const [activeGroupIndex, setActiveGroupIndex] = useState<number>();
+  const [activeCardIndex, setActiveCardIndex] = useState<number | null>();
+  const [activeGroupIndex, setActiveGroupIndex] = useState<number | null>();
   const addCardRef = useRef<HTMLButtonElement | null>(null);
   const card = getItemById(cards, editCardId);
   const isEmptyDeck = cards.length === 0;
 
   const resetActiveIndex = () => {
-    setActiveGroupIndex(undefined);
-    setActiveCardIndex(undefined);
+    setActiveGroupIndex(null);
+    setActiveCardIndex(null);
   }
 
   const handleCardClick = (scrollPosition: number, cardIndex: number, groupIndex?: number) => {
-    groupIndex !== undefined && setActiveGroupIndex(groupIndex);
+    groupIndex !== null && setActiveGroupIndex(groupIndex);
     setActiveCardIndex(cardIndex);
     setScrollPosition(scrollPosition);
     setIsManaging(true);
   }
 
-  const handleEditComplete = (action: CardOnCompleteAction) => {
+  const handleOnComplete = (action: CardOnCompleteAction) => {
     setIsManaging(false);
     setEditCardId("");
 
@@ -53,7 +52,7 @@ export default function DeckDisplay() {
   }
 
   if (isManaging) {
-    return <CardEditor card={card} onComplete={handleEditComplete}></CardEditor>
+    return <CardEditor card={card} onComplete={handleOnComplete}></CardEditor>
   }
 
   if (isEmptyDeck) {

@@ -33,10 +33,10 @@ export const getItemById = <T extends { id: string }>(arr: T[], id: string): T |
  * @param {HTMLElement[]} arr An array of focusable elements.
  * @param {number} focusIndex The element that should be focused.
  */
-export const refocusElement = (arr: (HTMLElement | null)[], focusIndex: number | undefined) => {
+export const refocusElement = (arr: (HTMLElement | null)[], focusIndex: number | null) => {
   if (!arr) return;
 
-  if (focusIndex !== undefined) {
+  if (focusIndex) {
     const index = arr[focusIndex] ? focusIndex : focusIndex - 1;
     arr[index]?.focus({ preventScroll: true });
   }

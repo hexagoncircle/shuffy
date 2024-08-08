@@ -4,8 +4,8 @@ import { CategoriesContext, CategoryDataProps } from "@components/CategoriesCont
 import CardsGroup from "@components/CardsGroup";
 
 interface CardsListProps {
-  focusGroupIndex?: number;
-  focusCardIndex?: number;
+  focusGroupIndex?: number | null;
+  focusCardIndex?: number | null;
   scrollPosition?: number;
   onCardClick(scrollPos: number, cardIndex: number, groupIndex: number): void;
 }
@@ -75,7 +75,7 @@ export default function CardsList({ focusGroupIndex, focusCardIndex, scrollPosit
           key={category}
           category={category}
           cards={groupedCards[category]}
-          focusIndex={focusGroupIndex === index ? focusCardIndex : undefined}
+          focusIndex={focusGroupIndex === index ? focusCardIndex : null}
           onCardClick={(id, cardIndex) => handleCardClick(id, cardIndex, index)}
         />
       ))}
