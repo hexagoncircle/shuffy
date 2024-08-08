@@ -150,7 +150,7 @@
 
 /** Card editor **/
 .card-editor {
-  --max: var(--card-size);
+  --max: min(var(--card-size), 100% - var(--page-gutter) * 2);
 }
 
 .card-editor .card-display {

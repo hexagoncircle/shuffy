@@ -75,6 +75,8 @@
 
   --card-size: min(22rem, 100%);
   --card-aspect-ratio: 154 / 202;
+
+  --page-gutter: clamp(var(--space-l), 4vw, var(--space-3xl));
 }
 
 html,

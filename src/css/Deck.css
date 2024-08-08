@@ -3,7 +3,6 @@
 }
 
 .deck-header {
-  --padding-inline: clamp(var(--space-l), 0.75rem + 4vw, var(--space-3xl));
   position: sticky;
   top: 0;
   z-index: 1;
@@ -11,7 +10,7 @@
   align-items: center;
   gap: var(--space-s);
   padding-block: clamp(var(--space-s), 0.5rem + 2vw, var(--space-m));
-  padding-inline: var(--padding-inline);
+  padding-inline: var(--page-gutter);
   background-color: var(--white);
   border-block-end: var(--border);
 }
@@ -29,7 +28,7 @@
   position: absolute;
   top: 50%;
   translate: 0 -50%;
-  right: var(--padding-inline);
+  right: var(--space-m);
 }
 
 .deck-edit-header-action .icon-button {
