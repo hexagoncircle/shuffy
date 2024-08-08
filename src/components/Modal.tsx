@@ -1,7 +1,6 @@
 import CloseIcon from "@assets/close.svg?react";
 import { ReactNode, useEffect, useRef } from "react";
 import "@css/modal.css";
-import { useClickAway } from "@uidotdev/usehooks";
 
 interface ModalProps {
   open: boolean;

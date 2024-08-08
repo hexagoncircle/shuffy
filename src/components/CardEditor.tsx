@@ -8,11 +8,11 @@ import { CardDataProps, CardsContext } from "@components/CardsContext";
 import Select from "./Select";
 import CategorySelectIcon from "@assets/category-select.svg?react";
 
-export type CardOnCompleteAction = "create" | "update" | "cancel";
+export type CardEditAction = "create" | "update" | "cancel";
 
 interface CardEditorProps {
   card?: CardDataProps;
-  onComplete(value: CardOnCompleteAction): void;
+  onComplete(value: CardEditAction): void;
 }
 
 export default function CardEditor({ card, onComplete }: CardEditorProps) {

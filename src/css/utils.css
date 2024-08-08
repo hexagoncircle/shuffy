@@ -92,6 +92,10 @@
   hyphens: auto;
 }
 
+.border-0 {
+  border: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .scroll-x:focus-within {
     scroll-behavior: smooth;

@@ -2,6 +2,76 @@
   padding-block: var(--space-l);
 }
 
+.deck-header {
+  --padding-inline: clamp(var(--space-l), 0.75rem + 4vw, var(--space-3xl));
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  align-items: center;
+  gap: var(--space-s);
+  padding-block: clamp(var(--space-s), 0.5rem + 2vw, var(--space-m));
+  padding-inline: var(--padding-inline);
+  background-color: var(--white);
+  border-block-end: var(--border);
+}
+
+.deck-header:not(.deck-edit-header) {
+  grid-template-columns: 1fr auto auto;
+}
+
+.deck-edit-header-text {
+  text-align: center;
+  font-size: var(--text-l);
+}
+
+.deck-edit-header-action {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  right: var(--padding-inline);
+}
+
+.deck-edit-header-action .icon-button {
+  --button-icon-size: 1.25em;
+  --button-bg: transparent;
+  --button-padding: var(--space-s);
+}
+
+.deck-header .settings-toggle {
+  grid-column: -1;
+  margin-inline-end: calc(var(--button-padding) * -1);
+}
+
+.deck-header .callout {
+  max-inline-size: 22rem;
+}
+
+.deck-header .category-creator {
+  --space: var(--space-s);
+}
+
+.deck-header-info {
+  margin-inline-end: auto;
+  padding-block: var(--space-m);
+}
+
+.deck-header-card-count {
+  color: var(--color-text-subtle);
+}
+
+@media (max-width: 43rem) {
+  .deck-header:not(.deck-edit-header) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .deck-header .callout {
+    justify-self: center;
+    grid-column: span 2;
+    grid-row: 2;
+  }
+}
+
 .cards-wrapper {
   --gutter: var(--space-m);
   scroll-snap-type: x mandatory;

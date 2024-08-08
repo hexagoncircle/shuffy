@@ -1,26 +1,18 @@
-import { CSSProperties, SyntheticEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { pluralize } from "@js/utils";
 import { SettingsContext } from "@components/SettingsContext";
 import { CardsContext } from "./CardsContext";
-import SettingsToggle from "./SettingsToggle";
-import Categories from "./Categories";
-import Callout from "./Callout";
-import Modal from "./Modal";
-import "@css/app-header.css";
 import { Link } from "react-router-dom";
-import Switch from "./Switch";
 import { CategoriesContext } from "./CategoriesContext";
-import { ConfirmModalContext } from "./ConfirmModalContext";
-import SettingsModal from "./SettingsModal";
+import Callout from "./Callout";
+import SettingsToggle from "./SettingsToggle";
 
-export default function AppHeader() {
-  const {
-    deckName,
-    setIsSettingsActive,
-  } = useContext(SettingsContext);
-  const { cards } = useContext(CardsContext);
+
+export default function DeckHeader() {
+  const { deckName, setIsSettingsActive } = useContext(SettingsContext);
   const { categories } = useContext(CategoriesContext);
   const [hasNotification, setHasNotification] = useState(!categories.length);
+  const { cards } = useContext(CardsContext);
   const cardCount = cards.length;
   const deckNameDisplayText = deckName || "¯\\_(ツ)_/¯";
 
@@ -30,10 +22,10 @@ export default function AppHeader() {
   }
 
   return (
-    <header className="app-header">
-      <section className="app-header-info">
+    <header className="deck-header">
+      <section className="deck-header-info">
         <h1 className="text-2xl font-semibold">{deckNameDisplayText}</h1>
-        <p className="app-header-card-count">{cardCount} {pluralize("card", "cards", cardCount)}</p>
+        <p className="deck-header-card-count">{cardCount} {pluralize("card", "cards", cardCount)}</p>
       </section>
 
       {hasNotification && cards.length === 0 ? (
@@ -43,9 +35,7 @@ export default function AppHeader() {
       ) : (
         <Link className="button action raised large" to='/shuffle'>Shuffy this deck</Link>
       )}
-
       <SettingsToggle hasNotification={hasNotification} onClick={handleSettingsToggleClick} />
-      <SettingsModal />
     </header>
   )
 }
