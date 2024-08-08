@@ -49,7 +49,7 @@ export default function CardsGroup({ focusIndex, category, cards, onCardClick }:
   }, [cards, allChecked, someChecked]);
 
   useEffect(() => {
-    refocusElement(cardsRef.current, focusIndex);
+    focusIndex && refocusElement(cardsRef.current, focusIndex);
   }, [focusIndex])
 
   return (
