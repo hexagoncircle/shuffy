@@ -13,7 +13,6 @@ interface ModalProps {
 
 export default function Modal({ open, actions, title, variant, children, onClose }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
-  // const formRef = useClickAway<HTMLFormElement>(() => onClose());
 
   useEffect(() => {
     if (open) {
