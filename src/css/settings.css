@@ -1,0 +1,5 @@
+.settings-section + .settings-section {
+  border-block-start: var(--border);
+  padding-block-start: var(--space-l);
+  margin-block-start: var(--space-xl);
+}
