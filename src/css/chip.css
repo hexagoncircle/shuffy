@@ -1,7 +1,7 @@
 .chips {
   --max: min(35rem, 100% - var(--page-gutter) * 2);
-
   margin-block-end: var(--space-3xl);
+  inline-size: 100%;
 }
 
 .chip {
