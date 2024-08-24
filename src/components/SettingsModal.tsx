@@ -74,7 +74,7 @@ export default function SettingsModal() {
         <div className="checkbox-wrapper">
           <Switch id="card-active-toggle" variant="compact" checked={repeatCard} onChange={() => setRepeatCard(!repeatCard)} />
           <label htmlFor="card-active-toggle">
-            Allow same card in back-to-back shuffies
+            Allow same selected card in back-to-back shuffies
           </label>
         </div>
         <div className="checkbox-wrapper">
