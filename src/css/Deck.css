@@ -95,6 +95,8 @@
     min(var(--card-size), 100% - var(--gutter) * 2)
     [content-end]
     1fr [full-end];
+  padding-block: var(--gutter);
+  margin-block: calc(var(--gutter) * -1);
 }
 
 .cards {
