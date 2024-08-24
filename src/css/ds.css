@@ -1,6 +1,7 @@
 @import "@css/reset.css";
 @import "@css/fonts.css";
 @import "@css/utils.css";
+@import "@css/custom-media.css";
 
 :root {
   --font-body: "Pangea", sans-serif;
@@ -76,12 +77,11 @@
   --card-size: min(22rem, 100%);
   --card-aspect-ratio: 154 / 202;
 
-  --page-gutter: clamp(var(--space-l), 4vw, var(--space-3xl));
+  --page-gutter: var(--space-l);
 }
 
 html,
-body,
-#root {
+body {
   height: 100%;
 }
 
@@ -94,6 +94,11 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   overscroll-behavior: none;
+}
+
+#root {
+  display: grid;
+  gap: var(--space-l);
 }
 
 [id="main-nav"] {
@@ -235,7 +240,7 @@ textarea {
   align-items: center;
   gap: var(--space-s);
 
-  [type="checkbox"] {
+  :where([type="checkbox"], .switch) {
     flex-shrink: 0;
   }
 }
@@ -474,11 +479,39 @@ button:disabled {
 .actions {
   display: grid;
   gap: var(--space-m);
-  max-inline-size: 24rem;
+  margin-inline: auto;
+  padding-block-end: var(--page-gutter);
+  inline-size: min(var(--card-size), 100%);
 }
 
+@media (--mq-small-max) {
+  .actions {
+    padding: var(--page-gutter);
+    inline-size: 100%;
+    background-color: var(--white);
+  }
+}
+
+/* Adjusted for visual offset created by button shadow */
 .actions .raised:is(:only-child, :last-child) {
-  margin-bottom: 4px; /* Considers button shadow offset */
+  margin-bottom: 4px;
+}
+
+.main-display {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  place-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+@media (--mq-small-max) {
+  .main-display {
+    padding: unset;
+  }
 }
 
 .section-title {

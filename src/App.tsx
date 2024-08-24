@@ -11,8 +11,6 @@ import DesignReview from "./DesignReview";
 function App() {
   return (
     <>
-      <h1 className="visually-hidden">Shuffy</h1>
-
       <SettingsProvider>
         <CategoriesProvider>
           <CardsProvider>

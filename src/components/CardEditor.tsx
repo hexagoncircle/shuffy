@@ -92,53 +92,55 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
   }, []);
 
   return (
-    <article className="card-editor flow center" onKeyDown={handleEscapeCancel}>
-      <header className="card-editor-category-select">
-        <label htmlFor="select-category" className="visually-hidden">Category</label>
-        <Select
-          id="select-category"
-          options={categoryOptions}
-          selected={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.currentTarget.value)}
-        />
-        <button className="icon-button" onClick={() => setIsSettingsActive(true)}>
-          <CategorySelectIcon aria-hidden="true" />
-        </button>
-      </header>
-      <section
-        className="card"
-        style={{ "--theme": selectedCategoryObj?.theme } as CSSProperties}
-      >
-        <div className="card-front">
-          <div className="card-display">
-            {selectedCategoryObj && <div className="card-category">{selectedCategoryObj.label}</div>}
+    <>
+      <article className="card-editor flow center" onKeyDown={handleEscapeCancel}>
+        <div className="card-editor-category-select">
+          <label htmlFor="select-category" className="visually-hidden">Category</label>
+          <Select
+            id="select-category"
+            options={categoryOptions}
+            selected={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.currentTarget.value)}
+          />
+          <button className="icon-button" onClick={() => setIsSettingsActive(true)}>
+            <CategorySelectIcon aria-hidden="true" />
+          </button>
+        </div>
+        <div
+          className="card"
+          style={{ "--theme": selectedCategoryObj?.theme } as CSSProperties}
+        >
+          <div className="card-front">
+            <div className="card-display">
+              {selectedCategoryObj && <div className="card-category">{selectedCategoryObj.label}</div>}
 
-            <div className="editor-box">
-              <div className="editor-box-corner"></div>
-              <div className="editor-box-corner"></div>
-              <div className="editor-box-corner"></div>
-              <div className="editor-box-corner"></div>
-              <label htmlFor="edit-card-title" className="visually-hidden">Card label</label>
-              <div className="card-name-wrapper stack" data-value={nameValue}>
-                <textarea
-                  ref={nameRef}
-                  id="edit-card-title"
-                  className="card-name"
-                  placeholder="Enter text for this card"
-                  maxLength={nameMaxLength}
-                  rows={nameValue ? 1 : 2}
-                  value={nameValue}
-                  onChange={(e) => setNameValue(e.currentTarget.value)}
-                  onKeyDown={handleNameInputKeydown}
-                />
+              <div className="editor-box">
+                <div className="editor-box-corner"></div>
+                <div className="editor-box-corner"></div>
+                <div className="editor-box-corner"></div>
+                <div className="editor-box-corner"></div>
+                <label htmlFor="edit-card-title" className="visually-hidden">Card label</label>
+                <div className="card-name-wrapper stack" data-value={nameValue}>
+                  <textarea
+                    ref={nameRef}
+                    id="edit-card-title"
+                    className="card-name"
+                    placeholder="Enter text for this card"
+                    maxLength={nameMaxLength}
+                    rows={nameValue ? 1 : 2}
+                    value={nameValue}
+                    onChange={(e) => setNameValue(e.currentTarget.value)}
+                    onKeyDown={handleNameInputKeydown}
+                  />
+                </div>
+                <p className={clsx("character-count", isNameCharacterLimit && "limit")}>
+                  {nameValue.length} / {nameMaxLength}
+                </p>
               </div>
-              <p className={clsx("character-count", isNameCharacterLimit && "limit")}>
-                {nameValue.length} / {nameMaxLength}
-              </p>
             </div>
           </div>
         </div>
-      </section>
+      </article>
       <footer className="actions">
         {card ? (
           <>
@@ -168,6 +170,6 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
           </>
         )}
       </footer>
-    </article>
+    </>
   );
 }

@@ -91,15 +91,19 @@
   --button-push: 0;
   display: grid;
   padding: var(--gutter);
+  color: inherit;
   background-color: var(--bg);
   border: var(--border);
   border-radius: inherit;
   backface-visibility: hidden;
 }
 
-.card.inactive :is(.card-front, .card-back) {
-  --theme: var(--light-gray);
+.card.inactive {
   color: var(--color-text-subtle);
+
+  &.has-theme {
+    --theme: var(--light-gray) !important;
+  }
 }
 
 .card-front {
@@ -120,13 +124,13 @@
 }
 
 :where(.card).is-flipping {
-  animation: card-flip 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: card-flip 380ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes card-flip {
   0% {
     transform: rotateY(90deg);
-    scale: 0.6;
+    scale: 0.5;
   }
   100% {
     transform: rotateY(0);
@@ -151,6 +155,7 @@
 /** Card editor **/
 .card-editor {
   --max: min(var(--card-size), 100% - var(--page-gutter) * 2);
+  inline-size: 100%;
 }
 
 .card-editor .card-display {

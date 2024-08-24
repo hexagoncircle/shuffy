@@ -23,18 +23,20 @@ export default function DeckHeader() {
 
   return (
     <header className="deck-header">
-      <section className="deck-header-info">
+      <div className="deck-header-info flow flow-xs">
         <h1 className="text-2xl font-semibold">{deckNameDisplayText}</h1>
         <p className="deck-header-card-count">{cardCount} {pluralize("card", "cards", cardCount)}</p>
-      </section>
+      </div>
 
-      {hasNotification && cards.length === 0 ? (
-        <Callout>
-          <p>Lots of cards to add? Consider setting up deck categories first.</p>
-        </Callout>
-      ) : (
-        <Link className="button action raised large" to='/shuffle'>Shuffy this deck</Link>
-      )}
+      <div className="deck-header-action">
+        {hasNotification && cards.length === 0 ? (
+          <Callout>
+            <p>Lots of cards to add? Consider setting up deck categories first.</p>
+          </Callout>
+        ) : (
+          <Link className="button action raised large" to='/shuffle'>Shuffy this deck</Link>
+        )}
+      </div>
       <SettingsToggle hasNotification={hasNotification} onClick={handleSettingsToggleClick} />
     </header>
   )

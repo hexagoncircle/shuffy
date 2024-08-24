@@ -71,7 +71,7 @@ export default function DeckDisplay({ isEditing, onIsEditing }: DeckDisplayProps
           ref={addCardRef}
           id="add-new-card"
           className="primary small"
-          onClick={() => onIsEditing(true, "add")}
+          onClick={() => onIsEditing(true, "create")}
         >
           <PlusIcon /> Add a card
         </button>

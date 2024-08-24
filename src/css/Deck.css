@@ -1,22 +1,28 @@
-.deck {
-  padding-block: var(--space-l);
+.deck-display {
+  align-self: start;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-l);
+  padding-block-end: var(--page-gutter);
 }
 
 .deck-header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  position: relative;
   display: grid;
   align-items: center;
   gap: var(--space-s);
-  padding-block: clamp(var(--space-s), 0.5rem + 2vw, var(--space-m));
-  padding-inline: var(--page-gutter);
+  padding: var(--page-gutter);
+  padding-inline: clamp(var(--page-gutter), 3vw, var(--space-2xl));
   background-color: var(--white);
   border-block-end: var(--border);
 }
 
 .deck-header:not(.deck-edit-header) {
   grid-template-columns: 1fr auto auto;
+}
+
+.deck-edit-header {
+  padding-block: var(--space-l);
 }
 
 .deck-edit-header-text {
@@ -57,11 +63,19 @@
 
 .deck-header-card-count {
   color: var(--color-text-subtle);
+  line-height: 1.1;
 }
 
 @media (max-width: 43rem) {
   .deck-header:not(.deck-edit-header) {
     grid-template-columns: minmax(0, 1fr);
+    background-color: transparent;
+    border-block-end: unset;
+    padding-block-end: unset;
+  }
+
+  .deck-header-action {
+    display: none;
   }
 
   .deck-header .callout {
@@ -74,7 +88,6 @@
 .cards-wrapper {
   --gutter: var(--space-m);
   scroll-snap-type: x mandatory;
-  padding-block: var(--space-xs);
   display: grid;
   grid-template-columns:
     [full-start] 1fr
@@ -86,7 +99,7 @@
 
 .cards {
   --scale: 0.94;
-  grid-area: content;
+  grid-column: content;
   display: flex;
   gap: var(--space-s);
 
@@ -105,18 +118,19 @@
 
 .deck-controls {
   --max: 35rem;
-  --gutter: var(--space-m);
+  --gutter: var(--space-l);
   --justify: space-between;
 
   border-block-end: var(--border);
-  margin-block-end: var(--space-l);
   padding-block-end: var(--space-l);
+  inline-size: 100%;
 }
 
 .card-active-control {
-  --max: var(--card-size);
+  --max: min(var(--card-size), 100% - var(--page-gutter) * 2);
   --align: center;
   --justify: space-between;
+  inline-size: 100%;
 }
 
 .card-active-control label {

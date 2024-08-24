@@ -1,5 +1,5 @@
 .modal {
-  --gutter: var(--space-xl);
+  --gutter: clamp(var(--space-l), 4vw, var(--space-xl));
   inset-block-start: auto;
   margin: auto;
   padding: 0;

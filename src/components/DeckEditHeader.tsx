@@ -2,7 +2,7 @@ import CloseIcon from "@assets/close.svg?react";
 
 interface DeckEditHeaderProps {
   text: string;
-  onClose(): void;
+  onClose?(): void;
 }
 
 export default function DeckEditHeader({ text, onClose }: DeckEditHeaderProps) {
@@ -11,12 +11,14 @@ export default function DeckEditHeader({ text, onClose }: DeckEditHeaderProps) {
       <h2 className="deck-edit-header-text center">
         {text}
       </h2>
-      <div className="deck-edit-header-action">
-        <button className="icon-button border-0" onClick={() => onClose()}>
-          <span className="visually-hidden">Cancel action</span>
-          <CloseIcon aria-hidden="true" />
-        </button>
-      </div>
+      {onClose ? (
+        <div className="deck-edit-header-action">
+          <button className="icon-button border-0" onClick={() => onClose()}>
+            <span className="visually-hidden">Cancel action</span>
+            <CloseIcon aria-hidden="true" />
+          </button>
+        </div>
+      ) : null}
     </header>
   )
 }

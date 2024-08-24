@@ -25,7 +25,12 @@ const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected
   return (
     <article
       id={id}
-      className={clsx("card stack", !isActive && "inactive", flipped && "flipped", className)}
+      className={clsx(
+        "card stack",
+        !isActive && "inactive",
+        flipped && "flipped",
+        theme && "has-theme",
+        className)}
       style={{ "--theme": theme } as CSSProperties}
     >
       <button

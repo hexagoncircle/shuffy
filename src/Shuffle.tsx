@@ -1,4 +1,4 @@
-import { CSSProperties, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 import { getRandomValue } from "@js/utils";
 import { CardsContext } from "@components/CardsContext";
 import { Link } from "react-router-dom";
@@ -38,30 +38,32 @@ export default function Shuffle() {
   }, [shuffleAnimation])
 
   return (
-    <div className="shuffle-display flow">
-      <div className="shuffle-wrapper flow stack center">
-        {isReady ? (
-          <Card card={card} className="is-flipping" />
-        ) : (
-          <video className="shuffle-video"
-            width={1518}
-            height={1080}
-            autoPlay
-            muted
-            playsInline
-            onEnded={() => setIsReady(true)}
-          >
-            <source src="shuffle.mov" type='video/mp4; codecs="hvc1"' />
-            <source src="shuffle.webm" type="video/webm" />
-          </video>
-        )}
-      </div>
-      <div className="cluster center" style={{ "--align": "center", "--justify": "center" } as CSSProperties}>
-        <button className="primary reset-button" onClick={handleReshuffle}>
-          Shuffy it again
-        </button>
-        <Link to='/deck'>Back to deck</Link>
-      </div>
-    </div>
+    <>
+      <main className="shuffle-display main-display">
+        <article className="shuffle-wrapper stack center">
+          {isReady ? (
+            <Card card={card} className="is-flipping" />
+          ) : (
+            <video className="shuffle-video"
+              width={1518}
+              height={1080}
+              autoPlay
+              muted
+              playsInline
+              onEnded={() => setIsReady(true)}
+            >
+              <source src="shuffle.mov" type='video/mp4; codecs="hvc1"' />
+              <source src="shuffle.webm" type="video/webm" />
+            </video>
+          )}
+        </article>
+        <footer className="actions" style={{ "--align": "center", "--justify": "center" } as CSSProperties}>
+          <button className="raised action" onClick={handleReshuffle}>
+            Shuffy it again
+          </button>
+          <Link className="button primary" to='/deck'>Back to deck</Link>
+        </footer>
+      </main>
+    </>
   )
 }

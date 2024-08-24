@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 69 56">
   <path
-    fill="silver"
+    fill="currentColor"
     stroke="#231F20"
     stroke-miterlimit="10"
     stroke-width="1.021"
     d="M48 37c9.941 0 18-7.611 18-17S57.941 3 48 3s-18 7.611-18 17 8.059 17 18 17Z"
   />
   <path
-    fill="silver"
+    fill="currentColor"
     stroke="#231F20"
     stroke-miterlimit="10"
     stroke-width="1.021"
