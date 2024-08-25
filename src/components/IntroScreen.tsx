@@ -9,7 +9,6 @@ import styles from "@css/IntroScreen.module.css";
 import { SettingsContext } from "./SettingsContext";
 import { Link, useNavigate } from "react-router-dom";
 
-gsap.registerPlugin(useGSAP);
 
 export default function IntroScreen() {
   const { deckName, setDeckName } = useContext(SettingsContext);

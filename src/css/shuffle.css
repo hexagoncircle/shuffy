@@ -2,6 +2,31 @@
   min-height: 100svh;
 }
 
+.shuffle-actions-wrapper {
+  --_offset: var(--space-m);
+  --_d: 300ms;
+  display: grid;
+  grid-template-rows: 1fr;
+  justify-items: center;
+  inline-size: 100%;
+  opacity: 1;
+  transition: grid-template-rows var(--_d), opacity var(--_d) var(--_d);
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+  &[hidden] {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition-duration: var(--_d), calc(var(--_d) / 2);
+    transition-delay: var(--_d), 0ms;
+  }
+
+  > * {
+    overflow: hidden;
+    padding: var(--_offset);
+    margin: calc(var(--_offset) * -1);
+  }
+}
+
 .shuffle-wrapper {
   --max: 50rem;
 

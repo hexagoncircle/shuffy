@@ -480,7 +480,6 @@ button:disabled {
   display: grid;
   gap: var(--space-m);
   margin-inline: auto;
-  padding-block-end: var(--page-gutter);
   inline-size: min(var(--card-size), 100%);
 }
 
