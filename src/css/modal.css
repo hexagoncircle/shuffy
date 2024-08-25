@@ -63,10 +63,13 @@ html:has(.modal[open]) {
   --button-bg: transparent;
   --padding: var(--space-s);
   margin-inline-start: auto;
-  margin-block-start: calc(var(--padding) * -1);
   margin-inline-end: calc(var(--padding) * -1);
   padding: var(--padding);
   border: 0;
+}
+
+.modal:not([data-variant="drawer"]) .modal-close {
+  margin-block-start: calc(var(--padding) * -1);
 }
 
 .modal[data-variant="drawer"] {
