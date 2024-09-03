@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getRandomValue } from "@js/utils";
 import { CardsContext } from "@components/CardsContext";
 import { Link } from "react-router-dom";
@@ -7,7 +7,6 @@ import Card from "@components/Card";
 import "@css/shuffle.css";
 
 export default function Shuffle() {
-  const displayRef = useRef<HTMLButtonElement | null>(null);
   const { shuffleAnimation, repeatCard } = useContext(SettingsContext);
   const { cards } = useContext(CardsContext);
   const activeCards = cards.filter(card => card.isActive);
@@ -33,34 +32,22 @@ export default function Shuffle() {
     getCard();
   }
 
-  useEffect(() => {
-    !shuffleAnimation && setIsPlaybackComplete(true);
-  }, [shuffleAnimation]);
-
   const handlePlaybackEnded = () => {
     setIsPlaybackComplete(true);
   }
 
+  const handleAnimationEnd = () => {
+    setShowActions(true);
+  }
+
   useEffect(() => {
-    if (!displayRef.current) return;
-
-    const card = displayRef.current;
-
-    const handleAnimationEnd = () => {
-      setShowActions(true);
-    }
-
-    card.addEventListener("animationend", handleAnimationEnd);
-
-    return () => {
-      card.removeEventListener("animationend", handleAnimationEnd);
-    }
-  }, [])
+    !shuffleAnimation && setIsPlaybackComplete(true);
+  }, [shuffleAnimation]);
 
   return (
     <>
       <main className="shuffle-display main-display">
-        <article ref={displayRef} className="shuffle-wrapper stack center">
+        <article onAnimationEnd={handleAnimationEnd} className="shuffle-wrapper stack center">
           {isPlaybackComplete ? (
             <Card card={card} className="is-flipping" />
           ) : (
