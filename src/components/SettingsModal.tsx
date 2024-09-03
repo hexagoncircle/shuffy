@@ -13,11 +13,11 @@ export default function SettingsModal() {
     deckName,
     isSettingsActive,
     repeatCard,
-    shuffleAnimation,
+    hasShuffleAnimation,
     setDeckName,
     setIsSettingsActive,
     setRepeatCard,
-    setShuffleAnimation
+    setHasShuffleAnimation
   } = useContext(SettingsContext);
   const { cards, deleteAllCards } = useContext(CardsContext);
   const { categories, deleteAllCategories } = useContext(CategoriesContext);
@@ -78,7 +78,7 @@ export default function SettingsModal() {
           </label>
         </div>
         <div className="checkbox-wrapper">
-          <Switch id="shuffle-animation" variant="compact" checked={shuffleAnimation} onChange={() => setShuffleAnimation(!shuffleAnimation)} />
+          <Switch id="shuffle-animation" variant="compact" checked={hasShuffleAnimation} onChange={() => setHasShuffleAnimation(!hasShuffleAnimation)} />
           <label htmlFor="shuffle-animation">
             Play animation when shuffy-ing
           </label>

@@ -9,12 +9,12 @@ interface SettingsContextType {
   repeatCard: boolean;
   isSettingsActive: boolean;
   lastSelectedCategory: string;
-  shuffleAnimation: boolean;
+  hasShuffleAnimation: boolean;
   setDeckName(value: string): void;
   setRepeatCard(value: boolean): void;
   setIsSettingsActive(value: boolean): void;
   setLastSelectedCategory(id: string): void;
-  setShuffleAnimation(value: boolean): void;
+  setHasShuffleAnimation(value: boolean): void;
 }
 
 export const SettingsContext = createContext<SettingsContextType>({
@@ -22,19 +22,19 @@ export const SettingsContext = createContext<SettingsContextType>({
   repeatCard: false,
   isSettingsActive: false,
   lastSelectedCategory: "",
-  shuffleAnimation: true,
+  hasShuffleAnimation: true,
   setDeckName: () => { },
   setRepeatCard: () => { },
   setIsSettingsActive: () => { },
   setLastSelectedCategory: () => { },
-  setShuffleAnimation: () => { },
+  setHasShuffleAnimation: () => { },
 });
 
 export default function SettingsProvider({ children }: SettingsProviderProps) {
   const [deckName, setDeckName] = useState("")
   const [repeatCard, setRepeatCard] = useState(false)
   const [isSettingsActive, setIsSettingsActive] = useState(false)
-  const [shuffleAnimation, setShuffleAnimation] = useState(true)
+  const [hasShuffleAnimation, setHasShuffleAnimation] = useState(true)
   const [lastSelectedCategory, setLastSelectedCategory] = useState("")
 
   const value: SettingsContextType = {
@@ -42,12 +42,12 @@ export default function SettingsProvider({ children }: SettingsProviderProps) {
     repeatCard,
     isSettingsActive,
     lastSelectedCategory,
-    shuffleAnimation,
+    hasShuffleAnimation: hasShuffleAnimation,
     setDeckName,
     setRepeatCard,
     setIsSettingsActive,
     setLastSelectedCategory,
-    setShuffleAnimation
+    setHasShuffleAnimation: setHasShuffleAnimation
   };
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;

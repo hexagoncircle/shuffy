@@ -7,11 +7,11 @@ import Card from "@components/Card";
 import "@css/shuffle.css";
 
 export default function Shuffle() {
-  const { shuffleAnimation, repeatCard } = useContext(SettingsContext);
+  const { hasShuffleAnimation, repeatCard } = useContext(SettingsContext);
   const { cards } = useContext(CardsContext);
   const activeCards = cards.filter(card => card.isActive);
   const [card, setCard] = useState(getRandomValue(activeCards));
-  const [isPlaybackComplete, setIsPlaybackComplete] = useState(false);
+  const [isPlaybackComplete, setIsPlaybackComplete] = useState(!hasShuffleAnimation);
   const [showActions, setShowActions] = useState(false);
 
   const getCard = () => {
@@ -25,7 +25,7 @@ export default function Shuffle() {
   }
 
   const handleReshuffle = () => {
-    if (shuffleAnimation) {
+    if (hasShuffleAnimation) {
       setShowActions(false);
       setIsPlaybackComplete(false);
     }
@@ -39,10 +39,6 @@ export default function Shuffle() {
   const handleAnimationEnd = () => {
     setShowActions(true);
   }
-
-  useEffect(() => {
-    !shuffleAnimation && setIsPlaybackComplete(true);
-  }, [shuffleAnimation]);
 
   return (
     <>
