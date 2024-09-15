@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { ConfirmModalContext, ConfirmModalState } from "./ConfirmModalContext";
+import { ConfirmModalContext, ConfirmModalState } from "@contexts/ConfirmModalContext";
 import Modal from "./Modal";
 
 export default function ConfirmModal() {

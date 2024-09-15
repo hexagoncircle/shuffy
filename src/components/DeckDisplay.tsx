@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { CardsContext } from "@components/CardsContext";
+import { CardsContext } from "@contexts/CardsContext";
 import DeckDisplayControl, { DeckDisplayControlView } from "@components/DeckDisplayControl";
 import { getItemById } from "@js/utils";
 import CardStarter from "@components/CardStarter";

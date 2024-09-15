@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
-import { CardDataProps, CardsContext } from "@components/CardsContext";
-import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
+import { CardDataProps, CardsContext } from "@contexts/CardsContext";
+import { CategoriesContext, CategoryDataProps } from "@contexts/CategoriesContext";
 import CardsGroup from "@components/CardsGroup";
 
 interface CardsListProps {

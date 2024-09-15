@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
+import { CardsContext } from "@contexts/CardsContext";
+import ConfirmModalProvider from "@contexts/ConfirmModalContext";
 import DeckDisplay from "@components/DeckDisplay";
 import ConfirmModal from "@components/ConfirmModal";
-import ConfirmModalProvider from "@components/ConfirmModalContext";
 import SettingsModal from "@components/SettingsModal";
 import DeckHeader from "@components/DeckHeader";
 import DeckEditHeader from "@components/DeckEditHeader";
 import { CardEditAction } from "@components/CardEditor";
-import { CardsContext } from "@components/CardsContext";
 import "@css/deck.css"
 
 export default function Deck() {

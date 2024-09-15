@@ -1,11 +1,11 @@
 import { CSSProperties, SyntheticEvent, useContext } from "react";
-import { SettingsContext } from "@components/SettingsContext";
-import { CardsContext } from "./CardsContext";
+import { SettingsContext } from "@contexts/SettingsContext";
+import { CardsContext } from "@contexts/CardsContext";
 import Categories from "./Categories";
 import Modal from "./Modal";
 import Switch from "./Switch";
-import { CategoriesContext } from "./CategoriesContext";
-import { ConfirmModalContext } from "./ConfirmModalContext";
+import { CategoriesContext } from "@contexts/CategoriesContext";
+import { ConfirmModalContext } from "@contexts/ConfirmModalContext";
 import "@css/settings.css";
 
 export default function SettingsModal() {

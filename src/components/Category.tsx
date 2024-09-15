@@ -1,12 +1,12 @@
 import { CSSProperties, DragEvent, FormEvent, KeyboardEvent, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import slugify from "slugify";
-import { CategoriesContext, CategoryDataProps } from "@components/CategoriesContext";
+import { CategoriesContext, CategoryDataProps } from "@contexts/CategoriesContext";
+import { CardsContext } from "@contexts/CardsContext";
+import { ConfirmModalContext } from "@contexts/ConfirmModalContext";
 import ColorPicker from "./ColorPicker";
 import GripIcon from "@assets/grip.svg?react";
 import "@css/category.css";
 import clsx from "clsx";
-import { CardsContext } from "./CardsContext";
-import { ConfirmModalContext } from "./ConfirmModalContext";
 
 export type CategoryDragEvent = DragEvent<Element>;
 

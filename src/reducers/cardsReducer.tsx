@@ -19,9 +19,9 @@ type AllDeletedAction = {
   type: "CARDS_ALL_DELETED";
 };
 
-type Actions = CreatedAction | UpdatedAction | DeletedAction | AllDeletedAction;
+type CardActions = CreatedAction | UpdatedAction | DeletedAction | AllDeletedAction;
 
-export default function cardsReducer(cards: CardDataProps[], action: Actions) {
+export default function cardsReducer(cards: CardDataProps[], action: CardActions) {
   switch (action.type) {
     case "CARD_CREATED": {
       return [...cards, action.card];

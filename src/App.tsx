@@ -1,8 +1,8 @@
 import "@css/ds.css";
 import { Link, Route, Routes } from "react-router-dom";
-import CategoriesProvider from "@components/CategoriesContext";
-import SettingsProvider from "@components/SettingsContext";
-import CardsProvider from "@components/CardsContext";
+import CategoriesProvider from "@contexts/CategoriesContext";
+import SettingsProvider from "@contexts/SettingsContext";
+import CardsProvider from "@contexts/CardsContext";
 import Home from "./Home";
 import Deck from "./Deck";
 import Shuffle from "./Shuffle";

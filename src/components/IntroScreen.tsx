@@ -6,7 +6,7 @@ import { moveEyes } from "@js/moveEyes";
 import ShuffyCard from "./ShuffyCard";
 import Logo from "@assets/logo.svg?react";
 import styles from "@css/IntroScreen.module.css";
-import { SettingsContext } from "./SettingsContext";
+import { SettingsContext } from "@contexts/SettingsContext";
 import { Link, useNavigate } from "react-router-dom";
 
 

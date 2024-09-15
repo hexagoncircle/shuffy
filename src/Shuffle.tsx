@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { getRandomValue } from "@js/utils";
-import { CardsContext } from "@components/CardsContext";
 import { Link } from "react-router-dom";
-import { SettingsContext } from "@components/SettingsContext";
+import { CardsContext } from "@contexts/CardsContext";
+import { SettingsContext } from "@contexts/SettingsContext";
 import Card from "@components/Card";
 import "@css/shuffle.css";
 

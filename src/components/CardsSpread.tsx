@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { CardsContext } from "@components/CardsContext";
+import { CardsContext } from "@contexts/CardsContext";
 import Card from "@components/Card";
 import Switch from "./Switch";
 import { useRovingTabIndex } from "@hooks/useRovingTabIndex";

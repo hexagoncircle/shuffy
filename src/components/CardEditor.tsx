@@ -2,9 +2,9 @@ import { CSSProperties, KeyboardEvent, useContext, useEffect, useRef, useState }
 import { v4 as uuid } from "uuid";
 import clsx from "clsx";
 import { getItemById } from "@js/utils";
-import { SettingsContext } from "@components/SettingsContext";
-import { CategoriesContext } from "@components/CategoriesContext";
-import { CardDataProps, CardsContext } from "@components/CardsContext";
+import { SettingsContext } from "@contexts/SettingsContext";
+import { CategoriesContext } from "@contexts/CategoriesContext";
+import { CardDataProps, CardsContext } from "@contexts/CardsContext";
 import Select from "./Select";
 import CategorySelectIcon from "@assets/category-select.svg?react";
 

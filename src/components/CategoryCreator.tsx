@@ -2,7 +2,7 @@ import { CSSProperties, FormEvent, KeyboardEvent, useContext, useRef, useState }
 import { useClickAway } from "@uidotdev/usehooks";
 import slugify from "slugify";
 import { v4 as uuid } from "uuid";
-import { CategoriesContext } from "@components/CategoriesContext";
+import { CategoriesContext } from "@contexts/CategoriesContext";
 import ColorPicker from "./ColorPicker";
 import CategorySelectIcon from "@assets/category-select.svg?react";
 import COLORS from "@data/colors.theme.json";

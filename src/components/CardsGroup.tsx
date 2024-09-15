@@ -1,6 +1,6 @@
 import { useEffect, useRef, useId, ChangeEvent, useContext } from 'react';
 import { getItemById, refocusElement } from '@js/utils';
-import { CardDataProps, CardsContext } from '@components/CardsContext';
+import { CardDataProps, CardsContext } from '@contexts/CardsContext';
 import CardChip from '@components/CardChip';
 
 interface CardsGroupProps {

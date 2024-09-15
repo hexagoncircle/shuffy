@@ -1,10 +1,10 @@
 import { CSSProperties, forwardRef, useContext } from "react";
 import clsx from "clsx";
-import { CardDataProps } from "@components/CardsContext";
+import { CardDataProps } from "@contexts/CardsContext";
+import { CategoriesContext } from "@contexts/CategoriesContext";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
 import ShuffyFaceInactive from "@assets/shuffy-face-sleep.svg?react";
 import Blot from "@assets/card-blot.svg?react";
-import { CategoriesContext } from "@components/CategoriesContext";
 import "@css/card.css";
 
 export interface CardProps {

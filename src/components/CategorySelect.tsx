@@ -1,5 +1,5 @@
 import { FormEvent, useContext } from "react";
-import { CategoriesContext, CategoryProps } from "@components/CategoriesContext";
+import { CategoriesContext, CategoryDataProps } from "@contexts/CategoriesContext";
 
 interface CategorySelect {
   id: string;
@@ -8,7 +8,7 @@ interface CategorySelect {
 }
 
 export default function CategorySelect({ id, selectedValue, onChange }: CategorySelect) {
-  const categories = useContext<CategoryProps[]>(CategoriesContext);
+  const categories = useContext<CategoryDataProps[]>(CategoriesContext);
 
   return (
     <select id={id} onChange={onChange} value={selectedValue}>

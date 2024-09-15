@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { pluralize } from "@js/utils";
-import { SettingsContext } from "@components/SettingsContext";
-import { CardsContext } from "./CardsContext";
+import { SettingsContext } from "@contexts/SettingsContext";
+import { CardsContext } from "@contexts/CardsContext";
 import { Link } from "react-router-dom";
-import { CategoriesContext } from "./CategoriesContext";
+import { CategoriesContext } from "@contexts/CategoriesContext";
 import Callout from "./Callout";
 import SettingsToggle from "./SettingsToggle";
 

@@ -1,5 +1,5 @@
 import { KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
-import { CategoriesContext } from "./CategoriesContext";
+import { CategoriesContext } from "@contexts/CategoriesContext";
 import CategoryCreator from "./CategoryCreator";
 import CategoryStarter from "./CategoryStarter";
 import PlusIcon from "@assets/plus.svg?react";

@@ -24,9 +24,9 @@ type ReorderAction = {
   data: CategoryDataProps[];
 };
 
-type Actions = CreatedAction | UpdatedAction | DeletedAction | AllDeletedAction | ReorderAction;
+type CategoryActions = CreatedAction | UpdatedAction | DeletedAction | AllDeletedAction | ReorderAction;
 
-export default function categoriesReducer(categories: CategoryDataProps[], action: Actions) {
+export default function categoriesReducer(categories: CategoryDataProps[], action: CategoryActions) {
   switch (action.type) {
     case "CATEGORY_CREATED": {
       console.log("CATEGORY_CREATED", action.category);
