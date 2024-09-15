@@ -1,8 +1,8 @@
-import "@css/color-picker.css";
 import { CSSProperties, SyntheticEvent, useEffect, useRef, useState } from "react";
+import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
 import ShuffyFace from "@assets/color-picker-face.svg?react";
 import COLORS from "@data/colors.theme.json";
-import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
+import "@css/color-picker.css";
 
 interface ColorDataProps {
   label: string;

@@ -17,18 +17,7 @@ interface SettingsContextType {
   setHasShuffleAnimation(value: boolean): void;
 }
 
-export const SettingsContext = createContext<SettingsContextType>({
-  deckName: "",
-  repeatCard: false,
-  isSettingsActive: false,
-  lastSelectedCategory: "",
-  hasShuffleAnimation: true,
-  setDeckName: () => { },
-  setRepeatCard: () => { },
-  setIsSettingsActive: () => { },
-  setLastSelectedCategory: () => { },
-  setHasShuffleAnimation: () => { },
-});
+export const SettingsContext = createContext<SettingsContextType | null>(null);
 
 export default function SettingsProvider({ children }: SettingsProviderProps) {
   const [deckName, setDeckName] = useState("")

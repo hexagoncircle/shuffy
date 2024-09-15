@@ -1,9 +1,8 @@
-import { useContext } from "react"
-import { ConfirmModalContext, ConfirmModalState } from "@contexts/ConfirmModalContext";
+import { useConfirmModalContext } from "@hooks/useConfirmModalContext";
 import Modal from "./Modal";
 
 export default function ConfirmModal() {
-  const { modalContext, setModalContext } = useContext(ConfirmModalContext);
+  const { modalContext, setModalContext } = useConfirmModalContext();
   const {
     title,
     message,
@@ -14,7 +13,7 @@ export default function ConfirmModal() {
   } = modalContext;
 
   const handleClose = () => {
-    setModalContext((prev: ConfirmModalState) => ({ ...prev, isOpen: false }));
+    setModalContext((prev) => ({ ...prev, isOpen: false }));
   };
 
   const handleConfirm = () => {

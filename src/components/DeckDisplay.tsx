@@ -1,8 +1,8 @@
-import { useContext, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { CardsContext } from "@contexts/CardsContext";
-import DeckDisplayControl, { DeckDisplayControlView } from "@components/DeckDisplayControl";
+import { useRef, useState } from "react";
 import { getItemById } from "@js/utils";
+import { useSearchParams } from "react-router-dom";
+import { useCardsContext } from "@hooks/useCardsContext";
+import DeckDisplayControl, { DeckDisplayControlView } from "@components/DeckDisplayControl";
 import CardStarter from "@components/CardStarter";
 import CardsSpread from "@components/CardsSpread";
 import CardsList from "@components/CardsList";
@@ -16,7 +16,7 @@ interface DeckDisplayProps {
 
 export default function DeckDisplay({ isEditing, onIsEditing }: DeckDisplayProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { cards, editCardId, setEditCardId } = useContext(CardsContext);
+  const { cards, editCardId, setEditCardId } = useCardsContext();
   const [scrollPosition, setScrollPosition] = useState(0);
   const [view, setView] = useState(searchParams.get('view') as DeckDisplayControlView);
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>();

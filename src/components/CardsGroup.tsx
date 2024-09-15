@@ -1,6 +1,7 @@
-import { useEffect, useRef, useId, ChangeEvent, useContext } from 'react';
+import { useEffect, useRef, useId, ChangeEvent } from 'react';
 import { getItemById, refocusElement } from '@js/utils';
-import { CardDataProps, CardsContext } from '@contexts/CardsContext';
+import { CardDataProps } from '@contexts/CardsContext';
+import { useCardsContext } from '@hooks/useCardsContext';
 import CardChip from '@components/CardChip';
 
 interface CardsGroupProps {
@@ -12,7 +13,7 @@ interface CardsGroupProps {
 
 export default function CardsGroup({ focusIndex, category, cards, onCardClick }: CardsGroupProps) {
   const id = useId();
-  const { updateCard } = useContext(CardsContext);
+  const { updateCard } = useCardsContext();
   const parentRef = useRef<HTMLInputElement>(null);
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const allChecked = cards.every(card => card.isActive);

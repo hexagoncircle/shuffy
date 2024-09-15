@@ -18,17 +18,7 @@ interface ConfirmModalContextType {
   setModalContext: Dispatch<SetStateAction<ConfirmModalState>>;
 }
 
-export const ConfirmModalContext = createContext<ConfirmModalContextType>({
-  modalContext: {
-    isOpen: false,
-    title: "",
-    message: "",
-    actionConfirmText: "Confirm",
-    actionCancelText: "Cancel",
-    onConfirm: () => { },
-  },
-  setModalContext: () => { }
-});
+export const ConfirmModalContext = createContext<ConfirmModalContextType | null>(null);
 
 export default function ConfirmModalProvider({ children }: ConfirmModalProviderProps) {
   const [modalContext, setModalContext] = useState<ConfirmModalState>({

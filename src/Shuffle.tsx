@@ -1,14 +1,14 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { getRandomValue } from "@js/utils";
 import { Link } from "react-router-dom";
-import { CardsContext } from "@contexts/CardsContext";
-import { SettingsContext } from "@contexts/SettingsContext";
 import Card from "@components/Card";
 import "@css/shuffle.css";
+import { useCardsContext } from "@hooks/useCardsContext";
+import { useSettingsContext } from "@hooks/useSettingsContext";
 
 export default function Shuffle() {
-  const { hasShuffleAnimation, repeatCard } = useContext(SettingsContext);
-  const { cards } = useContext(CardsContext);
+  const { hasShuffleAnimation, repeatCard } = useSettingsContext();
+  const { cards } = useCardsContext();
   const activeCards = cards.filter(card => card.isActive);
   const [card, setCard] = useState(getRandomValue(activeCards));
   const [isPlaybackComplete, setIsPlaybackComplete] = useState(!hasShuffleAnimation);

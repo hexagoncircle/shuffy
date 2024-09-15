@@ -1,18 +1,18 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { pluralize } from "@js/utils";
-import { SettingsContext } from "@contexts/SettingsContext";
-import { CardsContext } from "@contexts/CardsContext";
 import { Link } from "react-router-dom";
-import { CategoriesContext } from "@contexts/CategoriesContext";
 import Callout from "./Callout";
 import SettingsToggle from "./SettingsToggle";
+import { useSettingsContext } from "@hooks/useSettingsContext";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
+import { useCardsContext } from "@hooks/useCardsContext";
 
 
 export default function DeckHeader() {
-  const { deckName, setIsSettingsActive } = useContext(SettingsContext);
-  const { categories } = useContext(CategoriesContext);
+  const { deckName, setIsSettingsActive } = useSettingsContext();
+  const { categories } = useCategoriesContext();
+  const { cards } = useCardsContext();
   const [hasNotification, setHasNotification] = useState(!categories.length);
-  const { cards } = useContext(CardsContext);
   const cardCount = cards.length;
   const deckNameDisplayText = deckName || "¯\\_(ツ)_/¯";
 

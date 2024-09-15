@@ -1,12 +1,13 @@
-import { CSSProperties, DragEvent, FormEvent, KeyboardEvent, forwardRef, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, DragEvent, FormEvent, KeyboardEvent, forwardRef, useEffect, useRef, useState } from "react";
 import slugify from "slugify";
-import { CategoriesContext, CategoryDataProps } from "@contexts/CategoriesContext";
-import { CardsContext } from "@contexts/CardsContext";
-import { ConfirmModalContext } from "@contexts/ConfirmModalContext";
+import { CategoryDataProps } from "@contexts/CategoriesContext";
 import ColorPicker from "./ColorPicker";
 import GripIcon from "@assets/grip.svg?react";
 import "@css/category.css";
 import clsx from "clsx";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
+import { useCardsContext } from "@hooks/useCardsContext";
+import { useConfirmModalContext } from "@hooks/useConfirmModalContext";
 
 export type CategoryDragEvent = DragEvent<Element>;
 
@@ -39,9 +40,9 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
   onDragStart,
   onDrop,
 }, ref) => {
-  const { categories, updateCategory, deleteCategory } = useContext(CategoriesContext);
-  const { cards } = useContext(CardsContext);
-  const { setModalContext } = useContext(ConfirmModalContext);
+  const { categories, updateCategory, deleteCategory } = useCategoriesContext();
+  const { cards } = useCardsContext();
+  const { setModalContext } = useConfirmModalContext();
   const { id, label, theme } = category;
   const [colorValue, setColorValue] = useState(theme);
   const [inputValue, setInputValue] = useState(label);

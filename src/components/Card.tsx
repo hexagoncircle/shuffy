@@ -1,7 +1,7 @@
-import { CSSProperties, forwardRef, useContext } from "react";
+import { CSSProperties, forwardRef } from "react";
 import clsx from "clsx";
 import { CardDataProps } from "@contexts/CardsContext";
-import { CategoriesContext } from "@contexts/CategoriesContext";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
 import ShuffyFaceInactive from "@assets/shuffy-face-sleep.svg?react";
 import Blot from "@assets/card-blot.svg?react";
@@ -16,7 +16,7 @@ export interface CardProps {
 }
 
 const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected, className, onClick }, ref) => {
-  const { categories } = useContext(CategoriesContext);
+  const { categories } = useCategoriesContext();
   const { id, label, category, isActive } = card;
   const categoryObj = categories.find(c => c.id === category);
   const categoryLabel = categoryObj?.label;

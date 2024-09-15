@@ -1,6 +1,6 @@
+import { ReactNode, useEffect, useRef } from "react";
 import CloseIcon from "@assets/close.svg?react";
 import ArrowIcon from "@assets/caret.svg?react";
-import { ReactNode, useEffect, useRef } from "react";
 import "@css/modal.css";
 
 interface ModalProps {

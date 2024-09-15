@@ -1,11 +1,11 @@
-import { CSSProperties, SyntheticEvent, useContext } from "react";
-import { SettingsContext } from "@contexts/SettingsContext";
-import { CardsContext } from "@contexts/CardsContext";
+import { CSSProperties, SyntheticEvent } from "react";
+import { useCardsContext } from "@hooks/useCardsContext";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
+import { useConfirmModalContext } from "@hooks/useConfirmModalContext";
+import { useSettingsContext } from "@hooks/useSettingsContext";
 import Categories from "./Categories";
 import Modal from "./Modal";
 import Switch from "./Switch";
-import { CategoriesContext } from "@contexts/CategoriesContext";
-import { ConfirmModalContext } from "@contexts/ConfirmModalContext";
 import "@css/settings.css";
 
 export default function SettingsModal() {
@@ -18,10 +18,10 @@ export default function SettingsModal() {
     setIsSettingsActive,
     setRepeatCard,
     setHasShuffleAnimation
-  } = useContext(SettingsContext);
-  const { cards, deleteAllCards } = useContext(CardsContext);
-  const { categories, deleteAllCategories } = useContext(CategoriesContext);
-  const { setModalContext } = useContext(ConfirmModalContext);
+  } = useSettingsContext();
+  const { cards, deleteAllCards } = useCardsContext();
+  const { categories, deleteAllCategories } = useCategoriesContext();
+  const { setModalContext } = useConfirmModalContext();
 
   const handleDeckNameChange = (e: SyntheticEvent<HTMLInputElement>) => {
     setDeckName(e.currentTarget.value);

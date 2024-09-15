@@ -1,10 +1,11 @@
-import { CSSProperties, KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 import clsx from "clsx";
 import { getItemById } from "@js/utils";
-import { SettingsContext } from "@contexts/SettingsContext";
-import { CategoriesContext } from "@contexts/CategoriesContext";
-import { CardDataProps, CardsContext } from "@contexts/CardsContext";
+import { CardDataProps } from "@contexts/CardsContext";
+import { useSettingsContext } from "@hooks/useSettingsContext";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
+import { useCardsContext } from "@hooks/useCardsContext";
 import Select from "./Select";
 import CategorySelectIcon from "@assets/category-select.svg?react";
 
@@ -16,9 +17,9 @@ interface CardEditorProps {
 }
 
 export default function CardEditor({ card, onComplete }: CardEditorProps) {
-  const { lastSelectedCategory, setIsSettingsActive, setLastSelectedCategory } = useContext(SettingsContext);
-  const { categories } = useContext(CategoriesContext);
-  const { createCard, updateCard, deleteCard } = useContext(CardsContext);
+  const { lastSelectedCategory, setIsSettingsActive, setLastSelectedCategory } = useSettingsContext();
+  const { createCard, updateCard, deleteCard } = useCardsContext();
+  const { categories } = useCategoriesContext();
 
   const [nameValue, setNameValue] = useState(card?.label || "");
   const nameRef = useRef<HTMLTextAreaElement>(null);

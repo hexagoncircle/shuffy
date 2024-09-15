@@ -1,9 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { CardsContext } from "@contexts/CardsContext";
+import { useEffect, useRef, useState } from "react";
+import { refocusElement } from "@js/utils";
+import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
+import { useCardsContext } from "@hooks/useCardsContext";
 import Card from "@components/Card";
 import Switch from "./Switch";
-import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
-import { refocusElement } from "@js/utils";
 
 interface CardsSpreadProps {
   focusIndex?: number | null;
@@ -12,7 +12,7 @@ interface CardsSpreadProps {
 }
 
 export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }: CardsSpreadProps) {
-  const { cards, updateCard, setEditCardId } = useContext(CardsContext);
+  const { cards, updateCard, setEditCardId } = useCardsContext();
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const cardsScrollRef = useRef<HTMLElement>(null);
   const [activeCardIndex, setActiveCardIndex] = useState(focusIndex || 0);

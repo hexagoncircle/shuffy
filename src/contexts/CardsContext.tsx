@@ -25,15 +25,7 @@ interface CardsContextType {
   setEditCardId: (id: string) => void;
 }
 
-export const CardsContext = createContext<CardsContextType>({
-  cards: [],
-  editCardId: "",
-  createCard: () => { },
-  updateCard: () => { },
-  deleteCard: () => { },
-  deleteAllCards: () => { },
-  setEditCardId: () => { }
-});
+export const CardsContext = createContext<CardsContextType | null>(null);
 
 export default function CardsProvider({ children }: CardsProviderProps) {
   const [cards, dispatch] = useReducer(cardsReducer, CARDS);

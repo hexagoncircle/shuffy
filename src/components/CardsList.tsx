@@ -1,7 +1,9 @@
-import { useContext, useEffect } from "react";
-import { CardDataProps, CardsContext } from "@contexts/CardsContext";
-import { CategoriesContext, CategoryDataProps } from "@contexts/CategoriesContext";
+import { useEffect } from "react";
+import { CardDataProps } from "@contexts/CardsContext";
+import { CategoryDataProps } from "@contexts/CategoriesContext";
 import CardsGroup from "@components/CardsGroup";
+import { useCardsContext } from "@hooks/useCardsContext";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
 
 interface CardsListProps {
   focusGroupIndex?: number | null;
@@ -49,8 +51,8 @@ const groupByCategory = (cards: CardDataProps[], categories: CategoryDataProps[]
 };
 
 export default function CardsList({ focusGroupIndex, focusCardIndex, scrollPosition, onCardClick }: CardsListProps) {
-  const { cards, setEditCardId } = useContext(CardsContext);
-  const { categories } = useContext(CategoriesContext);
+  const { cards, setEditCardId } = useCardsContext();
+  const { categories } = useCategoriesContext();
   const groupedCards = groupByCategory(cards, categories);
 
   const handleCardClick = (id: string, cardIndex: number, groupIndex: number) => {

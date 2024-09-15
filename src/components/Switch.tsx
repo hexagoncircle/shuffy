@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import { ChangeEvent } from "react";
+import clsx from "clsx";
 import OnIcon from "@assets/on.svg?react";
 import OffIcon from "@assets/off.svg?react";
 import "@css/switch.css"

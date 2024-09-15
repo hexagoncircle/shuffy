@@ -1,8 +1,8 @@
-import { CSSProperties, FormEvent, KeyboardEvent, useContext, useRef, useState } from "react";
+import { CSSProperties, FormEvent, KeyboardEvent, useRef, useState } from "react";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import { useClickAway } from "@uidotdev/usehooks";
 import slugify from "slugify";
 import { v4 as uuid } from "uuid";
-import { CategoriesContext } from "@contexts/CategoriesContext";
 import ColorPicker from "./ColorPicker";
 import CategorySelectIcon from "@assets/category-select.svg?react";
 import COLORS from "@data/colors.theme.json";
@@ -14,7 +14,7 @@ interface CategoryCreatorProps {
 }
 
 export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
-  const { categories, createCategory } = useContext(CategoriesContext);
+  const { categories, createCategory } = useCategoriesContext();
   const [colorValue, setColorValue] = useState(getRandomValue(COLORS).value);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);

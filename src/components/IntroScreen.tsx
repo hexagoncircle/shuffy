@@ -1,17 +1,17 @@
-import { FormEvent, SyntheticEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { FormEvent, SyntheticEvent, useCallback, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useGSAP } from "@gsap/react";
+import { useSettingsContext } from "@hooks/useSettingsContext";
 import clsx from "clsx";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import { moveEyes } from "@js/moveEyes";
 import ShuffyCard from "./ShuffyCard";
 import Logo from "@assets/logo.svg?react";
 import styles from "@css/IntroScreen.module.css";
-import { SettingsContext } from "@contexts/SettingsContext";
-import { Link, useNavigate } from "react-router-dom";
 
 
 export default function IntroScreen() {
-  const { deckName, setDeckName } = useContext(SettingsContext);
+  const { deckName, setDeckName } = useSettingsContext();
   const [inputValue, setInputValue] = useState("");
   const introRef = useRef(null);
   const svgRef = useRef<SVGSVGElement | null>(null);

@@ -24,14 +24,7 @@ interface CategoriesContextType {
   reorderCategories: (data: CategoryDataProps[]) => void;
 }
 
-export const CategoriesContext = createContext<CategoriesContextType>({
-  categories: [],
-  createCategory: () => { },
-  updateCategory: () => { },
-  deleteCategory: () => { },
-  deleteAllCategories: () => { },
-  reorderCategories: () => { },
-});
+export const CategoriesContext = createContext<CategoriesContextType | null>(null);
 
 export default function CategoriesProvider({ children }: CategoriesProviderProps) {
   const [categories, dispatch] = useReducer(categoriesReducer, CATEGORIES);

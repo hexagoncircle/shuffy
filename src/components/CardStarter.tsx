@@ -1,6 +1,6 @@
+import { CSSProperties, forwardRef } from "react";
 import PlusIcon from "@assets/plus.svg?react";
 import clsx from "clsx";
-import { CSSProperties, forwardRef } from "react";
 
 interface CardStarterProps {
   className?: string;

@@ -1,13 +1,13 @@
-import { KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
-import { CategoriesContext } from "@contexts/CategoriesContext";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
+import { useClickAway } from "@uidotdev/usehooks";
 import CategoryCreator from "./CategoryCreator";
 import CategoryStarter from "./CategoryStarter";
 import PlusIcon from "@assets/plus.svg?react";
 import Category, { CategoryDragEvent } from "./Category";
-import { useClickAway } from "@uidotdev/usehooks";
 
 export default function Categories() {
-  const { categories, reorderCategories } = useContext(CategoriesContext);
+  const { categories, reorderCategories } = useCategoriesContext();
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
   const [editingCategoryIndex, setEditingCategoryIndex] = useState(-1);
   const isEditing = editingCategoryIndex !== -1;

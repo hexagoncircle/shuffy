@@ -1,5 +1,5 @@
-import PlusIcon from "@assets/plus.svg?react";
 import { forwardRef } from "react";
+import PlusIcon from "@assets/plus.svg?react";
 
 interface CategoryStarterProps {
   onClick(): void;
