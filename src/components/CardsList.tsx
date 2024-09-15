@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { CardDataProps } from "@contexts/CardsContext";
-import { CategoryDataProps } from "@contexts/CategoriesContext";
-import CardsGroup from "@components/CardsGroup";
+import { groupByCategory } from "@js/utils";
 import { useCardsContext } from "@hooks/useCardsContext";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
+import CardsGroup from "@components/CardsGroup";
 
 interface CardsListProps {
   focusGroupIndex?: number | null;
@@ -11,44 +10,6 @@ interface CardsListProps {
   scrollPosition?: number;
   onCardClick(scrollPos: number, cardIndex: number, groupIndex: number): void;
 }
-
-/**
- * Group cards into their respective categories.
- * If a card doesn't have a category, it'll appear in an "uncategorized" group.
- * If a category doesn't contain cards, it's removed from the final output
- * @param {object[]} cards Collection of cards
- * @param {object[]} categories Collection of categories
- * @returns Card grouped by category
- */
-const groupByCategory = (cards: CardDataProps[], categories: CategoryDataProps[]): Record<string, CardDataProps[]> => {
-  const groups: Record<string, CardDataProps[]> = {};
-  const uncategorizedLabel = "Uncategorized";
-
-  categories.forEach(category => {
-    groups[category.label] = [];
-  });
-
-  // Add a group for cards with no category
-  groups[uncategorizedLabel] = [];
-
-  cards.forEach(card => {
-    const category = categories.find(c => c.id === card.category);
-
-    if (category) {
-      groups[category.label].push(card);
-    } else {
-      groups[uncategorizedLabel].push(card);
-    }
-  });
-
-  Object.keys(groups).forEach(key => {
-    if (groups[key].length === 0) {
-      delete groups[key];
-    }
-  });
-
-  return groups;
-};
 
 export default function CardsList({ focusGroupIndex, focusCardIndex, scrollPosition, onCardClick }: CardsListProps) {
   const { cards, setEditCardId } = useCardsContext();
