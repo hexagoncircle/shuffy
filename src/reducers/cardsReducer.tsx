@@ -1,4 +1,4 @@
-import { CardDataProps } from "@components/CardsContext";
+import { CardDataProps } from "@contexts/CardsContext";
 
 type CreatedAction = {
   type: "CARD_CREATED";

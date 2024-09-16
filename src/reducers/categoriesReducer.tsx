@@ -1,4 +1,4 @@
-import { CategoryDataProps } from "@components/CategoriesContext";
+import { CategoryDataProps } from "@contexts/CategoriesContext";
 
 type CreatedAction = {
   type: "CATEGORY_CREATED";
