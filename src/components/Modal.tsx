@@ -12,7 +12,7 @@ interface ModalProps {
   variant?: "modal" | "drawer";
 }
 
-export default function Modal({ open, actions, title, variant, children, closeIcon, onClose }: ModalProps) {
+export default function Modal({ open, actions, title, variant, children, onClose }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
