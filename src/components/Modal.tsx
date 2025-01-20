@@ -17,10 +17,8 @@ export default function Modal({ open, actions, title, variant, children, onClose
 
   useEffect(() => {
     if (open) {
-      ref.current?.removeAttribute('inert');
       ref.current?.showModal();
     } else {
-      ref.current?.setAttribute('inert', '');
       ref.current?.close();
     }
   }, [open]);
