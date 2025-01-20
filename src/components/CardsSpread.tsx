@@ -83,7 +83,9 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
             <li key={card.id}>
               <Card
                 card={card}
-                ref={el => (cardsRef.current[index] = el)}
+                ref={el => {
+                  (cardsRef.current[index] = el);
+                }}
                 selected={index === activeCardIndex}
                 onClick={() => handleClick(card.id, index)}
               />

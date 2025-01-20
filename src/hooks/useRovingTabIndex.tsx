@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, RefObject, KeyboardEvent } from 'react';
 
-export function useRovingTabIndex(parentRef: RefObject<Element>, selectedIndex: number) {
+export function useRovingTabIndex(parentRef: RefObject<Element | null>, selectedIndex: number) {
   const [currentIndex, setCurrentIndex] = useState(selectedIndex || 0);
   const focusableSelectors = ':is(button, [href], input, select, textarea):not([data-no-roving])';
 

@@ -71,7 +71,9 @@ export default function CardsGroup({ focusIndex, category, cards, onCardClick }:
           {cards.map(({ label, isActive, id }, index) => (
             <li key={id}>
               <CardChip
-                ref={el => (cardsRef.current[index] = el)}
+                ref={el => {
+                  (cardsRef.current[index] = el);
+                }}
                 id={id}
                 label={label}
                 isActive={isActive}

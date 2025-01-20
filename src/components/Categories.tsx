@@ -111,7 +111,9 @@ export default function Categories() {
             {categories.map((category, index) => (
               <Category
                 key={category.id}
-                ref={el => (categoriesRef.current[index] = el)}
+                ref={el => {
+                  (categoriesRef.current[index] = el);
+                }}
                 category={category}
                 isEditing={index === editingCategoryIndex}
                 onIsEditing={() => handleEdit(index)}
@@ -129,7 +131,6 @@ export default function Categories() {
           </ul>
         </section>
       ) : null}
-
       {isCreatingCategory ? (
         <CategoryCreator onComplete={() => setIsCreatingCategory(false)} />
       ) : hasCategories ? (

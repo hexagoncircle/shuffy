@@ -122,12 +122,13 @@ export default function ColorPicker({ id, defaultColor, onChange }: ColorPickerP
       <figure className="color-picker-face" style={{ "--theme": selectedColor } as CSSProperties}>
         <ShuffyFace />
       </figure>
-
       <div ref={swatchRef} className="color-picker-swatch" onKeyDown={handleRovingIndex}>
         {swatch.map(({ value, label, selected }, index) => (
           <button
             key={value}
-            ref={el => (colorsRef.current[index] = el)}
+            ref={el => {
+              (colorsRef.current[index] = el);
+            }}
             data-color={value}
             className="color-picker-option"
             style={{ "--color": value } as CSSProperties}
