@@ -4,7 +4,6 @@ import Select from "./components/Select";
 import Switch from "./components/Switch";
 import Card from "./components/Card";
 import CardStarter from "./components/CardStarter";
-import Category from "./components/Category";
 import CategoryStarter from "./components/CategoryStarter";
 import ColorPicker from "./components/ColorPicker";
 import Modal from "./components/Modal";
@@ -13,9 +12,13 @@ import SettingsToggle from "./components/SettingsToggle";
 import DeckDisplayControl from "./components/DeckDisplayControl";
 import TrashIcon from "@assets/trash.svg?react";
 import PlusIcon from "@assets/plus.svg?react";
+import ConfirmModalProvider from "@contexts/ConfirmModalContext";
+import Categories from "@components/Categories";
+
 import CARDS from "@data/cards.json";
 import CATEGORIES from "@data/categories.json";
 import COLORS from "@data/colors.app.json";
+
 import "@css/ds.css";
 
 const SELECT_OPTIONS = [
@@ -198,22 +201,8 @@ export default function DesignReview() {
           </Modal>
         </section>
 
-        <section>
+        <section style={{ "--space": "var(--space-xl)" } as CSSProperties}>
           <DeckDisplayControl onClick={handleDeckDisplayUpdate} defaultView="list" />
-        </section>
-
-        <section className="actions">
-          <button className="raised action">Add card to deck</button>
-          <button>Cancel</button>
-        </section>
-
-        <section className="actions">
-          <button className="raised action" disabled>Add card to deck</button>
-          <button>Cancel</button>
-        </section>
-
-        <section className="actions">
-          <button className="raised action large">Shuffy this deck</button>
         </section>
       </article>
 
@@ -262,14 +251,10 @@ export default function DesignReview() {
       <article className="page-section flow">
         <h2 className="section-title">Category</h2>
         <section className="flow" style={{ maxInlineSize: "25rem" }}>
-          <ul className="flow flow-xs" role="list">
-            {CATEGORIES.map((category) => (
-              <li key={category.id}>
-                <Category category={category} />
-              </li>
-            ))}
-          </ul>
           <CategoryStarter onClick={handleCategoryStarterClick} />
+          <ConfirmModalProvider>
+            <Categories />
+          </ConfirmModalProvider>
         </section>
       </article>
     </main>
