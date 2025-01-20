@@ -1,6 +1,5 @@
 import { CSSProperties, FormEvent, KeyboardEvent, useRef, useState } from "react";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
-import { useClickAway } from "@uidotdev/usehooks";
 import slugify from "slugify";
 import { v4 as uuid } from "uuid";
 import ColorPicker from "./ColorPicker";
@@ -20,7 +19,6 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const slugifiedValue = slugify(inputValue, { lower: true });
   const isDuplicate = categories.find(c => c.value === slugifiedValue);
-  const clickAwayRef = useClickAway<HTMLDivElement>(() => onComplete());
 
   const handleContainerKeydown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Escape") {
@@ -58,7 +56,6 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
 
   return (
     <div
-      ref={clickAwayRef}
       className="category-creator category box"
       style={{ "--theme": colorValue } as CSSProperties}
       onKeyDown={handleContainerKeydown}

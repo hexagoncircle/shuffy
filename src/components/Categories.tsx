@@ -1,6 +1,5 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
-import { useClickAway } from "@uidotdev/usehooks";
 import CategoryCreator from "./CategoryCreator";
 import CategoryStarter from "./CategoryStarter";
 import PlusIcon from "@assets/plus.svg?react";
@@ -20,7 +19,6 @@ export default function Categories() {
   const dragRef = useRef<number>(0);
   const dragTargetRef = useRef<number>(0);
   const [dragIndex, setDragIndex] = useState(0);
-  const clickAwayRef = useClickAway<HTMLUListElement>(() => setEditingCategoryIndex(-1));
 
   const handleSort = (e: CategoryDragEvent) => {
     const target = e.target as HTMLElement;
