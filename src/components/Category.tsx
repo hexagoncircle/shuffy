@@ -9,7 +9,6 @@ import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import { useCardsContext } from "@hooks/useCardsContext";
 import { useConfirmModalContext } from "@hooks/useConfirmModalContext";
 
-export type CategoryDragEvent = DragEvent<Element>;
 
 export interface CategoryProps {
   category: CategoryDataProps;
@@ -17,13 +16,6 @@ export interface CategoryProps {
   onIsEditing(): void;
   onComplete(): void;
   onDelete(): void;
-  draggable: boolean;
-  onDragStart(e: CategoryDragEvent): void;
-  onDragEnter(e: CategoryDragEvent): void;
-  onDragOver(e: CategoryDragEvent): void;
-  onDragEnd(e: CategoryDragEvent): void;
-  onDragLeave(e: CategoryDragEvent): void;
-  onDrop(e: CategoryDragEvent): void;
 }
 
 const Category = forwardRef<HTMLLIElement, CategoryProps>(({
@@ -32,13 +24,6 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
   onIsEditing,
   onComplete,
   onDelete,
-  draggable,
-  onDragEnd,
-  onDragEnter,
-  onDragLeave,
-  onDragOver,
-  onDragStart,
-  onDrop,
 }, ref) => {
   const { categories, updateCategory, deleteCategory } = useCategoriesContext();
   const { cards } = useCardsContext();
@@ -129,13 +114,6 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
       className="category box"
       style={{ "--theme": colorValue } as CSSProperties}
       onKeyDown={handleEscapeCancel}
-      draggable={draggable}
-      onDragStart={onDragStart}
-      onDragEnter={onDragEnter}
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      onDrop={onDrop}
-      onDragEnd={onDragEnd}
     >
       <section className="category-content">
         <GripIcon className="grip-icon icon" aria-hidden="true" />

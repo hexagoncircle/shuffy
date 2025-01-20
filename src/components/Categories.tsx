@@ -3,7 +3,8 @@ import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import CategoryCreator from "./CategoryCreator";
 import CategoryStarter from "./CategoryStarter";
 import PlusIcon from "@assets/plus.svg?react";
-import Category, { CategoryDragEvent } from "./Category";
+import Category from "./Category";
+import useDraggable from "@hooks/useDraggable";
 
 export default function Categories() {
   const { categories, reorderCategories } = useCategoriesContext();
@@ -11,61 +12,10 @@ export default function Categories() {
   const [editingCategoryIndex, setEditingCategoryIndex] = useState(-1);
   const isEditing = editingCategoryIndex !== -1;
   const hasCategories = categories.length > 0;
-
   const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLUListElement>(null);
   const activeElementRef = useRef<HTMLElement | null>(null);
   const categoriesRef = useRef<(HTMLLIElement | null)[]>([]);
-  const dragRef = useRef<number>(0);
-  const dragTargetRef = useRef<number>(0);
-  const [dragIndex, setDragIndex] = useState(0);
-
-  const handleSort = (e: CategoryDragEvent) => {
-    const target = e.target as HTMLElement;
-    const arr = [...categories];
-    const temp = arr[dragRef.current];
-
-    // Swap index of drag item and its target
-    arr[dragRef.current] = arr[dragTargetRef.current];
-    arr[dragTargetRef.current] = temp
-    reorderCategories(arr);
-
-    containerRef.current?.classList.remove("is-dragging");
-    target.classList.remove("is-drag-item");
-  }
-
-  const handleDragStart = (e: CategoryDragEvent, index: number) => {
-    const target = e.target as HTMLElement;
-
-    dragRef.current = index
-    setDragIndex(index);
-    containerRef.current?.classList.add("is-dragging");
-    target.classList.add("is-drag-item");
-  }
-
-  const handleDragEnter = (e: CategoryDragEvent, index: number) => {
-    const target = e.target as HTMLElement;
-
-    target.classList.add('is-drag-target');
-    dragTargetRef.current = index
-  }
-
-  const handleDragLeave = (e: CategoryDragEvent) => {
-    const target = e.target as HTMLElement;
-    target.classList.remove('is-drag-target');
-    dragTargetRef.current = dragIndex;
-  }
-
-  const handleDragOver = (e: CategoryDragEvent) => {
-    e.preventDefault();
-  }
-
-  const handleDrop = (e: CategoryDragEvent) => {
-    e.preventDefault();
-    const target = e.target as HTMLElement;
-
-    target.classList.remove('is-drag-target');
-  }
 
   const handleEdit = (index: number) => {
     setEditingCategoryIndex(index);
@@ -83,6 +33,14 @@ export default function Categories() {
     setEditingCategoryIndex(-1);
     addCategoryButtonRef.current?.focus();
   }
+
+  const updateCategoryOrder = (arr: number[]) => {
+    const reorderedItems = arr.map((index) => categories[index]);
+    reorderCategories(reorderedItems);
+  };
+
+  // Update category order via drag and drop
+  useDraggable(containerRef, updateCategoryOrder);
 
   useEffect(() => {
     // Refocus "Add category" button if category create action is canceled
@@ -119,13 +77,6 @@ export default function Categories() {
                 onIsEditing={() => handleEdit(index)}
                 onComplete={() => setEditingCategoryIndex(-1)}
                 onDelete={handleDelete}
-                draggable={!isEditing}
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragEnter={(e) => handleDragEnter(e, index)}
-                onDragLeave={(e) => handleDragLeave(e)}
-                onDragOver={handleDragOver}
-                onDragEnd={handleSort}
-                onDrop={handleDrop}
               />
             ))}
           </ul>

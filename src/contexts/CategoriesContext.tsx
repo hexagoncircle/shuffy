@@ -55,6 +55,7 @@ export default function CategoriesProvider({ children }: CategoriesProviderProps
   };
 
   const reorderCategories = (data: CategoryDataProps[]) => {
+    console.log("CATEGORIES_REORDER", data);
     dispatch({
       type: "CATEGORIES_REORDER",
       data,
