@@ -116,7 +116,10 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
       onKeyDown={handleEscapeCancel}
     >
       <section className="category-content">
-        <GripIcon className="grip-icon icon" aria-hidden="true" />
+        <div className="grippy">
+          <GripIcon className="icon" aria-hidden="true" />
+          <span className="visually-hidden">Drag to reorder</span>
+        </div>
         {!isEditing ? (
           <button
             type="button"

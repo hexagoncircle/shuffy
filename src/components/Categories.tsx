@@ -40,7 +40,11 @@ export default function Categories() {
   };
 
   // Update category order via drag and drop
-  useDraggable(containerRef, updateCategoryOrder);
+  useDraggable({
+    containerRef,
+    onDragEnd: updateCategoryOrder,
+    dragHandle: '.grippy'
+  });
 
   useEffect(() => {
     // Refocus "Add category" button if category create action is canceled

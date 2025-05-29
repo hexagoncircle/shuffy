@@ -1,9 +1,24 @@
 import { RefObject, useEffect, useState } from "react";
+import gsap from "gsap";
+import { Flip } from "gsap/Flip";
+import { useGSAP } from "@gsap/react";
 
-const useDraggable = (containerRef: RefObject<HTMLElement | null>, onDragEnd: (data: number[]) => void) => {
+interface UseDraggableProps {
+  containerRef: RefObject<HTMLElement | null>;
+  onDragEnd?(data: number[]): void;
+  dragHandle?: string;
+}
+
+gsap.registerPlugin(Flip)
+
+const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps) => {
   const [initialChildren, setInitialChildren] = useState<HTMLElement[]>([]);
   const [isDragOutsideContainer, setIsDragOutsideContainer] = useState(false);
   const dragClassName = "is-dragging";
+  const dragTargetAttr = "drag-target";
+  const flipAttr = "flip";
+
+  const { contextSafe } = useGSAP({ scope: containerRef });
 
   useEffect(() => {
     const container = containerRef.current;
@@ -33,7 +48,7 @@ const useDraggable = (containerRef: RefObject<HTMLElement | null>, onDragEnd: (d
 
       target.classList.remove(dragClassName);
 
-      if (!isDragOutsideContainer) {
+      if (onDragEnd && !isDragOutsideContainer) {
         const reorderedData = sortedChildren.map((el) => Number(el.dataset.index));
 
         onDragEnd(reorderedData);
@@ -46,7 +61,7 @@ const useDraggable = (containerRef: RefObject<HTMLElement | null>, onDragEnd: (d
       });
     };
 
-    const handleDragOver = (e: DragEvent) => {
+    const handleDragOver = contextSafe((e: DragEvent) => {
       e.preventDefault();
       setIsDragOutsideContainer(false);
 
@@ -55,9 +70,11 @@ const useDraggable = (containerRef: RefObject<HTMLElement | null>, onDragEnd: (d
       if (!dragging) return;
 
       const target = e.target as HTMLElement;
-      const currentTarget = target.closest("[data-drag-target]");
+      const currentTarget = target.closest(`[${dragTargetAttr}]`);
 
-      if (!currentTarget || currentTarget === dragging) return;
+      if (!currentTarget || currentTarget === dragging || currentTarget.hasAttribute(flipAttr)) return;
+
+      const state = Flip.getState(initialChildren);
 
       const currentChildren = [...container.children];
       const draggingIndex = currentChildren.indexOf(dragging);
@@ -68,7 +85,19 @@ const useDraggable = (containerRef: RefObject<HTMLElement | null>, onDragEnd: (d
       } else {
         container.insertBefore(dragging, currentTarget);
       }
-    };
+
+      // Prevent dragover updates while animating positions
+      currentTarget.setAttribute(flipAttr, "");
+
+      Flip.from(state, {
+        targets: currentChildren,
+        duration: 0.3,
+        ease: "power3.out",
+        onComplete: () => {
+          currentTarget.removeAttribute(flipAttr);
+        }
+      })
+    });
 
     const handleDragLeave = (e: DragEvent) => {
       if (!container.contains(e.relatedTarget as Node)) {
@@ -78,8 +107,8 @@ const useDraggable = (containerRef: RefObject<HTMLElement | null>, onDragEnd: (d
 
     initialChildren.forEach((el, index) => {
       el.draggable = true;
-      el.setAttribute("data-drag-target", "");
       el.setAttribute("data-index", String(index));
+      el.setAttribute(dragTargetAttr, "");
       el.addEventListener("dragstart", handleDragStart);
       el.addEventListener("dragend", handleDragEnd);
     });
@@ -90,8 +119,8 @@ const useDraggable = (containerRef: RefObject<HTMLElement | null>, onDragEnd: (d
     return () => {
       initialChildren.forEach((el) => {
         el.draggable = false;
-        el.removeAttribute("data-drag-target");
         el.removeAttribute("data-index");
+        el.removeAttribute(dragTargetAttr);
         el.removeEventListener("dragstart", handleDragStart);
         el.removeEventListener("dragend", handleDragEnd);
       });
@@ -107,9 +136,17 @@ const useDraggable = (containerRef: RefObject<HTMLElement | null>, onDragEnd: (d
       const container = containerRef.current;
 
       if (container) {
+        const state = Flip.getState(initialChildren);
+
         initialChildren.forEach((el) => {
           container.appendChild(el);
         });
+
+        Flip.from(state, {
+          targets: initialChildren,
+          duration: 0.3,
+          ease: "power3.out",
+        })
       }
     }
   }, [containerRef, initialChildren, isDragOutsideContainer]);
