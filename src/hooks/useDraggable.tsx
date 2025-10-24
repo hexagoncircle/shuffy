@@ -12,7 +12,7 @@ interface UseDraggableProps {
 gsap.registerPlugin(Flip)
 
 const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps) => {
-  const [initialChildren, setInitialChildren] = useState<HTMLElement[]>([]);
+  const [draggableItems, setDraggableItems] = useState<HTMLElement[]>([]);
   const [isDragOutsideContainer, setIsDragOutsideContainer] = useState(false);
   const dragClassName = "is-dragging";
   const dragTargetAttr = "drag-target";
@@ -25,13 +25,7 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
 
     if (!container) return;
 
-    setInitialChildren([...container.children] as HTMLElement[]);
-  }, [containerRef]);
-
-  useEffect(() => {
-    const container = containerRef.current;
-
-    if (!container) return;
+    const draggableItems = [...container.children] as HTMLElement[];
 
     const handleDragStart = (e: DragEvent) => {
       const target = e.target as HTMLElement;
@@ -44,41 +38,41 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
 
     const handleDragEnd = (e: DragEvent) => {
       const target = e.target as HTMLElement;
-      const sortedChildren = [...container.children] as HTMLElement[];
 
       target.classList.remove(dragClassName);
 
       if (onDragEnd && !isDragOutsideContainer) {
-        const reorderedData = sortedChildren.map((el) => Number(el.dataset.index));
+        const items = [...container.children] as HTMLElement[];
+        const reorderedIndexes = items.map((el) => Number(el.dataset.index));
 
-        onDragEnd(reorderedData);
-        setInitialChildren(sortedChildren);
+        // Reset data-index values to match new order
+        items.forEach((el, index) => {
+          el.setAttribute("data-index", String(index));
+        });
+
+
+        setDraggableItems(items);
+        onDragEnd(reorderedIndexes);
       }
-
-      // Reset data-index values to match new order
-      sortedChildren.forEach((el, index) => {
-        el.setAttribute("data-index", String(index));
-      });
     };
 
     const handleDragOver = contextSafe((e: DragEvent) => {
       e.preventDefault();
       setIsDragOutsideContainer(false);
 
-      const dragging = container.querySelector(`.${dragClassName}`);
+      const dragging = container.querySelector(`.${dragClassName}`) as HTMLElement;
 
       if (!dragging) return;
 
       const target = e.target as HTMLElement;
-      const currentTarget = target.closest(`[${dragTargetAttr}]`);
+      const currentTarget = target.closest(`[${dragTargetAttr}]`) as HTMLElement;
 
       if (!currentTarget || currentTarget === dragging || currentTarget.hasAttribute(flipAttr)) return;
 
-      const state = Flip.getState(initialChildren);
+      const state = Flip.getState(draggableItems);
 
-      const currentChildren = [...container.children];
-      const draggingIndex = currentChildren.indexOf(dragging);
-      const targetIndex = currentChildren.indexOf(currentTarget);
+      const draggingIndex = draggableItems.indexOf(dragging);
+      const targetIndex = draggableItems.indexOf(currentTarget);
 
       if (draggingIndex < targetIndex) {
         container.insertBefore(dragging, currentTarget.nextSibling);
@@ -90,7 +84,7 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
       currentTarget.setAttribute(flipAttr, "");
 
       Flip.from(state, {
-        targets: currentChildren,
+        targets: draggableItems,
         duration: 0.3,
         ease: "power3.out",
         onComplete: () => {
@@ -105,7 +99,7 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
       }
     };
 
-    initialChildren.forEach((el, index) => {
+    draggableItems.forEach((el, index) => {
       el.draggable = true;
       el.setAttribute("data-index", String(index));
       el.setAttribute(dragTargetAttr, "");
@@ -117,7 +111,7 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
     container.addEventListener("dragleave", handleDragLeave);
 
     return () => {
-      initialChildren.forEach((el) => {
+      draggableItems.forEach((el) => {
         el.draggable = false;
         el.removeAttribute("data-index");
         el.removeAttribute(dragTargetAttr);
@@ -128,28 +122,30 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
       container.removeEventListener("dragover", handleDragOver);
       container.removeEventListener("dragleave", handleDragLeave);
     };
-  }, [containerRef, onDragEnd, initialChildren, isDragOutsideContainer]);
+  }, [containerRef, onDragEnd, draggableItems, isDragOutsideContainer]);
 
   // Check if drag leaves boundaries of container
   useEffect(() => {
-    if (isDragOutsideContainer && initialChildren.length > 0) {
-      const container = containerRef.current;
+    const container = containerRef.current;
 
-      if (container) {
-        const state = Flip.getState(initialChildren);
+    if (container && isDragOutsideContainer) {
 
-        initialChildren.forEach((el) => {
-          container.appendChild(el);
-        });
+      const state = Flip.getState(draggableItems);
+      const fragment = document.createDocumentFragment();
 
-        Flip.from(state, {
-          targets: initialChildren,
-          duration: 0.3,
-          ease: "power3.out",
-        })
-      }
+      draggableItems.forEach((el) => {
+        fragment.appendChild(el);
+      });
+
+      container.appendChild(fragment);
+
+      Flip.from(state, {
+        targets: draggableItems,
+        duration: 0.3,
+        ease: "power3.out",
+      })
     }
-  }, [containerRef, initialChildren, isDragOutsideContainer]);
+  }, [containerRef, isDragOutsideContainer]);
 };
 
 export default useDraggable;
