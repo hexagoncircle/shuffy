@@ -16,6 +16,7 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
   const [isDragOutsideContainer, setIsDragOutsideContainer] = useState(false);
   const dragClassName = "is-dragging";
   const dragTargetAttr = "drag-target";
+  const dragIndexAttr = "data-drag-index";
   const flipAttr = "flip";
 
   const { contextSafe } = useGSAP({ scope: containerRef });
@@ -43,11 +44,11 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
 
       if (onDragEnd && !isDragOutsideContainer) {
         const items = [...container.children] as HTMLElement[];
-        const reorderedIndexes = items.map((el) => Number(el.dataset.index));
+        const reorderedIndexes = items.map((el) => Number(el.getAttribute(dragIndexAttr)));
 
         // Reset data-index values to match new order
         items.forEach((el, index) => {
-          el.setAttribute("data-index", String(index));
+          el.setAttribute(dragIndexAttr, String(index));
         });
 
 
@@ -101,7 +102,7 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
 
     draggableItems.forEach((el, index) => {
       el.draggable = true;
-      el.setAttribute("data-index", String(index));
+      el.setAttribute(dragIndexAttr, String(index));
       el.setAttribute(dragTargetAttr, "");
       el.addEventListener("dragstart", handleDragStart);
       el.addEventListener("dragend", handleDragEnd);
@@ -113,7 +114,7 @@ const useDraggable = ({ containerRef, onDragEnd, dragHandle }: UseDraggableProps
     return () => {
       draggableItems.forEach((el) => {
         el.draggable = false;
-        el.removeAttribute("data-index");
+        el.removeAttribute(dragIndexAttr);
         el.removeAttribute(dragTargetAttr);
         el.removeEventListener("dragstart", handleDragStart);
         el.removeEventListener("dragend", handleDragEnd);
