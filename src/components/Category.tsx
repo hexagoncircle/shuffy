@@ -81,7 +81,6 @@ const Category = ({
   }
 
   const handleCancel = () => {
-    console.log("handleCancel");
     setEditCategoryId(null);
   }
 
