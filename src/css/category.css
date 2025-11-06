@@ -1,3 +1,9 @@
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+}
+
 .category {
   --padding: var(--space-l);
   display: grid;

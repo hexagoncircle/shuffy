@@ -1,104 +1,112 @@
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import CategoryCreator from "./CategoryCreator";
 import CategoryStarter from "./CategoryStarter";
 import PlusIcon from "@assets/plus.svg?react";
 import Category from "./Category";
-import useDraggable from "@hooks/useDraggable";
+import { DragDropProvider } from '@dnd-kit/react';
 
 export default function Categories() {
-  const { categories, reorderCategories } = useCategoriesContext();
+  const { categories, reorderCategories, editCategoryId, setEditCategoryId } = useCategoriesContext();
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
-  const [editingCategoryIndex, setEditingCategoryIndex] = useState(-1);
-  const isEditing = editingCategoryIndex !== -1;
   const hasCategories = categories.length > 0;
   const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLUListElement>(null);
   const activeElementRef = useRef<HTMLElement | null>(null);
   const categoriesRef = useRef<(HTMLLIElement | null)[]>([]);
 
-  const handleEdit = (index: number) => {
-    setEditingCategoryIndex(index);
-    activeElementRef.current = categoriesRef.current[index];
-  }
+  // Create a Map for O(1) lookups by ID
+  const categoryMap = useMemo(
+    () => new Map(categories.map((category) => [category.id, category])),
+    [categories]
+  );
 
   const handleClose = (e: KeyboardEvent<HTMLElement>) => {
-    if (isEditing && e.key === "Escape") {
+    if (editCategoryId && e.key === "Escape") {
       e.preventDefault();
-      setEditingCategoryIndex(-1);
+      setEditCategoryId(null);
     }
   }
 
-  const handleDelete = () => {
-    setEditingCategoryIndex(-1);
-    addCategoryButtonRef.current?.focus();
+  const handleAddCategory = () => {
+    setIsCreatingCategory(true);
+    setEditCategoryId("new-category");
   }
 
-  const updateCategoryOrder = (arr: number[]) => {
-    const reorderedItems = arr.map((index) => categories[index]);
+  const handleAddCategoryComplete = () => {
+    setIsCreatingCategory(false);
+    setEditCategoryId(null);
+  }
+
+  const handleDragEnd = () => {
+    if (!containerRef.current) return;
+
+    const itemEls = [...containerRef.current.children] as HTMLElement[];
+
+    // The new Set removes duplicate placeholder created by dnd-kit while dragging.
+    const newOrderById = [...new Set([...itemEls].map((item) => item.id))];
+    const currentOrderById = categories.map((category) => category.id);
+
+    // If order hasn't changed, do nothing.
+    if (currentOrderById.every((id, index) => id === newOrderById[index])) {
+      return;
+    }
+
+    const reorderedItems = newOrderById
+      .map((id) => categoryMap.get(id))
+      .filter((item) => item !== undefined);
+
     reorderCategories(reorderedItems);
-  };
+  }
 
-  // Update category order via drag and drop
-  useDraggable({
-    containerRef,
-    onDragEnd: updateCategoryOrder,
-    dragHandle: '.grippy'
-  });
+  // useEffect(() => {
+  //   // Refocus "Add category" button if category create action is canceled
+  //   if (!isCreatingCategory) {
+  //     addCategoryButtonRef.current?.focus();
+  //   }
+  // }, [isCreatingCategory]);
 
-  useEffect(() => {
-    // Refocus "Add category" button if category create action is canceled
-    if (!isCreatingCategory) {
-      addCategoryButtonRef.current?.focus();
-    }
-  }, [isCreatingCategory]);
+  // useEffect(() => {
+  //   /**
+  //    * Restore focus to the category label when no longer editing
+  //    * If category was deleted, focus "Add category" button instead
+  //    */
+  //   if (!editCategoryId) {
+  //     const btn = activeElementRef.current?.querySelector("button");
 
-  useEffect(() => {
-    /**
-     * Restore focus to the category label when no longer editing
-     * If category was deleted, focus "Add category" button instead
-     */
-    if (!isEditing) {
-      const btn = activeElementRef.current?.querySelector("button");
-
-      btn ? btn.focus() : addCategoryButtonRef.current?.focus();
-    }
-  }, [isEditing]);
+  //     btn ? btn.focus() : addCategoryButtonRef.current?.focus();
+  //   }
+  // }, [editCategoryId]);
 
   return (
     <>
       {hasCategories ? (
-        <section>
-          <ul ref={containerRef} className="category-list flow flow-s" role="list" onKeyDown={handleClose}>
+        <ul ref={containerRef} className="category-list" role="list" onKeyDown={handleClose}>
+          <DragDropProvider onDragEnd={handleDragEnd}>
             {categories.map((category, index) => (
               <Category
                 key={category.id}
-                ref={el => {
-                  (categoriesRef.current[index] = el);
-                }}
+                sortId={category.id}
+                index={index}
                 category={category}
-                isEditing={index === editingCategoryIndex}
-                onIsEditing={() => handleEdit(index)}
-                onComplete={() => setEditingCategoryIndex(-1)}
-                onDelete={handleDelete}
               />
             ))}
-          </ul>
-        </section>
+          </DragDropProvider>
+        </ul>
       ) : null}
       {isCreatingCategory ? (
-        <CategoryCreator onComplete={() => setIsCreatingCategory(false)} />
+        <CategoryCreator onComplete={handleAddCategoryComplete} />
       ) : hasCategories ? (
         <button
           ref={addCategoryButtonRef}
           type="button"
           className="primary small center"
-          onClick={() => setIsCreatingCategory(true)}
+          onClick={handleAddCategory}
         >
           <PlusIcon /> Add a category
         </button>
       ) : (
-        <CategoryStarter ref={addCategoryButtonRef} onClick={() => setIsCreatingCategory(true)} />
+        <CategoryStarter ref={addCategoryButtonRef} onClick={handleAddCategory} />
       )}
     </>
   )
