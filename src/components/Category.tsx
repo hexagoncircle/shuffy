@@ -1,4 +1,4 @@
-import { CSSProperties, DragEvent, FormEvent, KeyboardEvent, forwardRef, useEffect, useRef, useState } from "react";
+import { CSSProperties, FormEvent, KeyboardEvent, useEffect, useRef, useState, RefObject } from "react";
 import slugify from "slugify";
 import { CategoryDataProps } from "@contexts/CategoriesContext";
 import ColorPicker from "./ColorPicker";
@@ -8,39 +8,40 @@ import clsx from "clsx";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import { useCardsContext } from "@hooks/useCardsContext";
 import { useConfirmModalContext } from "@hooks/useConfirmModalContext";
+import { useSortable } from '@dnd-kit/react/sortable';
+import { useOnClickOutside } from "usehooks-ts";
+import mergeRefs from "merge-refs";
 
 
 export interface CategoryProps {
   category: CategoryDataProps;
-  isEditing?: boolean;
+  isEditing: boolean;
   onIsEditing(): void;
   onComplete(): void;
   onDelete(): void;
+  sortId: string;
+  index: number;
 }
 
-const Category = forwardRef<HTMLLIElement, CategoryProps>(({
+const Category = ({
   category,
-  isEditing,
-  onIsEditing,
-  onComplete,
-  onDelete,
-}, ref) => {
-  const { categories, updateCategory, deleteCategory } = useCategoriesContext();
-  const { cards } = useCardsContext();
-  const { setModalContext } = useConfirmModalContext();
+  index,
+}: CategoryProps) => {
+  const { categories, updateCategory, deleteCategory, editCategoryId, setEditCategoryId } = useCategoriesContext();
   const { id, label, theme } = category;
+  const isEditing = editCategoryId === id;
+  const editButtonRef = useRef<HTMLButtonElement>(null);
+  const grippyRef = useRef<HTMLDivElement>(null);
+  const { ref: sortRef } = useSortable({ id, index, handle: grippyRef, disabled: !!editCategoryId });
+  const { cards } = useCardsContext();
+  const { modalContext, setModalContext } = useConfirmModalContext();
   const [colorValue, setColorValue] = useState(theme);
   const [inputValue, setInputValue] = useState(label);
   const inputRef = useRef<HTMLInputElement>(null);
   const slugifiedValue = slugify(inputValue, { lower: true });
   const isDuplicate = categories.find(c => c.id !== id && c.value === slugifiedValue);
   const categoryCards = cards.filter(card => card.category === id);
-
-  const handleCancel = () => {
-    setColorValue(theme);
-    setInputValue(label);
-    onComplete();
-  }
+  const containerRef = useRef<Element>(null);
 
   const handleEscapeCancel = (e: KeyboardEvent<HTMLElement>) => {
     if (isEditing && e.key === "Escape") {
@@ -64,7 +65,7 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
   }
 
   const handleEdit = () => {
-    onIsEditing();
+    setEditCategoryId(id);
   }
 
   const handleSave = () => {
@@ -76,12 +77,17 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
       value: slugify(inputValue, { lower: true }),
       theme: colorValue
     })
-    onComplete();
+    setEditCategoryId(null);
+  }
+
+  const handleCancel = () => {
+    console.log("handleCancel");
+    setEditCategoryId(null);
   }
 
   const handleDelete = () => {
-    deleteCategory(category.id)
-    onDelete();
+    deleteCategory(category.id);
+    setEditCategoryId(null);
   }
 
   const handleDeleteClick = () => {
@@ -105,23 +111,33 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
   useEffect(() => {
     if (isEditing) {
       inputRef.current?.focus();
+    } else {
+      editButtonRef.current?.focus();
     }
   }, [isEditing]);
 
+  useOnClickOutside(containerRef as RefObject<HTMLElement>, () => {
+    if (isEditing && !modalContext.isOpen) {
+      handleCancel();
+    }
+  }, "mouseup");
+
   return (
     <li
-      ref={ref}
+      ref={mergeRefs(sortRef, containerRef) as React.Ref<HTMLLIElement>}
+      id={id}
       className="category box"
       style={{ "--theme": colorValue } as CSSProperties}
       onKeyDown={handleEscapeCancel}
     >
       <section className="category-content">
-        <div className="grippy">
+        <div ref={grippyRef} className="grippy" tabIndex={editCategoryId ? -1 : 0}>
           <GripIcon className="icon" aria-hidden="true" />
           <span className="visually-hidden">Drag to reorder</span>
         </div>
         {!isEditing ? (
           <button
+            ref={editButtonRef}
             type="button"
             className="category-edit-button break-words"
             onClick={handleEdit}
@@ -161,8 +177,8 @@ const Category = forwardRef<HTMLLIElement, CategoryProps>(({
           </footer>
         </section>
       )}
-    </li >
+    </li>
   )
-})
+}
 
 export default Category;

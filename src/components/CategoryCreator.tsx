@@ -1,4 +1,4 @@
-import { CSSProperties, FormEvent, KeyboardEvent, useRef, useState } from "react";
+import { CSSProperties, FormEvent, KeyboardEvent, RefObject, useRef, useState } from "react";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import slugify from "slugify";
 import { v4 as uuid } from "uuid";
@@ -7,6 +7,7 @@ import CategorySelectIcon from "@assets/category-select.svg?react";
 import COLORS from "@data/colors.theme.json";
 import { getRandomValue } from "@js/utils";
 import clsx from "clsx";
+import { useOnClickOutside } from "usehooks-ts";
 
 interface CategoryCreatorProps {
   onComplete(): void;
@@ -19,7 +20,7 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const slugifiedValue = slugify(inputValue, { lower: true });
   const isDuplicate = categories.find(c => c.value === slugifiedValue);
-
+  const containerRef = useRef<HTMLDivElement>(null);
   const handleContainerKeydown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Escape") {
       e.preventDefault();
@@ -54,8 +55,13 @@ export default function CategoryCreator({ onComplete }: CategoryCreatorProps) {
     onComplete();
   }
 
+  useOnClickOutside(containerRef as RefObject<HTMLElement>, () => {
+    onComplete();
+  }, "mouseup");
+
   return (
     <div
+      ref={containerRef}
       className="category-creator category box"
       style={{ "--theme": colorValue } as CSSProperties}
       onKeyDown={handleContainerKeydown}

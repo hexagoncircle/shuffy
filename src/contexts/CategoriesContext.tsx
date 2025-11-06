@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useReducer } from "react";
+import { ReactNode, createContext, useReducer, useState } from "react";
 import categoriesReducer from "@reducers/categoriesReducer";
 
 // Testing data
@@ -17,6 +17,8 @@ interface CategoriesProviderProps {
 
 interface CategoriesContextType {
   categories: CategoryDataProps[];
+  editCategoryId: string | null;
+  setEditCategoryId: (id: string | null) => void;
   createCategory: (category: CategoryDataProps) => void;
   updateCategory: (category: CategoryDataProps) => void;
   deleteCategory: (id: string) => void;
@@ -28,6 +30,7 @@ export const CategoriesContext = createContext<CategoriesContextType | null>(nul
 
 export default function CategoriesProvider({ children }: CategoriesProviderProps) {
   const [categories, dispatch] = useReducer(categoriesReducer, CATEGORIES);
+  const [editCategoryId, setEditCategoryId] = useState<string | null>(null);
 
   const createCategory = (category: CategoryDataProps) => {
     dispatch({
@@ -63,6 +66,8 @@ export default function CategoriesProvider({ children }: CategoriesProviderProps
 
   const value: CategoriesContextType = {
     categories,
+    editCategoryId,
+    setEditCategoryId,
     createCategory,
     updateCategory,
     deleteCategory,
