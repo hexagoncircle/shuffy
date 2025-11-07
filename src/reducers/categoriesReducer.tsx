@@ -1,4 +1,5 @@
 import { CategoryDataProps } from "@contexts/CategoriesContext";
+import { debugLog } from "@js/debug";
 
 type CreatedAction = {
   type: "CATEGORY_CREATED";
@@ -29,13 +30,13 @@ type CategoryActions = CreatedAction | UpdatedAction | DeletedAction | AllDelete
 export default function categoriesReducer(categories: CategoryDataProps[], action: CategoryActions) {
   switch (action.type) {
     case "CATEGORY_CREATED": {
-      console.log("CATEGORY_CREATED", action.category);
+      debugLog("CATEGORY_CREATED", action.category);
 
       return [...categories, action.category];
     }
 
     case "CATEGORY_UPDATED": {
-      console.log("CATEGORY_UPDATED", action.category);
+      debugLog("CATEGORY_UPDATED", action.category);
 
       return categories.map((category) => {
         if (category.id === action.category.id) {
@@ -47,19 +48,19 @@ export default function categoriesReducer(categories: CategoryDataProps[], actio
     }
 
     case "CATEGORY_DELETED": {
-      console.log("CATEGORY_DELETED", categories.find(({ id }) => action.id === id));
+      debugLog("CATEGORY_DELETED", categories.find(({ id }) => action.id === id));
 
       return categories.filter((category) => category.id !== action.id);
     }
 
     case "CATEGORIES_ALL_DELETED": {
-      console.log("CATEGORIES_ALL_DELETED", categories);
+      debugLog("CATEGORIES_ALL_DELETED");
 
       return [];
     }
 
     case "CATEGORIES_REORDER": {
-      console.log("CATEGORIES_REORDER", action.data);
+      debugLog("CATEGORIES_REORDER", action.data);
 
       return categories = [...action.data];
     }

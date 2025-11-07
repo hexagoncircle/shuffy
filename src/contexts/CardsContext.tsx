@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useReducer, useState } from "react";
 import cardsReducer from "@reducers/cardsReducer";
+import { useCategoriesContext } from "@hooks/useCategoriesContext";
 
 // Testing data
 import CARDS from "@data/deck.json";
@@ -28,12 +29,15 @@ interface CardsContextType {
 export const CardsContext = createContext<CardsContextType | null>(null);
 
 export default function CardsProvider({ children }: CardsProviderProps) {
-  const [cards, dispatch] = useReducer(cardsReducer, CARDS);
+  const { categories } = useCategoriesContext();
+  const [cards, dispatch] = useReducer(
+    (state: CardDataProps[], action: Parameters<typeof cardsReducer>[1]) =>
+      cardsReducer(state, action, categories),
+    CARDS
+  );
   const [editCardId, setEditCardId] = useState("");
 
   const createCard = (card: CardDataProps) => {
-    console.log("CARD_CREATED", card);
-
     dispatch({
       type: "CARD_CREATED",
       card,
@@ -41,8 +45,6 @@ export default function CardsProvider({ children }: CardsProviderProps) {
   };
 
   const updateCard = (card: CardDataProps) => {
-    console.log("CARD_UPDATED", card);
-
     dispatch({
       type: "CARD_UPDATED",
       card,
@@ -50,8 +52,6 @@ export default function CardsProvider({ children }: CardsProviderProps) {
   };
 
   const deleteCard = (id: string) => {
-    console.log("CARD_DELETED", cards.find((card) => card.id === id));
-
     dispatch({
       type: "CARD_DELETED",
       id,
@@ -59,8 +59,6 @@ export default function CardsProvider({ children }: CardsProviderProps) {
   };
 
   const deleteAllCards = () => {
-    console.log("CARD_ALL_DELETED", cards);
-
     dispatch({ type: "CARDS_ALL_DELETED" });
   };
 
