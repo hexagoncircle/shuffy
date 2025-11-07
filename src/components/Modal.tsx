@@ -23,12 +23,19 @@ export default function Modal({ open, actions, title, variant, children, onClose
     }
   }, [open]);
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
     <dialog
       ref={ref}
       className="modal"
       data-variant={variant}
       onClose={() => onClose()}
+      onClick={handleBackdropClick}
     >
       <form method="dialog">
         <header className="modal-header">
