@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { refocusElement } from "@js/utils";
 import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
 import { useCardsContext } from "@hooks/useCardsContext";
@@ -35,17 +35,10 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
     });
   }
 
-  useEffect(() => {
-    if (!cardsScrollRef.current) return;
-
-    const cards = cardsRef.current;
+  useLayoutEffect(() => {
     const scrollEl = cardsScrollRef.current;
 
-    const options = {
-      root: scrollEl,
-      rootMargin: '0% -50%',
-      threshold: 0
-    };
+    if (!scrollEl) return;
 
     if (scrollPosition === -1) {
       // Set position to end for new card
@@ -54,8 +47,20 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
       // Set position to selected card
       scrollEl.scrollLeft = scrollPosition;
     }
+  }, []);
 
-    const observer = new IntersectionObserver((entries) => {
+  useEffect(() => {
+    focusIndex && refocusElement(cardsRef.current, focusIndex);
+  }, [focusIndex]);
+
+  useEffect(() => {
+    const scrollEl = cardsScrollRef.current;
+
+    if (!scrollEl) return;
+
+    const cards = cardsRef.current;
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const target = entry.target as HTMLButtonElement;
@@ -64,16 +69,22 @@ export default function CardsSpread({ focusIndex, scrollPosition, onCardClick }:
           setActiveCardIndex(index);
         }
       });
-    }, options);
+    }
 
-    focusIndex && refocusElement(cards, focusIndex);
+    const observerOptions = {
+      root: scrollEl,
+      rootMargin: '0% -50%',
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
 
     cards.forEach((card) => card && observer.observe(card));
 
     return () => {
       cards.forEach((card) => card && observer.unobserve(card));
     };
-  }, [focusIndex, scrollPosition]);
+  }, []);
 
   return (
     <>

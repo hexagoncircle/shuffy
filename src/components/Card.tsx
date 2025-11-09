@@ -1,7 +1,6 @@
-import { CSSProperties, forwardRef } from "react";
+import { CSSProperties, forwardRef, ViewTransition } from "react";
 import clsx from "clsx";
 import { CardDataProps } from "@contexts/CardsContext";
-import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import ShuffyFace from "@assets/shuffy-face.svg?react";
 import ShuffyFaceInactive from "@assets/shuffy-face-sleep.svg?react";
 import Blot from "@assets/card-blot.svg?react";
@@ -16,46 +15,44 @@ export interface CardProps {
 }
 
 const Card = forwardRef<HTMLButtonElement, CardProps>(({ card, flipped, selected, className, onClick }, ref) => {
-  const { categories } = useCategoriesContext();
-  const { id, label, category, isActive } = card;
-  const categoryObj = categories.find(c => c.id === category);
-  const categoryLabel = categoryObj?.label;
-  const theme = categoryObj?.theme;
+  const { id, label, isActive, categoryLabel, categoryTheme: theme } = card;
 
   return (
-    <article
-      id={id}
-      className={clsx(
-        "card stack",
-        !isActive && "inactive",
-        flipped && "flipped",
-        theme && "has-theme",
-        className)}
-      style={{ "--theme": theme } as CSSProperties}
-    >
-      <button
-        ref={ref}
-        className="card-front"
-        aria-selected={selected}
-        onClick={onClick}
+    <ViewTransition name={`card-${id}`}>
+      <article
+        id={id}
+        className={clsx(
+          "card stack",
+          !isActive && "inactive",
+          flipped && "flipped",
+          theme && "has-theme",
+          className)}
+        style={{ "--theme": theme } as CSSProperties}
       >
-        <div className="card-display">
-          <figure className="card-figure stack" aria-hidden="true">
-            <Blot className="card-blot" />
-            {isActive
-              ? <ShuffyFace className="card-face" />
-              : <ShuffyFaceInactive className="card-face" />
-            }
-          </figure>
-          {categoryLabel && <div className="card-category break-words">{categoryLabel}</div>}
-          <h2 className="card-name break-words">{label}</h2>
-        </div>
-      </button>
+        <button
+          ref={ref}
+          className="card-front"
+          aria-selected={selected}
+          onClick={onClick}
+        >
+          <div className="card-display">
+            <figure className="card-figure stack" aria-hidden="true">
+              <Blot className="card-blot" />
+              {isActive
+                ? <ShuffyFace className="card-face" />
+                : <ShuffyFaceInactive className="card-face" />
+              }
+            </figure>
+            {categoryLabel && <div className="card-category break-words">{categoryLabel}</div>}
+            <h2 className="card-name break-words">{label}</h2>
+          </div>
+        </button>
 
-      <section className="card-back">
-        <img src="card-back.svg" width="462" height="615" alt="" />
-      </section>
-    </article>
+        <section className="card-back">
+          <img src="card-back.svg" width="462" height="615" alt="" />
+        </section>
+      </article>
+    </ViewTransition>
   );
 })
 

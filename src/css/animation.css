@@ -1,0 +1,18 @@
+@keyframes screen-transition {
+  from {
+    opacity: 0;
+    scale: 1.01;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+::view-transition-old(.screen-transition) {
+  animation: screen-transition 0.1s ease-out reverse forwards;
+}
+
+::view-transition-new(.screen-transition) {
+  animation: screen-transition 0.2s 0.2s ease-out backwards;
+}

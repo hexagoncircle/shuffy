@@ -15,10 +15,6 @@ import mergeRefs from "merge-refs";
 
 export interface CategoryProps {
   category: CategoryDataProps;
-  isEditing: boolean;
-  onIsEditing(): void;
-  onComplete(): void;
-  onDelete(): void;
   sortId: string;
   index: number;
 }

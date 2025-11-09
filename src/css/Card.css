@@ -7,6 +7,7 @@
   --card-name-fontWeight: var(--font-semibold);
   container-type: inline-size;
   position: relative;
+  isolation: isolate;
   display: grid;
   inline-size: var(--card-size);
   aspect-ratio: var(--card-aspect-ratio);
@@ -108,10 +109,12 @@
 
 .card-front {
   border-radius: var(--radius);
+  z-index: 1;
 }
 
 .card-back {
   transform: rotateY(180deg);
+  z-index: 0;
 
   img {
     width: 100%;

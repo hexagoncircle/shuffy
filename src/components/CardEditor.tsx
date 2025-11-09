@@ -1,4 +1,4 @@
-import { CSSProperties, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { ViewTransition, startTransition, CSSProperties, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 import clsx from "clsx";
 import { getItemById } from "@js/utils";
@@ -51,32 +51,38 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
   }
 
   const handleCreate = () => {
-    createCard({
-      id: `card-${uuid()}`,
-      isActive: true,
-      label: nameValue,
-      category: selectedCategory
+    startTransition(() => {
+      createCard({
+        id: `card-${uuid()}`,
+        isActive: true,
+        label: nameValue,
+        category: selectedCategory
+      });
+      setLastSelectedCategory(selectedCategory);
+      onComplete("create");
     });
-    setLastSelectedCategory(selectedCategory);
-    onComplete("create");
   }
 
   const handleUpdate = () => {
     if (!card) return;
 
-    updateCard({
-      ...card,
-      label: nameValue,
-      category: selectedCategory
+    startTransition(() => {
+      updateCard({
+        ...card,
+        label: nameValue,
+        category: selectedCategory
+      });
+      onComplete("update");
     });
-    onComplete("update");
   }
 
   const handleDelete = () => {
     if (!card) return;
 
-    deleteCard(card.id);
-    onComplete("update");
+    startTransition(() => {
+      deleteCard(card.id);
+      onComplete("update");
+    })
   }
 
   useEffect(() => {
@@ -107,40 +113,42 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
             <CategorySelectIcon aria-hidden="true" />
           </button>
         </div>
-        <div
-          className="card"
-          style={{ "--theme": selectedCategoryObj?.theme } as CSSProperties}
-        >
-          <div className="card-front">
-            <div className="card-display">
-              {selectedCategoryObj && <div className="card-category">{selectedCategoryObj.label}</div>}
+        <ViewTransition name={`card-${card?.id}`}>
+          <div
+            className="card"
+            style={{ "--theme": selectedCategoryObj?.theme } as CSSProperties}
+          >
+            <div className="card-front">
+              <div className="card-display">
+                {selectedCategoryObj && <div className="card-category">{selectedCategoryObj.label}</div>}
 
-              <div className="editor-box">
-                <div className="editor-box-corner"></div>
-                <div className="editor-box-corner"></div>
-                <div className="editor-box-corner"></div>
-                <div className="editor-box-corner"></div>
-                <label htmlFor="edit-card-title" className="visually-hidden">Card label</label>
-                <div className="card-name-wrapper stack" data-value={nameValue}>
-                  <textarea
-                    ref={nameRef}
-                    id="edit-card-title"
-                    className="card-name"
-                    placeholder="Enter text for this card"
-                    maxLength={nameMaxLength}
-                    rows={nameValue ? 1 : 2}
-                    value={nameValue}
-                    onChange={(e) => setNameValue(e.currentTarget.value)}
-                    onKeyDown={handleNameInputKeydown}
-                  />
+                <div className="editor-box">
+                  <div className="editor-box-corner"></div>
+                  <div className="editor-box-corner"></div>
+                  <div className="editor-box-corner"></div>
+                  <div className="editor-box-corner"></div>
+                  <label htmlFor="edit-card-title" className="visually-hidden">Card label</label>
+                  <div className="card-name-wrapper stack" data-value={nameValue}>
+                    <textarea
+                      ref={nameRef}
+                      id="edit-card-title"
+                      className="card-name"
+                      placeholder="Enter text for this card"
+                      maxLength={nameMaxLength}
+                      rows={nameValue ? 1 : 2}
+                      value={nameValue}
+                      onChange={(e) => setNameValue(e.currentTarget.value)}
+                      onKeyDown={handleNameInputKeydown}
+                    />
+                  </div>
+                  <p className={clsx("character-count", isNameCharacterLimit && "limit")}>
+                    {nameValue.length} / {nameMaxLength}
+                  </p>
                 </div>
-                <p className={clsx("character-count", isNameCharacterLimit && "limit")}>
-                  {nameValue.length} / {nameMaxLength}
-                </p>
               </div>
             </div>
           </div>
-        </div>
+        </ViewTransition>
       </article>
       <footer className="actions">
         {card ? (

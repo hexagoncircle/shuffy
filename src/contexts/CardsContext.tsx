@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useReducer, useState } from "react";
+import { ReactNode, createContext, useReducer, useState, useMemo } from "react";
 import cardsReducer from "@reducers/cardsReducer";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
 
@@ -10,6 +10,8 @@ export interface CardDataProps {
   label: string;
   isActive: boolean;
   category: string;
+  categoryLabel?: string;
+  categoryTheme?: string;
 }
 
 interface CardsProviderProps {
@@ -37,6 +39,18 @@ export default function CardsProvider({ children }: CardsProviderProps) {
   );
   const [editCardId, setEditCardId] = useState("");
 
+  const cardsWithCategoryInfo = useMemo(() => {
+    return cards.map(card => {
+      const categoryObj = categories.find(c => c.id === card.category);
+
+      return {
+        ...card,
+        categoryLabel: categoryObj?.label,
+        categoryTheme: categoryObj?.theme,
+      };
+    });
+  }, [cards, categories]);
+
   const createCard = (card: CardDataProps) => {
     dispatch({
       type: "CARD_CREATED",
@@ -63,7 +77,7 @@ export default function CardsProvider({ children }: CardsProviderProps) {
   };
 
   const value: CardsContextType = {
-    cards,
+    cards: cardsWithCategoryInfo,
     editCardId,
     createCard,
     updateCard,

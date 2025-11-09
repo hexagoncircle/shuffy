@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ViewTransition, startTransition } from "react";
 import ConfirmModalProvider from "@contexts/ConfirmModalContext";
 import { useCardsContext } from "@hooks/useCardsContext";
 import DeckDisplay from "@components/DeckDisplay";
@@ -15,26 +15,32 @@ export default function Deck() {
   const [editAction, setEditAction] = useState("");
 
   const handleIsEditing = (isEditing: boolean, action: CardEditAction) => {
-    setIsEditing(isEditing);
-    setEditAction(action);
+    startTransition(() => {
+      setIsEditing(isEditing);
+      setEditAction(action);
+    })
   }
 
   const handleClose = () => {
-    setEditCardId("");
-    setIsEditing(false)
+    startTransition(() => {
+      setEditCardId("");
+      setIsEditing(false)
+    })
   }
 
   return (
     <ConfirmModalProvider>
-      {isEditing ? (
-        <DeckEditHeader
-          text={editAction === "add" ? "Add new card" : "Modify card"}
-          onClose={handleClose}
-        />
-      ) : <DeckHeader />}
-      <main className="deck-display">
-        <DeckDisplay isEditing={isEditing} onIsEditing={handleIsEditing} />
-      </main>
+      <ViewTransition update="screen-transition">
+        {isEditing ? (
+          <DeckEditHeader
+            text={editAction === "create" ? "Add new card" : "Modify card"}
+            onClose={handleClose}
+          />
+        ) : <DeckHeader />}
+        <main className="deck-display">
+          <DeckDisplay isEditing={isEditing} onIsEditing={handleIsEditing} />
+        </main>
+      </ViewTransition>
       <ConfirmModal />
       <SettingsModal />
     </ConfirmModalProvider>

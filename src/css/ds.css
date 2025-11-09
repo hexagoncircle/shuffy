@@ -1,6 +1,7 @@
 @import "@css/reset.css";
 @import "@css/fonts.css";
 @import "@css/utils.css";
+@import "@css/animation.css";
 @import "@css/custom-media.css";
 
 :root {
@@ -480,6 +481,7 @@ button:disabled {
   display: grid;
   gap: var(--space-m);
   margin-inline: auto;
+  margin-block-start: auto;
   inline-size: min(var(--card-size), 100%);
 }
 
