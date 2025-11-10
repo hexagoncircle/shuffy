@@ -1,13 +1,22 @@
-import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  KeyboardEvent,
+  useMemo,
+  useRef,
+  useState,
+  startTransition,
+  addTransitionType,
+} from "react";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import CategoryCreator from "./CategoryCreator";
 import CategoryStarter from "./CategoryStarter";
 import PlusIcon from "@assets/plus.svg?react";
 import Category from "./Category";
-import { DragDropProvider } from '@dnd-kit/react';
+import { DragDropProvider } from "@dnd-kit/react";
+import { VIEW_TRANSITIONS } from "@js/constants";
 
 export default function Categories() {
-  const { categories, reorderCategories, editCategoryId, setEditCategoryId } = useCategoriesContext();
+  const { categories, reorderCategories, editCategoryId, setEditCategoryId } =
+    useCategoriesContext();
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
   const hasCategories = categories.length > 0;
   const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
@@ -26,17 +35,17 @@ export default function Categories() {
       e.preventDefault();
       setEditCategoryId(null);
     }
-  }
+  };
 
   const handleAddCategory = () => {
     setIsCreatingCategory(true);
     setEditCategoryId("new-category");
-  }
+  };
 
   const handleAddCategoryComplete = () => {
     setIsCreatingCategory(false);
     setEditCategoryId(null);
-  }
+  };
 
   const handleDragEnd = () => {
     if (!containerRef.current) return;
@@ -56,8 +65,11 @@ export default function Categories() {
       .map((id) => categoryMap.get(id))
       .filter((item) => item !== undefined);
 
-    reorderCategories(reorderedItems);
-  }
+    startTransition(() => {
+      addTransitionType(VIEW_TRANSITIONS.none);
+      reorderCategories(reorderedItems);
+    });
+  };
 
   // useEffect(() => {
   //   // Refocus "Add category" button if category create action is canceled
@@ -81,7 +93,12 @@ export default function Categories() {
   return (
     <>
       {hasCategories ? (
-        <ul ref={containerRef} className="category-list" role="list" onKeyDown={handleClose}>
+        <ul
+          ref={containerRef}
+          className="category-list"
+          role="list"
+          onKeyDown={handleClose}
+        >
           <DragDropProvider onDragEnd={handleDragEnd}>
             {categories.map((category, index) => (
               <Category
@@ -106,8 +123,11 @@ export default function Categories() {
           <PlusIcon /> Add a category
         </button>
       ) : (
-        <CategoryStarter ref={addCategoryButtonRef} onClick={handleAddCategory} />
+        <CategoryStarter
+          ref={addCategoryButtonRef}
+          onClick={handleAddCategory}
+        />
       )}
     </>
-  )
+  );
 }

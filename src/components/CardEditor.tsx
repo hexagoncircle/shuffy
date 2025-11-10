@@ -1,4 +1,12 @@
-import { ViewTransition, startTransition, CSSProperties, KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  ViewTransition,
+  startTransition,
+  CSSProperties,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { v4 as uuid } from "uuid";
 import clsx from "clsx";
 import { getItemById } from "@js/utils";
@@ -8,6 +16,7 @@ import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import { useCardsContext } from "@hooks/useCardsContext";
 import Select from "./Select";
 import CategorySelectIcon from "@assets/category-select.svg?react";
+import { VIEW_TRANSITIONS } from "@js/constants";
 
 export type CardEditAction = "create" | "update" | "cancel";
 
@@ -17,7 +26,8 @@ interface CardEditorProps {
 }
 
 export default function CardEditor({ card, onComplete }: CardEditorProps) {
-  const { lastSelectedCategory, setIsSettingsActive, setLastSelectedCategory } = useSettingsContext();
+  const { lastSelectedCategory, setIsSettingsActive, setLastSelectedCategory } =
+    useSettingsContext();
   const { createCard, updateCard, deleteCard } = useCardsContext();
   const { categories } = useCategoriesContext();
 
@@ -26,19 +36,25 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
   const nameMaxLength = 80;
   const isNameCharacterLimit = nameValue.length >= nameMaxLength;
 
-  const [selectedCategory, setSelectedCategory] = useState(card?.category || lastSelectedCategory);
-  const selectedCategoryObj = selectedCategory ? getItemById(categories, selectedCategory) : null;
+  const [selectedCategory, setSelectedCategory] = useState(
+    card?.category || lastSelectedCategory
+  );
+  const selectedCategoryObj = selectedCategory
+    ? getItemById(categories, selectedCategory)
+    : null;
   const categoryOptions = [
     { label: "Select a category", value: "" },
-    ...categories.map(({ label, id }) => ({ label, value: id }))
+    ...categories.map(({ label, id }) => ({ label, value: id })),
   ];
 
   const handleEscapeCancel = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Escape") {
-      e.preventDefault();
-      onComplete("cancel");
+      startTransition(() => {
+        e.preventDefault();
+        onComplete("cancel");
+      });
     }
-  }
+  };
 
   const handleNameInputKeydown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -48,7 +64,7 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
         card ? handleUpdate() : handleCreate();
       }
     }
-  }
+  };
 
   const handleCreate = () => {
     startTransition(() => {
@@ -56,12 +72,12 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
         id: `card-${uuid()}`,
         isActive: true,
         label: nameValue,
-        category: selectedCategory
+        category: selectedCategory,
       });
       setLastSelectedCategory(selectedCategory);
       onComplete("create");
     });
-  }
+  };
 
   const handleUpdate = () => {
     if (!card) return;
@@ -70,11 +86,11 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
       updateCard({
         ...card,
         label: nameValue,
-        category: selectedCategory
+        category: selectedCategory,
       });
       onComplete("update");
     });
-  }
+  };
 
   const handleDelete = () => {
     if (!card) return;
@@ -82,8 +98,8 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
     startTransition(() => {
       deleteCard(card.id);
       onComplete("update");
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     const ref = nameRef.current;
@@ -95,40 +111,66 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
       ref?.focus();
       ref.setSelectionRange(length, length);
     }
-
   }, []);
 
   return (
-    <>
-      <article className="card-editor flow center" onKeyDown={handleEscapeCancel}>
+    <ViewTransition
+      default={VIEW_TRANSITIONS.screen}
+      update={{
+        [VIEW_TRANSITIONS.none]: VIEW_TRANSITIONS.none,
+      }}
+    >
+      <article
+        className="card-editor flow center"
+        onKeyDown={handleEscapeCancel}
+      >
         <div className="card-editor-category-select">
-          <label htmlFor="select-category" className="visually-hidden">Category</label>
+          <label htmlFor="select-category" className="visually-hidden">
+            Category
+          </label>
           <Select
             id="select-category"
             options={categoryOptions}
             selected={selectedCategory}
             onChange={(e) => setSelectedCategory(e.currentTarget.value)}
           />
-          <button className="icon-button" onClick={() => setIsSettingsActive(true)}>
+          <button
+            className="icon-button"
+            onClick={() => setIsSettingsActive(true)}
+          >
             <CategorySelectIcon aria-hidden="true" />
           </button>
         </div>
-        <ViewTransition name={`card-${card?.id}`}>
+        <ViewTransition
+          name={`card-${card?.id}`}
+          update={{
+            [VIEW_TRANSITIONS.none]: VIEW_TRANSITIONS.none,
+          }}
+        >
           <div
             className="card"
             style={{ "--theme": selectedCategoryObj?.theme } as CSSProperties}
           >
             <div className="card-front">
               <div className="card-display">
-                {selectedCategoryObj && <div className="card-category">{selectedCategoryObj.label}</div>}
+                {selectedCategoryObj && (
+                  <div className="card-category">
+                    {selectedCategoryObj.label}
+                  </div>
+                )}
 
                 <div className="editor-box">
                   <div className="editor-box-corner"></div>
                   <div className="editor-box-corner"></div>
                   <div className="editor-box-corner"></div>
                   <div className="editor-box-corner"></div>
-                  <label htmlFor="edit-card-title" className="visually-hidden">Card label</label>
-                  <div className="card-name-wrapper stack" data-value={nameValue}>
+                  <label htmlFor="edit-card-title" className="visually-hidden">
+                    Card label
+                  </label>
+                  <div
+                    className="card-name-wrapper stack"
+                    data-value={nameValue}
+                  >
                     <textarea
                       ref={nameRef}
                       id="edit-card-title"
@@ -141,7 +183,12 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
                       onKeyDown={handleNameInputKeydown}
                     />
                   </div>
-                  <p className={clsx("character-count", isNameCharacterLimit && "limit")}>
+                  <p
+                    className={clsx(
+                      "character-count",
+                      isNameCharacterLimit && "limit"
+                    )}
+                  >
                     {nameValue.length} / {nameMaxLength}
                   </p>
                 </div>
@@ -173,12 +220,10 @@ export default function CardEditor({ card, onComplete }: CardEditorProps) {
             >
               Add card to deck
             </button>
-            <button onClick={() => onComplete("cancel")}>
-              Cancel
-            </button>
+            <button onClick={() => onComplete("cancel")}>Cancel</button>
           </>
         )}
       </footer>
-    </>
+    </ViewTransition>
   );
 }

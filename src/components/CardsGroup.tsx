@@ -1,8 +1,8 @@
-import { useEffect, useRef, useId, ChangeEvent } from 'react';
-import { getItemById, refocusElement } from '@js/utils';
-import { CardDataProps } from '@contexts/CardsContext';
-import { useCardsContext } from '@hooks/useCardsContext';
-import CardChip from '@components/CardChip';
+import { useRef, useId, ChangeEvent, useLayoutEffect } from "react";
+import { getItemById, refocusElement } from "@js/utils";
+import { CardDataProps } from "@contexts/CardsContext";
+import { useCardsContext } from "@hooks/useCardsContext";
+import CardChip from "@components/CardChip";
 
 interface CardsGroupProps {
   category: string;
@@ -11,21 +11,26 @@ interface CardsGroupProps {
   onCardClick(id: string, index: number): void;
 }
 
-export default function CardsGroup({ focusIndex, category, cards, onCardClick }: CardsGroupProps) {
+export default function CardsGroup({
+  focusIndex,
+  category,
+  cards,
+  onCardClick,
+}: CardsGroupProps) {
   const id = useId();
   const { updateCard } = useCardsContext();
   const parentRef = useRef<HTMLInputElement>(null);
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
-  const allChecked = cards.every(card => card.isActive);
-  const someChecked = cards.some(card => card.isActive);
+  const allChecked = cards.every((card) => card.isActive);
+  const someChecked = cards.some((card) => card.isActive);
 
   const handleGroupChange = (e: ChangeEvent<HTMLInputElement>) => {
-    cards.forEach(card => {
+    cards.forEach((card) => {
       updateCard({
         ...card,
-        isActive: e.target.checked
+        isActive: e.target.checked,
       });
-    })
+    });
   };
 
   const handleCardChange = (id: string) => {
@@ -35,23 +40,23 @@ export default function CardsGroup({ focusIndex, category, cards, onCardClick }:
 
     updateCard({
       ...card,
-      isActive: !card.isActive
+      isActive: !card.isActive,
     });
   };
 
   const handleCardClick = (id: string, index: number) => {
     onCardClick(id, index);
-  }
+  };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (parentRef.current) {
       parentRef.current.indeterminate = someChecked && !allChecked;
     }
   }, [cards, allChecked, someChecked]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     focusIndex && refocusElement(cardsRef.current, focusIndex);
-  }, [focusIndex])
+  }, [focusIndex]);
 
   return (
     <ul className="flow" role="list">
@@ -71,8 +76,8 @@ export default function CardsGroup({ focusIndex, category, cards, onCardClick }:
           {cards.map(({ label, isActive, id }, index) => (
             <li key={id}>
               <CardChip
-                ref={el => {
-                  (cardsRef.current[index] = el);
+                ref={(el) => {
+                  cardsRef.current[index] = el;
                 }}
                 id={id}
                 label={label}

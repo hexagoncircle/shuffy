@@ -79,6 +79,8 @@
   --card-aspect-ratio: 154 / 202;
 
   --page-gutter: var(--space-l);
+
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 html,
@@ -178,13 +180,13 @@ body {
 
 /* --- Focus styles --- */
 :is(
-    input:focus-visible,
-    button:focus-visible,
-    .button:focus-visible,
-    .switch:has(:focus-visible),
-    .select:has(:focus-visible),
-    .custom-color-select:has(:focus-visible)
-  ) {
+  input:focus-visible,
+  button:focus-visible,
+  .button:focus-visible,
+  .switch:has(:focus-visible),
+  .select:has(:focus-visible),
+  .custom-color-select:has(:focus-visible)
+) {
   outline: none;
   box-shadow: var(--focus-shadow);
 }
@@ -219,10 +221,7 @@ textarea {
 
   &::placeholder {
     color: var(--dark-gray);
-  }
-
-  &:focus::placeholder {
-    color: var(--gray);
+    transition: opacity 0.2s ease-out;
   }
 }
 

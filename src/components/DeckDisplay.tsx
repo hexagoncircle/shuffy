@@ -1,70 +1,101 @@
-import { useRef, useState } from "react";
+import {
+  startTransition,
+  addTransitionType,
+  useRef,
+  useState,
+  ViewTransition,
+} from "react";
 import { getItemById } from "@js/utils";
 import { useSearchParams } from "react-router-dom";
 import { useCardsContext } from "@hooks/useCardsContext";
-import DeckDisplayControl, { DeckDisplayControlView } from "@components/DeckDisplayControl";
+import DeckDisplayControl, {
+  DeckDisplayControlView,
+} from "@components/DeckDisplayControl";
 import CardStarter from "@components/CardStarter";
 import CardsSpread from "@components/CardsSpread";
 import CardsList from "@components/CardsList";
 import PlusIcon from "@assets/plus.svg?react";
 import CardEditor, { CardEditAction } from "./CardEditor";
+import { VIEW_TRANSITIONS } from "@js/constants";
 
 interface DeckDisplayProps {
   isEditing: boolean;
   onIsEditing(isEditing: boolean, action?: CardEditAction): void;
 }
 
-export default function DeckDisplay({ isEditing, onIsEditing }: DeckDisplayProps) {
+export default function DeckDisplay({
+  isEditing,
+  onIsEditing,
+}: DeckDisplayProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { cards, editCardId, setEditCardId } = useCardsContext();
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [view, setView] = useState(searchParams.get('view') as DeckDisplayControlView);
+  const [view, setView] = useState(
+    searchParams.get("view") as DeckDisplayControlView
+  );
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>();
   const [activeGroupIndex, setActiveGroupIndex] = useState<number | null>();
   const addCardRef = useRef<HTMLButtonElement | null>(null);
   const card = getItemById(cards, editCardId);
   const isEmptyDeck = cards.length === 0;
+  const isCarSpreadView = !view || view === "spread";
 
   const resetActiveIndex = () => {
     setActiveGroupIndex(null);
     setActiveCardIndex(null);
-  }
+  };
 
-  const handleCardClick = (scrollPosition: number, cardIndex: number, groupIndex?: number) => {
+  const handleCardClick = (
+    scrollPosition: number,
+    cardIndex: number,
+    groupIndex?: number
+  ) => {
     groupIndex !== null && setActiveGroupIndex(groupIndex);
     setActiveCardIndex(cardIndex);
     setScrollPosition(scrollPosition);
     onIsEditing(true);
-  }
+  };
 
   const handleOnComplete = (action: CardEditAction) => {
-    onIsEditing(false);
-    setEditCardId("");
+    startTransition(() => {
+      onIsEditing(false);
+      setEditCardId("");
 
-    if (action === "create") {
-      setScrollPosition(-1);
-      setActiveCardIndex(cards.length);
-      setTimeout(() => addCardRef.current?.focus());
-    }
-  }
+      if (action === "create") {
+        setScrollPosition(-1);
+        setActiveCardIndex(cards.length);
+        setTimeout(() => addCardRef.current?.focus());
+      }
+    });
+  };
 
-  const handleViewChange = (view: DeckDisplayControlView) => {
-    resetActiveIndex();
-    setScrollPosition(0);
-    setView(view);
-    setSearchParams({ view });
-  }
+  const handleViewChange = (selectedView: DeckDisplayControlView) => {
+    if (view === selectedView) return;
+
+    startTransition(() => {
+      addTransitionType(VIEW_TRANSITIONS.none);
+      resetActiveIndex();
+      setScrollPosition(0);
+      setView(selectedView);
+      setSearchParams({ view: selectedView });
+    });
+  };
 
   if (isEditing) {
-    return <CardEditor card={card} onComplete={handleOnComplete}></CardEditor>
+    return <CardEditor card={card} onComplete={handleOnComplete}></CardEditor>;
   }
 
   if (isEmptyDeck) {
-    return <CardStarter className="center" onClick={() => onIsEditing(true)} />
+    return <CardStarter className="center" onClick={() => onIsEditing(true)} />;
   }
 
   return (
-    <>
+    <ViewTransition
+      default={VIEW_TRANSITIONS.screen}
+      update={{
+        [VIEW_TRANSITIONS.none]: VIEW_TRANSITIONS.none,
+      }}
+    >
       <section className="deck-controls cluster center">
         <DeckDisplayControl defaultView={view} onClick={handleViewChange} />
         <button
@@ -77,7 +108,7 @@ export default function DeckDisplay({ isEditing, onIsEditing }: DeckDisplayProps
         </button>
       </section>
 
-      {!view || view === "spread" ? (
+      {isCarSpreadView ? (
         <CardsSpread
           focusIndex={activeCardIndex}
           scrollPosition={scrollPosition}
@@ -91,6 +122,6 @@ export default function DeckDisplay({ isEditing, onIsEditing }: DeckDisplayProps
           onCardClick={handleCardClick}
         />
       )}
-    </>
+    </ViewTransition>
   );
 }

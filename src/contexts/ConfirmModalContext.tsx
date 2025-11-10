@@ -1,4 +1,10 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from "react";
 
 interface ConfirmModalProviderProps {
   children: ReactNode;
@@ -18,26 +24,29 @@ interface ConfirmModalContextType {
   setModalContext: Dispatch<SetStateAction<ConfirmModalState>>;
 }
 
-export const ConfirmModalContext = createContext<ConfirmModalContextType | null>(null);
+export const ConfirmModalContext =
+  createContext<ConfirmModalContextType | null>(null);
 
-export default function ConfirmModalProvider({ children }: ConfirmModalProviderProps) {
+export default function ConfirmModalProvider({
+  children,
+}: ConfirmModalProviderProps) {
   const [modalContext, setModalContext] = useState<ConfirmModalState>({
     isOpen: false,
     title: "",
     message: "",
     actionConfirmText: "Confirm",
     actionCancelText: "Cancel",
-    onConfirm: () => { },
+    onConfirm: () => {},
   });
 
   const value = {
     modalContext,
-    setModalContext
-  }
+    setModalContext,
+  };
 
   return (
     <ConfirmModalContext.Provider value={value}>
       {children}
     </ConfirmModalContext.Provider>
-  )
+  );
 }

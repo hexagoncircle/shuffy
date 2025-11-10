@@ -12,7 +12,14 @@ interface ModalProps {
   variant?: "modal" | "drawer";
 }
 
-export default function Modal({ open, actions, title, variant, children, onClose }: ModalProps) {
+export default function Modal({
+  open,
+  actions,
+  title,
+  variant,
+  children,
+  onClose,
+}: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -42,18 +49,12 @@ export default function Modal({ open, actions, title, variant, children, onClose
           {title && <h2 className="modal-title">{title}</h2>}
           <button className="modal-close icon-button" onClick={() => onClose()}>
             <span className="visually-hidden">Close</span>
-            {variant === 'drawer' ? <ArrowIcon aria-hidden="true" /> : <CloseIcon aria-hidden="true" />}
+            <CloseIcon aria-hidden="true" />
           </button>
         </header>
-        <article className="modal-content">
-          {children}
-        </article>
-        {actions && (
-          <footer className="modal-actions center">
-            {actions}
-          </footer>
-        )}
+        <article className="modal-content">{children}</article>
+        {actions && <footer className="modal-actions center">{actions}</footer>}
       </form>
     </dialog>
-  )
+  );
 }

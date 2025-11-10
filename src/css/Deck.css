@@ -107,7 +107,10 @@
   &::after {
     content: "";
     align-self: stretch;
-    padding-inline-end: max(var(--gutter), (100vw - var(--card-size)) / 2 + var(--gutter) * 2);
+    padding-inline-end: max(
+      var(--gutter),
+      (100vw - var(--card-size)) / 2 + var(--gutter) * 2
+    );
   }
 
   > * {
@@ -146,15 +149,19 @@
   }
 
   .cards > *:has([aria-selected="true"]) {
-    scale: 1;
+    scale: 1.01;
   }
 }
 
 @supports (animation-timeline: view()) {
   .cards > * {
-    animation: card-scale linear both, card-fade linear both;
+    animation:
+      card-scale linear both,
+      card-fade linear both;
     animation-timeline: view(inline);
-    animation-range: cover 30% cover 70%, cover 5% cover 95%;
+    animation-range:
+      cover 30% cover 70%,
+      cover 5% cover 95%;
   }
 
   @keyframes card-scale {
@@ -163,7 +170,7 @@
       scale: var(--scale);
     }
     50% {
-      scale: 1;
+      scale: 1.01;
     }
   }
 
