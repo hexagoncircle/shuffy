@@ -42,28 +42,17 @@ export default function Deck() {
 
   return (
     <ConfirmModalProvider>
-      <ViewTransition
-        default={
-          isInitialMount.current
-            ? VIEW_TRANSITIONS.none
-            : VIEW_TRANSITIONS.screen
-        }
-        update={{
-          [VIEW_TRANSITIONS.none]: VIEW_TRANSITIONS.none,
-        }}
-      >
-        {isEditing ? (
-          <DeckEditHeader
-            text={editAction === "create" ? "Add new card" : "Modify card"}
-            onClose={handleClose}
-          />
-        ) : (
-          <DeckHeader />
-        )}
-        <main className="deck-display">
-          <DeckDisplay isEditing={isEditing} onIsEditing={handleIsEditing} />
-        </main>
-      </ViewTransition>
+      {isEditing ? (
+        <DeckEditHeader
+          text={editAction === "create" ? "Add new card" : "Modify card"}
+          onClose={handleClose}
+        />
+      ) : (
+        <DeckHeader />
+      )}
+      <main className="deck-display">
+        <DeckDisplay isEditing={isEditing} onIsEditing={handleIsEditing} />
+      </main>
       <ConfirmModal />
       <SettingsModal />
     </ConfirmModalProvider>
