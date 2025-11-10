@@ -90,38 +90,43 @@ export default function DeckDisplay({
   }
 
   return (
-    <ViewTransition
-      default={VIEW_TRANSITIONS.screen}
-      update={{
-        [VIEW_TRANSITIONS.none]: VIEW_TRANSITIONS.none,
-      }}
-    >
-      <section className="deck-controls cluster center">
-        <DeckDisplayControl defaultView={view} onClick={handleViewChange} />
-        <button
-          ref={addCardRef}
-          id="add-new-card"
-          className="primary small"
-          onClick={() => onIsEditing(true, "create")}
-        >
-          <PlusIcon /> Add a card
-        </button>
-      </section>
+    <>
+      <ViewTransition
+        enter={VIEW_TRANSITIONS.screen}
+        exit={VIEW_TRANSITIONS.screen}
+      >
+        <section className="deck-controls cluster center">
+          <DeckDisplayControl defaultView={view} onClick={handleViewChange} />
+          <button
+            ref={addCardRef}
+            id="add-new-card"
+            className="primary small"
+            onClick={() => onIsEditing(true, "create")}
+          >
+            <PlusIcon /> Add a card
+          </button>
+        </section>
+      </ViewTransition>
 
-      {isCarSpreadView ? (
-        <CardsSpread
-          focusIndex={activeCardIndex}
-          scrollPosition={scrollPosition}
-          onCardClick={handleCardClick}
-        />
-      ) : (
-        <CardsList
-          focusCardIndex={activeCardIndex}
-          focusGroupIndex={activeGroupIndex}
-          scrollPosition={scrollPosition}
-          onCardClick={handleCardClick}
-        />
-      )}
-    </ViewTransition>
+      <ViewTransition
+        enter={VIEW_TRANSITIONS.screen}
+        exit={VIEW_TRANSITIONS.screen}
+      >
+        {isCarSpreadView ? (
+          <CardsSpread
+            focusIndex={activeCardIndex}
+            scrollPosition={scrollPosition}
+            onCardClick={handleCardClick}
+          />
+        ) : (
+          <CardsList
+            focusCardIndex={activeCardIndex}
+            focusGroupIndex={activeGroupIndex}
+            scrollPosition={scrollPosition}
+            onCardClick={handleCardClick}
+          />
+        )}
+      </ViewTransition>
+    </>
   );
 }
