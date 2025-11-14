@@ -25,6 +25,9 @@ export default function DeckHeader() {
     <ViewTransition
       enter={VIEW_TRANSITIONS.screen}
       exit={VIEW_TRANSITIONS.screen}
+      update={{
+        [VIEW_TRANSITIONS.none]: VIEW_TRANSITIONS.none,
+      }}
     >
       <header className="deck-header">
         <div className="deck-header-info flow flow-xs">
