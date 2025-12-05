@@ -1,10 +1,12 @@
 import { useLayoutEffect, useRef, useState, ViewTransition } from "react";
+import { VIEW_TRANSITIONS } from "@js/constants";
 import { refocusElement } from "@js/utils";
 import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
 import { useCardsContext } from "@hooks/useCardsContext";
+import { useScrollEnd } from "@hooks/useScrollEnd";
 import Card from "@components/Card";
 import Switch from "./Switch";
-import { VIEW_TRANSITIONS } from "@js/constants";
+import { CardDataProps } from "@contexts/CardsContext";
 
 interface CardsSpreadProps {
   focusIndex?: number | null;
@@ -18,10 +20,12 @@ export default function CardsSpread({
   onCardClick,
 }: CardsSpreadProps) {
   const { cards, updateCard, setEditCardId } = useCardsContext();
+  const [activeCardIndex, setActiveCardIndex] = useState(focusIndex || 0);
+  const [isScrolling, setIsScrolling] = useState(false);
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
   const cardsScrollRef = useRef<HTMLElement>(null);
-  const [activeCardIndex, setActiveCardIndex] = useState(focusIndex || 0);
   const cardsParentRef = useRef<HTMLUListElement>(null);
+  const activeCardRef = useRef<CardDataProps>(cards[activeCardIndex]);
   const handleRovingIndex = useRovingTabIndex(cardsParentRef, activeCardIndex);
 
   const handleClick = (id: string, index: number) => {
@@ -54,11 +58,13 @@ export default function CardsSpread({
 
   const handleActiveChange = () => {
     const card = cards[activeCardIndex];
-
-    updateCard({
+    const updatedCard = {
       ...card,
       isActive: !card.isActive,
-    });
+    };
+
+    activeCardRef.current = updatedCard;
+    updateCard(updatedCard);
   };
 
   useLayoutEffect(() => {
@@ -92,6 +98,7 @@ export default function CardsSpread({
           const target = entry.target as HTMLButtonElement;
           const index = cards.indexOf(target);
 
+          setIsScrolling(true);
           setActiveCardIndex(index);
         }
       });
@@ -114,6 +121,18 @@ export default function CardsSpread({
       cards.forEach((card) => card && observer.unobserve(card));
     };
   }, []);
+
+  useLayoutEffect(() => {
+    // Wait for scrollend before updating ref to avoid flicker of Switch checked state when scrolling cards quickly.
+    if (!isScrolling) {
+      activeCardRef.current = cards[activeCardIndex];
+    }
+  }, [isScrolling, activeCardIndex]);
+
+  useScrollEnd(() => {
+    setIsScrolling(false);
+    activeCardRef.current = cards[activeCardIndex];
+  }, cardsScrollRef);
 
   return (
     <ViewTransition
@@ -149,7 +168,7 @@ export default function CardsSpread({
         <label htmlFor="card-active-toggle">Card is shuffy-able</label>
         <Switch
           id="card-active-toggle"
-          checked={cards[activeCardIndex]?.isActive || false}
+          checked={!!activeCardRef.current?.isActive}
           onChange={handleActiveChange}
         />
       </section>

@@ -107,7 +107,6 @@ export default function DeckDisplay({
           </button>
         </section>
       </ViewTransition>
-
       <ViewTransition
         enter={VIEW_TRANSITIONS.screen}
         exit={VIEW_TRANSITIONS.screen}
