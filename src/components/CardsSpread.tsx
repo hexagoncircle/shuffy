@@ -23,7 +23,7 @@ export default function CardsSpread({
   const [activeCardIndex, setActiveCardIndex] = useState(focusIndex || 0);
   const [isScrolling, setIsScrolling] = useState(false);
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
-  const cardsScrollRef = useRef<HTMLElement>(null);
+  const cardsScrollElRef = useRef<HTMLElement>(null);
   const cardsParentRef = useRef<HTMLUListElement>(null);
   const activeCardRef = useRef<CardDataProps>(cards[activeCardIndex]);
   const handleRovingIndex = useRovingTabIndex(cardsParentRef, activeCardIndex);
@@ -34,10 +34,10 @@ export default function CardsSpread({
   };
 
   const getCardScrollPosition = (index: number) => {
-    if (!cardsScrollRef.current) return;
+    if (!cardsScrollElRef.current) return;
 
     const cardElement = cardsRef.current[index];
-    const scrollContainer = cardsScrollRef.current;
+    const scrollContainer = cardsScrollElRef.current;
 
     if (!cardElement) return;
 
@@ -68,7 +68,7 @@ export default function CardsSpread({
   };
 
   useLayoutEffect(() => {
-    const scrollEl = cardsScrollRef.current;
+    const scrollEl = cardsScrollElRef.current;
 
     if (!scrollEl) return;
 
@@ -86,11 +86,10 @@ export default function CardsSpread({
   }, [focusIndex]);
 
   useLayoutEffect(() => {
-    const scrollEl = cardsScrollRef.current;
-
-    if (!scrollEl) return;
-
+    const scrollEl = cardsScrollElRef.current;
     const cards = cardsRef.current;
+
+    if (!scrollEl || !cards) return;
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
@@ -132,7 +131,7 @@ export default function CardsSpread({
   useScrollEnd(() => {
     setIsScrolling(false);
     activeCardRef.current = cards[activeCardIndex];
-  }, cardsScrollRef);
+  }, cardsScrollElRef);
 
   return (
     <ViewTransition
@@ -141,7 +140,7 @@ export default function CardsSpread({
         [VIEW_TRANSITIONS.none]: VIEW_TRANSITIONS.none,
       }}
     >
-      <section ref={cardsScrollRef} className="cards-wrapper scroll-x">
+      <section ref={cardsScrollElRef} className="cards-wrapper scroll-x">
         <ul
           ref={cardsParentRef}
           className="cards"
