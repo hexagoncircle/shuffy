@@ -1,12 +1,20 @@
-import { useLayoutEffect, useRef, useState, ViewTransition } from "react";
+import {
+  KeyboardEvent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  ViewTransition,
+} from "react";
+import mergeRefs from "merge-refs";
 import { VIEW_TRANSITIONS } from "@js/constants";
 import { refocusElement } from "@js/utils";
-import { useRovingTabIndex } from "@hooks/useRovingTabIndex";
+import { CardDataProps } from "@contexts/CardsContext";
 import { useCardsContext } from "@hooks/useCardsContext";
+import { useRovingFocus } from "@hooks/useRovingFocus";
 import { useScrollEnd } from "@hooks/useScrollEnd";
 import Card from "@components/Card";
 import Switch from "./Switch";
-import { CardDataProps } from "@contexts/CardsContext";
 
 interface CardsSpreadProps {
   focusIndex?: number | null;
@@ -26,7 +34,12 @@ export default function CardsSpread({
   const cardsScrollElRef = useRef<HTMLElement>(null);
   const cardsParentRef = useRef<HTMLUListElement>(null);
   const activeCardRef = useRef<CardDataProps>(cards[activeCardIndex]);
-  const handleRovingIndex = useRovingTabIndex(cardsParentRef, activeCardIndex);
+  const {
+    rovingFocusContainerRef,
+    rovingFocusOnKeyDown,
+    rovingFocusItemProps,
+    currentIndex: rovingFocusIndex,
+  } = useRovingFocus<HTMLUListElement>({ initialIndex: activeCardIndex });
 
   const handleClick = (id: string, index: number) => {
     setEditCardId(id);
@@ -82,7 +95,9 @@ export default function CardsSpread({
   }, []);
 
   useLayoutEffect(() => {
-    focusIndex && refocusElement(cardsRef.current, focusIndex);
+    if (focusIndex != null) {
+      refocusElement(cardsRef.current, focusIndex);
+    }
   }, [focusIndex]);
 
   useLayoutEffect(() => {
@@ -121,7 +136,15 @@ export default function CardsSpread({
     };
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    // Sync rovingFocusIndex with activeCardIndex when arrow keys are used
+    if (rovingFocusIndex !== activeCardIndex && cards[rovingFocusIndex]) {
+      setActiveCardIndex(rovingFocusIndex);
+      activeCardRef.current = cards[rovingFocusIndex];
+    }
+  }, [rovingFocusIndex, cards]);
+
+  useEffect(() => {
     // Wait for scrollend before updating ref to avoid flicker of Switch checked state when scrolling cards quickly.
     if (!isScrolling) {
       activeCardRef.current = cards[activeCardIndex];
@@ -142,22 +165,21 @@ export default function CardsSpread({
     >
       <section ref={cardsScrollElRef} className="cards-wrapper scroll-x">
         <ul
-          ref={cardsParentRef}
+          ref={mergeRefs(cardsParentRef, rovingFocusContainerRef)}
+          onKeyDown={rovingFocusOnKeyDown}
           className="cards"
           role="list"
-          onKeyDown={handleRovingIndex}
         >
           {cards.map((card, index) => (
-            <li
-              key={card.id}
-              ref={(el) => {
-                cardsRef.current[index] = el;
-              }}
-            >
+            <li key={card.id}>
               <Card
                 card={card}
+                ref={(el) => {
+                  cardsRef.current[index] = el;
+                }}
                 selected={index === activeCardIndex}
                 onClick={() => handleClick(card.id, index)}
+                {...rovingFocusItemProps}
               />
             </li>
           ))}

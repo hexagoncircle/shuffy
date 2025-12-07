@@ -35,7 +35,7 @@ export default function DeckDisplay({
   );
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>();
   const [activeGroupIndex, setActiveGroupIndex] = useState<number | null>();
-  const addCardRef = useRef<HTMLButtonElement | null>(null);
+  const addCardButtonRef = useRef<HTMLButtonElement | null>(null);
   const card = getItemById(cards, editCardId);
   const isEmptyDeck = cards.length === 0;
   const isCardSpreadView = !view || view === "spread";
@@ -63,7 +63,9 @@ export default function DeckDisplay({
     if (action === "create") {
       setScrollPosition(-1);
       setActiveCardIndex(cards.length);
-      setTimeout(() => addCardRef.current?.focus());
+      requestAnimationFrame(() => {
+        addCardButtonRef.current?.focus();
+      });
     }
   };
 
@@ -96,7 +98,7 @@ export default function DeckDisplay({
         <section className="deck-controls cluster center">
           <DeckDisplayControl defaultView={view} onClick={handleViewChange} />
           <button
-            ref={addCardRef}
+            ref={addCardButtonRef}
             id="add-new-card"
             className="primary small"
             onClick={() => onIsEditing(true, "create")}

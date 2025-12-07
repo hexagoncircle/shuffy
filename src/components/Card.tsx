@@ -16,7 +16,7 @@ export interface CardProps {
 }
 
 const Card = forwardRef<HTMLButtonElement, CardProps>(
-  ({ card, flipped, selected, className, onClick }, ref) => {
+  ({ card, flipped, selected, className, onClick, ...rest }, ref) => {
     const { id, label, isActive, categoryLabel, categoryTheme: theme } = card;
 
     return (
@@ -42,6 +42,7 @@ const Card = forwardRef<HTMLButtonElement, CardProps>(
             className="card-front"
             aria-selected={selected}
             onClick={onClick}
+            {...rest}
           >
             <div className="card-display">
               <figure className="card-figure stack" aria-hidden="true">
