@@ -5,18 +5,20 @@
 }
 
 .chip {
+  --chip-bg: var(--white);
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-s);
   padding: var(--space-xs) var(--space-m) var(--space-xs) 0;
-  background-color: var(--white);
+  background-color: var(--chip-bg);
 }
 
 .chip.inactive {
   --theme: var(--color-bg);
+  --chip-bg: var(--color-bg-subtle);
   color: var(--color-text-subtle);
-  background-color: var(--color-bg-subtle);
 }
 
 .chip:has(button:focus-visible) {
@@ -40,4 +42,24 @@
 
 .chip .switch {
   flex-shrink: 0;
+}
+
+.chip .focus-label {
+  position: absolute;
+  bottom: var(--space-2xs);
+  left: 0;
+  opacity: 0;
+  font-size: 0.65em;
+  white-space: nowrap;
+  padding-inline: var(--space-l);
+  translate: 0 1px;
+  transition-property: opacity, translate;
+}
+
+.chip-label:focus-visible ~ .focus-label {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: 1s;
+  transition-duration: 300ms;
+  transition-timing-function: var(--ease-out);
 }

@@ -21,10 +21,7 @@ export default function Categories() {
   const hasCategories = categories.length > 0;
   const addCategoryButtonRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLUListElement>(null);
-  const activeElementRef = useRef<HTMLElement | null>(null);
-  const categoriesRef = useRef<(HTMLLIElement | null)[]>([]);
 
-  // Create a Map for O(1) lookups by ID
   const categoryMap = useMemo(
     () => new Map(categories.map((category) => [category.id, category])),
     [categories]

@@ -55,9 +55,9 @@ export default function CardsList({
             category={category}
             cards={groupedCards[category]}
             focusIndex={focusGroupIndex === index ? focusCardIndex : null}
-            onCardClick={(id, cardIndex) =>
-              handleCardClick(id, cardIndex, index)
-            }
+            onCardClick={(id, cardIndex) => {
+              handleCardClick(id, cardIndex, index);
+            }}
           />
         ))}
       </ul>

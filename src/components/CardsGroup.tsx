@@ -55,7 +55,9 @@ export default function CardsGroup({
   }, [cards, allChecked, someChecked]);
 
   useLayoutEffect(() => {
-    focusIndex && refocusElement(cardsRef.current, focusIndex);
+    if (focusIndex != null) {
+      refocusElement(cardsRef.current, focusIndex);
+    }
   }, [focusIndex]);
 
   return (

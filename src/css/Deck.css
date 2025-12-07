@@ -1,5 +1,4 @@
 .deck-display {
-  align-self: start;
   display: grid;
   grid-template-rows: auto 1fr;
   gap: var(--space-l);

@@ -38,7 +38,7 @@ export default function DeckDisplay({
   const addCardRef = useRef<HTMLButtonElement | null>(null);
   const card = getItemById(cards, editCardId);
   const isEmptyDeck = cards.length === 0;
-  const isCarSpreadView = !view || view === "spread";
+  const isCardSpreadView = !view || view === "spread";
 
   const resetActiveIndex = () => {
     setActiveGroupIndex(null);
@@ -57,16 +57,14 @@ export default function DeckDisplay({
   };
 
   const handleOnComplete = (action: CardEditAction) => {
-    startTransition(() => {
-      onIsEditing(false);
-      setEditCardId("");
+    onIsEditing(false);
+    setEditCardId("");
 
-      if (action === "create") {
-        setScrollPosition(-1);
-        setActiveCardIndex(cards.length);
-        setTimeout(() => addCardRef.current?.focus());
-      }
-    });
+    if (action === "create") {
+      setScrollPosition(-1);
+      setActiveCardIndex(cards.length);
+      setTimeout(() => addCardRef.current?.focus());
+    }
   };
 
   const handleViewChange = (selectedView: DeckDisplayControlView) => {
@@ -110,8 +108,9 @@ export default function DeckDisplay({
       <ViewTransition
         enter={VIEW_TRANSITIONS.screen}
         exit={VIEW_TRANSITIONS.screen}
+        update={VIEW_TRANSITIONS.none}
       >
-        {isCarSpreadView ? (
+        {isCardSpreadView ? (
           <CardsSpread
             focusIndex={activeCardIndex}
             scrollPosition={scrollPosition}
