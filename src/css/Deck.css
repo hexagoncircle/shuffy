@@ -50,10 +50,6 @@
   max-inline-size: 22rem;
 }
 
-.deck-header .category-creator {
-  --space: var(--space-s);
-}
-
 .deck-header-info {
   margin-inline-end: auto;
   padding-block: var(--space-m);

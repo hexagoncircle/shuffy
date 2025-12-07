@@ -18,6 +18,7 @@ import { useSortable } from "@dnd-kit/react/sortable";
 import { useOnClickOutside } from "usehooks-ts";
 import mergeRefs from "merge-refs";
 import "@css/category.css";
+import { useFocusTrap } from "@hooks/useFocusTrap";
 
 export interface CategoryProps {
   category: CategoryDataProps;
@@ -35,6 +36,8 @@ const Category = ({ category, index }: CategoryProps) => {
   } = useCategoriesContext();
   const { id, label, theme } = category;
   const isEditing = editCategoryId === id;
+  const containerRef = useRef<HTMLElement>(null);
+  const focusTrapRef = useFocusTrap<HTMLElement>(isEditing);
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const grippyRef = useRef<HTMLDivElement>(null);
@@ -53,7 +56,6 @@ const Category = ({ category, index }: CategoryProps) => {
     (c) => c.id !== id && c.value === slugifiedValue
   );
   const categoryCards = cards.filter((card) => card.category === id);
-  const containerRef = useRef<HTMLElement>(null);
 
   const handleEscapeCancel = (e: KeyboardEvent<HTMLElement>) => {
     if (isEditing && e.key === "Escape") {
@@ -138,7 +140,13 @@ const Category = ({ category, index }: CategoryProps) => {
 
   return (
     <li
-      ref={mergeRefs(sortRef, containerRef) as React.Ref<HTMLLIElement>}
+      ref={
+        mergeRefs(
+          sortRef,
+          containerRef,
+          focusTrapRef
+        ) as React.Ref<HTMLLIElement>
+      }
       id={id}
       className="category box"
       style={{ "--theme": colorValue } as CSSProperties}

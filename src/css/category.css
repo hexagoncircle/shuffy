@@ -4,6 +4,10 @@
   gap: var(--space-s);
 }
 
+.category-creator {
+  --space: var(--space-s);
+}
+
 .category {
   --padding: var(--space-l);
   display: grid;

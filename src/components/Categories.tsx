@@ -5,6 +5,7 @@ import {
   useState,
   startTransition,
   addTransitionType,
+  useEffect,
 } from "react";
 import { useCategoriesContext } from "@hooks/useCategoriesContext";
 import CategoryCreator from "./CategoryCreator";
@@ -42,6 +43,11 @@ export default function Categories() {
   const handleAddCategoryComplete = () => {
     setIsCreatingCategory(false);
     setEditCategoryId(null);
+
+    // Refocus "Add category" button
+    requestAnimationFrame(() => {
+      addCategoryButtonRef.current?.focus();
+    });
   };
 
   const handleDragEnd = () => {
@@ -67,25 +73,6 @@ export default function Categories() {
       reorderCategories(reorderedItems);
     });
   };
-
-  // useEffect(() => {
-  //   // Refocus "Add category" button if category create action is canceled
-  //   if (!isCreatingCategory) {
-  //     addCategoryButtonRef.current?.focus();
-  //   }
-  // }, [isCreatingCategory]);
-
-  // useEffect(() => {
-  //   /**
-  //    * Restore focus to the category label when no longer editing
-  //    * If category was deleted, focus "Add category" button instead
-  //    */
-  //   if (!editCategoryId) {
-  //     const btn = activeElementRef.current?.querySelector("button");
-
-  //     btn ? btn.focus() : addCategoryButtonRef.current?.focus();
-  //   }
-  // }, [editCategoryId]);
 
   return (
     <>
